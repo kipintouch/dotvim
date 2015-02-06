@@ -62,7 +62,7 @@
             "\" To Be Figured Out"
         ]
     },
-    "format_multi_cursor": {
+    "format_multicursor": {
         "config": [
         ]
     },
@@ -71,7 +71,7 @@
             "\" Nothing To Be Done"
         ]
     },
-    "format_vim_origami": {
+    "format_vimorigami": {
         "config": [
             "nnoremap <leader>fo :call origami#InsertFoldmarker(  \"open\", \"comment\" )<CR>",
             "nnoremap <leader>fc :call origami#InsertFoldmarker( \"close\", \"comment\" )<CR>",
@@ -115,14 +115,9 @@
             "nnoremap <leader>tg :TagbarOpen<CR>"
         ]
     },
-    "lang_cpp_clighter": {
+    "langcpp_clighter": {
         "config": [
             "\" To Be Decided"
-        ]
-    },
-    "lang_py_mode": {
-        "config": [
-            "let g:pymode_rope   =  0 "
         ]
     },
     "linter_syntastic": {
@@ -161,7 +156,7 @@
             "    \" nnoremap <silent> <F5> :SyntasticCheck<CR>"
         ]
     },
-    "linter_vim_lint": {
+    "linter_vimlint": {
         "config": [
             "\" To Be Decided"
         ]

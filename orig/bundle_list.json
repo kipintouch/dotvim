@@ -20,7 +20,6 @@
     },
     "autocomplete_ycm": {
         "opt": {
-            "lazy": "1",
             "vim_version": "7.3.584"
         },
         "url": "Valloric/YouCompleteMe"
@@ -45,7 +44,7 @@
         "opt": {},
         "url": "altercation/vim-colors-solarized.git"
     },
-    "format_easy_align": {
+    "format_easyalign": {
         "opt": {},
         "url": "junegunn/vim-easy-align"
     },
@@ -60,7 +59,7 @@
         },
         "url": "junegunn/goyo.vim"
     },
-    "format_multi_cursor": {
+    "format_multicursor": {
         "opt": {},
         "url": "terryma/vim-multiple-cursors"
     },
@@ -68,7 +67,7 @@
         "opt": {},
         "url": "tpope/vim-surround"
     },
-    "format_vim_origami": {
+    "format_vimorigami": {
         "opt": {},
         "url": "kshenoy/vim-origami"
     },
@@ -85,7 +84,7 @@
         },
         "url": "majutsushi/tagbar"
     },
-    "lang_cpp_clighter": {
+    "langcpp_clighter": {
         "opt": {
             "autoload": {
                 "filetypes": [
@@ -97,22 +96,11 @@
         },
         "url": "bbchung/clighter"
     },
-    "lang_py_mode": {
-        "opt": {
-            "autoload": {
-                "filetypes": [
-                    "python"
-                ]
-            },
-            "lazy": "1"
-        },
-        "url": "klen/python-mode"
-    },
     "linter_syntastic": {
         "opt": {},
         "url": "scrooloose/syntastic"
     },
-    "linter_vim_lint": {
+    "linter_vimlint": {
         "opt": {
             "autoload": {
                 "filetypes": [
