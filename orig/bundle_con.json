@@ -1,0 +1,235 @@
+{
+    "autocomplete_neocomplcache": {
+        "config": [
+            "\" Not Used So Left Alone So Far"
+        ]
+    },
+    "autocomplete_neocomplete": {
+        "config": [
+            "let g:neocomplete#enable_at_startup = 1",
+            "let g:neocomplete#data_directory    = expand(\"$VIM/vimfiles/cache/neocomplete/\")",
+            "inoremap <expr><S-Tab>  pumvisible() ? \"\\<C-p>\": \"<S-Tab>\"",
+            "inoremap <expr><Tab>    pumvisible() ? \"\\<C-n>\": \"<Tab>\""
+        ]
+    },
+    "autocomplete_ycm": {
+        "config": [
+            "\" Config File:",
+            "if s:is_unix",
+            "   let g:ycm_global_ycm_extra_conf = '~/.vim/vimrcs/.ycm_extra_conf.py'",
+            "endif",
+            "\" Close Scratch window",
+            "\" let g:ycm_autoclose_preview_window_after_completion=1",
+            "\" Disable Preview/Scratch window which shows information about",
+            "\" Functions",
+            "\" Not Sure About this",
+            "set completeopt-=preview",
+            "let g:ycm_key_detailed_diagnostics = ''",
+            "\" ECLIM SETTINGS:",
+            "let g:EclimCompletionMethod = 'omnifunc'"
+        ]
+    },
+    "color_gruvbox": {
+        "config": [
+        ]
+    },
+    "color_kolor": {
+        "config": [
+        ]
+    },
+    "color_molokai": {
+        "config": [
+        ]
+    },
+    "color_seoul256": {
+        "config": [
+        ]
+    },
+    "color_solarized": {
+        "config": [
+        ]
+    },
+    "format_easy_align": {
+        "config": [
+            "\" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)",
+            "vmap <Enter> <Plug>(EasyAlign)",
+            "\" Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)",
+            "nmap <Leader>a <Plug>(EasyAlign)"
+        ]
+    },
+    "format_goyo": {
+        "config": [
+            "\" To Be Figured Out"
+        ]
+    },
+    "format_multi_cursor": {
+        "config": [
+        ]
+    },
+    "format_surround": {
+        "config": [
+            "\" Nothing To Be Done"
+        ]
+    },
+    "format_vim_origami": {
+        "config": [
+            "nnoremap <leader>fo :call origami#InsertFoldmarker(  \"open\", \"comment\" )<CR>",
+            "nnoremap <leader>fc :call origami#InsertFoldmarker( \"close\", \"comment\" )<CR>",
+            "nnoremap <leader>fd :call origami#DeleteFoldmarker()<CR>"
+        ]
+    },
+    "gui_airline": {
+        "config": [
+            "if !exists('g:airline_symbols')",
+            "    let g:airline_symbols = {}",
+            "    \" Symbols:",
+            "    let g:airline_left_sep         = \"\u2B80\"",
+            "    let g:airline_left_alt_sep     = \"\u2B81\"",
+            "    let g:airline_right_sep        = \"\u2B82\"",
+            "    let g:airline_right_alt_sep    = \"\u2B83\"",
+            "    let g:airline_symbols.branch   = \"\u2B60\"",
+            "    let g:airline_symbols.readonly = \"\u2B64\"",
+            "    let g:airline_symbols.linenr   = \"\u2B61\"",
+            "\n",
+            "    \" Section:",
+            "    let g:airline_section_c = airline#section#create(['%>',",
+            "                           \\   '%{fnamemodify(\".\", \":p:~\")}',",
+            "                           \\   'file', 'readonly'])",
+            "    let g:airline_section_y = airline#section#create([\"\u2B62\u2B63 \".'[%{&ft}]'])",
+            "    let g:airline_section_b = '%{strftime(\"%d %b %Y %H:%M\")}'",
+            "    let g:airline_section_x = ''",
+            "\n",
+            "    \" Tabline Addon Information:",
+            "    let g:airline#extensions#tabline#left_sep     = \"\u2B80\"",
+            "    let g:airline#extensions#tabline#left_alt_sep = \"\u2B81\"",
+            "    let g:airline#extensions#tabline#fnamemod     = ':t'",
+            "    let g:airline#extensions#tabline#enabled      = 1",
+            "\n",
+            "    \" Theme:",
+            "    let g:airline_theme = \"powerlineish\"",
+            "endif"
+        ]
+    },
+    "gui_tagbar": {
+        "config": [
+            "nnoremap <leader>tg :TagbarOpen<CR>"
+        ]
+    },
+    "lang_cpp_clighter": {
+        "config": [
+            "\" To Be Decided"
+        ]
+    },
+    "lang_py_mode": {
+        "config": [
+            "let g:pymode_rope   =  0 "
+        ]
+    },
+    "linter_syntastic": {
+        "config": [
+            "\" Syntastic Eclim Problems",
+            "let g:EclimFileTypeValidate = 0",
+            "let g:EclimPythonValidate   = 0",
+            "\n",
+            "\" Better sign interface symbol",
+            "let g:syntastic_check_on_open = 1",
+            "if s:is_win",
+            "    let g:syntastic_error_symbol         = \">>\"",
+            "    let g:syntastic_style_error_symbol   = \"S>\"",
+            "    let g:syntastic_warning_symbol       = \"**\"",
+            "    let g:syntastic_style_warning_symbol = \"S*\"",
+            "else",
+            "    let g:syntastic_error_symbol         = \"✗\"",
+            "    let g:syntastic_style_error_symbol   = \"✰\"",
+            "    let g:syntastic_warning_symbol       = \"\u2620\"",
+            "    let g:syntastic_style_warning_symbol = \"\u2621\"",
+            "endif",
+            "\" Vim-Lint",
+            "let g:syntastic_vim_checkers            = ['vimlint']",
+            "\" Syntastic Debug Info",
+            "\" let g:syntastic_debug = 1",
+            "\" let g:syntastic_debug_file='~/.vim/some.log'",
+            "\n",
+            "\" Syntastic Lisp Setting",
+            "\" let g:syntastic_lisp_clisp_post_args = \"-o /tmp/\"",
+            "\n",
+            "\" Making Syntastic Passive and TO activate it with <F5>",
+            "    \" let g:syntastic_mode_map = { 'mode': 'passive',",
+            "                             \" \\ 'active_filetypes': [],",
+            "                             \" \\ 'passive_filetypes': [] }",
+            "    \" let g:syntastic_auto_loc_list=1",
+            "    \" nnoremap <silent> <F5> :SyntasticCheck<CR>"
+        ]
+    },
+    "linter_vim_lint": {
+        "config": [
+            "\" To Be Decided"
+        ]
+    },
+    "misc_ack": {
+        "config": [
+        ]
+    },
+    "misc_fugitive": {
+        "config": [
+        ]
+    },
+    "misc_gitgutter": {
+        "config": [
+        ]
+    },
+    "navigate_nerdtree": {
+        "config": [
+            "let NERDTreeIgnore = ['\\.beam$', '\\.pyc$', 'ebin$', '\\.obj$', '\\.out$', '\\.aux$', '\\.pdf$']",
+            "let NERDChristmasTree = 1",
+            "\" let NERDTreeMinimalUI = 1",
+            "\" let NERDTreeDirArrows = 0"
+        ]
+    },
+    "snippet_honza": {
+        "config": [
+        ]
+    },
+    "snippet_ultisnips": {
+        "config": [
+            "let g:snips_author = \"Doom\"",
+            "let g:snips_email  = \"kipintouch29@gmail.com\"",
+            "let g:snips_github = \"kipintouch29\"",
+            "\" let g:UltiSnipsSnippetDirectories = ['Ultisnips', expand('~/.vim/myUltiSnips/')]",
+            "let g:UltiSnipsEditSplit=\"horizontal\"",
+            "let g:UltiSnipsListSnippets=\"<F4>\"",
+            "\" UltiSnips Expand Trigger",
+            "\" let g:UltiSnipsExpandTrigger       = \"<C-d>\"",
+            "\" let g:UltiSnipsJumpForwardTrigger  = \"<C-d>\"",
+            "\" let g:UltiSnipsJumpBackwardTrigger = \"<C-s>\"",
+            "\" let g:UltiSnipsExpandTrigger       = \"<C-j>\"",
+            "\" let g:UltiSnipsJumpForwardTrigger  = \"<C-j>\"",
+            "\" let g:UltiSnipsJumpBackwardTrigger = \"<C-k>\""
+        ]
+    },
+    "unite_airline": {
+        "config": [
+            "\" To Be Decided "
+        ]
+    },
+    "unite_colors": {
+        "config": [
+            "\" To Be Decided "
+        ]
+    },
+    "unite_core": {
+        "config": [
+            "\" To Be Decided "
+        ]
+    },
+    "unite_mru": {
+        "config": [
+            "\" To Be Decided "
+        ]
+    },
+    "unite_vimproc": {
+        "config": [
+            "\" To Be Decided "
+        ]
+    }
+}

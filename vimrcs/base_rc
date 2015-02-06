@@ -1,0 +1,584 @@
+"»»»»»»»»»»»»»»»»»»»»»»»»»»»»"
+" Setting Default Map Leader "
+"»»»»»»»»»»»»»»»»»»»»»»»»»»»»"
+    let mapleader   = ","
+    let g:mapleader = ","
+
+"»»»»»»»»»"
+" Startup "
+"»»»»»»»»»"
+    let s:running_windows = has("win16") || has("win32") || has("win64")
+    let s:colorful_term = (&term =~ "xterm") || (&term =~ "screen")
+    let g:erlangHighlightBif = 1
+    let g:erlangHighLightOperators = 1
+
+"»»»»»»»»"
+" Basics "
+"»»»»»»»»"
+    set nocompatible " explicitly get out of vi-compatible mode
+    set noexrc " don't use local version of .(g)vimrc, .exrc
+    set background=dark " we plan to use a dark background
+    set fenc=utf-8 " UTF-8
+    set cpoptions=aABceFsmq
+    "             |||||||||
+    "             ||||||||+-- When joining lines, leave the cursor between joined lines
+    "             |||||||+-- When a new match is created (showmatch) pause for .5
+    "             ||||||+-- Set buffer options when entering the buffer
+    "             |||||+--:write command updates current file name automatically add <CR> to the last line when using :@r
+    "             |||+-- Searching continues at the end of the match at the cursor position
+    "             ||+-- A backslash has no special meaning in mappings
+    "             |+-- :write updates alternative file name
+    "             +-- :read updates alternative file name
+    syntax on " syntax highlighting on
+    let g:skip_loading_mswin=1 " Just in case :)
+
+"»»»»»»»»"
+" Newish "
+"»»»»»»»»"
+    set history=9999 " big old history
+    set timeoutlen=300 " super low delay (works for me)
+    set formatoptions+=n " Recognize numbered lists
+    set formatlistpat=^\\s*\\(\\d\\\|[-*]\\)\\+[\\]:.)}\\t\ ]\\s* "and bullets, too
+    " Remember info about open buffers on close
+    set viminfo^=%
+    " set viminfo+=! " Store upper-case registers in viminfo
+    set nomore " Short nomore
+
+"»»»»»»»»»"
+" General "
+"»»»»»»»»»"
+    filetype plugin indent on " load filetype plugins/indent settings
+    set autochdir " always switch to the current file directory
+    set backspace=indent,eol,start " make backspace a more flexible
+    " set backup " make backup files
+    set clipboard+=unnamed " share windows clipboard
+    set noswapfile
+    "if s:running_windows
+    "    set backupdir=~/vimfiles/backup " where to put backup files
+    "    set directory=~/vimfiles/temp " directory to place swap files in
+    "else
+    "    set backupdir=~/.vim/backup " where to put backup files
+    "    set directory=~/.vim/temp " directory to place swap files in
+    "endif
+    set fileformats=unix,dos,mac " support all three, in this order
+    set hidden " you can change buffers without saving
+    " (XXX: #VIM/tpope warns the line below could break things)
+    set iskeyword+=_,$,@,%,# " none of these are word dividers
+    set mouse=a " use mouse everywhere
+    set whichwrap=b,s,h,l,<,>,~,[,] " everything wraps
+    "             | | | | | | | | |
+    "             | | | | | | | | +-- "]" Insert and Replace
+    "             | | | | | | | +-- "[" Insert and Replace
+    "             | | | | | | +-- "~" Normal
+    "             | | | | | +-- <Right> Normal and Visual
+    "             | | | | +-- <Left> Normal and Visual
+    "             | | | +-- "l" Normal and Visual (not recommended)
+    "             | | +-- "h" Normal and Visual (not recommended)
+    "             | +-- <Space> Normal and Visual
+    "             +-- <BS> Normal and Visual
+    set wildmenu " turn on command line completion wild style
+    set wildignore=*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,*.jpg,*.gif,*.png " ignore these list file extensions
+    "set wildmode=list:longest " turn on wild mode huge list
+    let html_number_lines = 0
+    let html_use_css = 0
+    let use_xhtml = 0
+
+"»»»»»»»»"
+" Vim UI "
+"»»»»»»»»"
+    set incsearch " BUT do highlight as you type you search phrase
+    set laststatus=2 " always show the status line
+    set lazyredraw " do not redraw while running macros
+    set linespace=0 " don't insert any extra pixel lines betweens rows
+    " set list " we do what to show tabs, to ensure we get them out of my files
+    set nohlsearch " do not highlight searched for phrases
+    set listchars=tab:>-,trail:- " show tabs and trailing
+    set matchtime=5 " how many tenths of a second to blink matching brackets for
+    set nostartofline " leave my cursor where it was
+    set number " turn on line numbers
+    set numberwidth=6 " We are good up to 99999 lines
+    set report=0 " tell us when anything is changed via :...
+    set ruler " Always show current positions along the bottom
+    set scrolloff=10 " Keep 10 lines (top/bottom) for scope
+    set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
+    set showcmd " show the command being typed
+    set showmatch " show matching brackets
+    set sidescrolloff=10 " Keep 5 lines at the size
+    " Format the status line
+    " set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ \ Col:\ %c
+        " set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
+          "               | | | | |  |   |      |  |     |    |
+          "               | | | | |  |   |      |  |     |    + current column
+          "               | | | | |  |   |      |  |     +-- current line
+          "               | | | | |  |   |      |  +-- current % into file
+          "               | | | | |  |   |      +-- current syntax in square brackets
+          "               | | | | |  |   +-- current fileformat
+          "               | | | | |  +-- number of lines
+          "               | | | | +-- preview flag in square brackets
+          "               | | | +-- help flag in square brackets
+          "               | | +-- readonly flag in square brackets
+          "               | +-- rodified flag in square brackets
+          "               +-- full path to file in the buffer
+    " HasPaste Function
+    function! HasPaste()
+        if &paste
+            return 'PASTE MODE  '
+        else
+            return ''
+        endif
+    endfunction
+    " No Annoying Sounds:
+    " set noerrorbells novisualbell t_vb=
+
+"»»»»»»»»»»»»»»»»»»»»»»»»"
+" Text Formatting/Layout "
+"»»»»»»»»»»»»»»»»»»»»»»»»"
+    " set completeopt=menuone " don't use a pop up menu for completions
+    set expandtab " no real tabs please!
+    set formatoptions=rq " Automatically insert comment leader on return, and let gq format comments
+    set ignorecase " case insensitive by default
+    set infercase " case inferred by default
+    set nowrap " do not wrap line
+    set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
+    set smartcase " if there are caps, go case-sensitive
+    set shiftwidth=4 " auto-indent amount when using cindent, >>, << and stuff like that
+    set softtabstop=4 " when hitting tab or backspace, how many spaces should a tab be (see expandtab)
+    set tabstop=8 " real tabs should be 8, and they will show with set list on
+    set ai " Auto Indent
+    set si " Smart Ident
+    set wrap " Wrap Lines
+    set cursorline
+    set cmdheight=2
+
+"»»»»»»»»»"
+" Folding "
+"»»»»»»»»»"
+    set foldenable " Turn on folding
+    set foldmethod=indent " Fold on the indent (damn you python)
+    set foldlevel=100 " Don't autofold anything (but I can still fold manually)
+    set foldopen=block,hor,mark,percent,quickfix,tag " what movements open folds
+    "function! SimpleFoldText() " {
+    "    return getline(v:foldstart).' '
+    "endfunction " }
+    "set foldtext=SimpleFoldText() " Custom fold text function (cleaner than default)
+
+"»»»»»»»»»»»"
+"" Mappings "
+"»»»»»»»»»»»"
+    let NERDTreeIgnore = [' \.beam',' \.pyc' ,' \.ebin',' \.dll' ,' \.o'   ,' \.obj' ,' \.bak' ,' \.exe' ,' \.pyc' ,' \.jpg' ,' \.gif' ,'\.png']
+    let NERDChristmasTree = 1
+    let NERDTreeMinimalUI = 1
+    let NERDTreeDirArrows = 0
+    "    " hit f11 to paste
+    "    set pastetoggle=<f11>
+    "    " space / shift-space scroll in normal mode
+    "    noremap <S-space> <C-b>
+    "    noremap <space> <C-f>
+    "    " fuzzymaps
+    "    nmap <leader>f :FufFileWithCurrentBufferDir<CR>
+    "    nmap <leader>ff :FufFile<CR>
+    "    nmap <leader>b :FufBuffer<CR>
+    "    nmap <leader>t :FufBufferTag<CR>
+    "    nmap <leader>tt :FufBufferTagAll<CR>
+    "    nmap <tab> :FufBufferTag<CR>
+    "    " make arrow keys useful
+    "    map <left> <ESC>:NERDTree<RETURN>
+    "    map <right> <ESC>:TagbarToggle<RETURN>
+    "    map <up> <ESC>:bp<RETURN>
+    "    map <down> <ESC>:bn<RETURN>
+    nnoremap <Space> /
+
+"»»»»»»»»»»»»»»"
+" GUI Settings "
+"»»»»»»»»»»»»»»"
+if has("gui_running")
+    set guioptions-=T
+    set guioptions+=e
+    set t_Co=256
+    set guitablabel=%M\ %t
+    " Requried Specifically for GVIM
+    autocmd GUIENTER    *   set vb t_vb=
+    " set background=light
+    set background=dark
+    colorscheme molokai
+    set guifont=Consolas\ for\ Powerline\ FixedD:h10,Monaco\ for\ Powerline:h10,Ubuntu\ Mono\ derivative\ Powerline:h10,DejaVu_Sans_Mono_for_Powerline:h10:i:cANSI
+    set guicursor+=n-v-c:blinkon0
+    nnoremap <A-Up> :silent! let &guifont = join(
+        \ split(&guifont, ',')[1:], ',') . ',' .
+        \ split(&guifont, ',')[0]<CR>
+    nnoremap <C-Up> :silent! let &guifont = substitute(
+        \ &guifont,
+        \ ':h\zs\d\+',
+        \ '\=eval(submatch(0)+1)',
+        \ 'g')<CR>
+    nnoremap <C-Down> :silent! let &guifont = substitute(
+        \ &guifont,
+        \ ':h\zs\d\+',
+        \ '\=eval(submatch(0)-1)',
+        \ 'g')<CR>
+endif
+
+"»»»»»»»»»»»»»»»"
+" Term Settings "
+"»»»»»»»»»»»»»»»"
+if s:colorful_term
+    "256 color --
+    let &t_Co=256
+    colorscheme molokai
+    " restore screen after quitting
+    if has("terminfo")
+        let &t_Sf="\ESC[3%p1%dm"
+        let &t_Sb="\ESC[4%p1%dm"
+    else
+        let &t_Sf="\ESC[3%dm"
+        let &t_Sb="\ESC[4%dm"
+    endif
+endif
+
+"»»»»»»»»»»»»»"
+" Odds n Ends "
+"»»»»»»»»»»»»»"
+set ttymouse=xterm2 " makes it work in everything
+
+"»»»»»»»»»»»»»»»»»»»»»»»"
+" Setting File Encoding "
+"»»»»»»»»»»»»»»»»»»»»»»»"
+    if has("multi_byte")
+        if &termencoding == ""
+            let &termencoding = &encoding
+        endif
+        set encoding=utf-8
+        setglobal fileencoding=utf-8
+        " setglobal bomb
+        set fileencodings=ucs-bom,utf-8,latin1
+    else
+        set encoding=utf-8
+    endif
+
+"»»»»»»»»»»»»»»»»»»»»»"
+" Comment Font Change "
+"»»»»»»»»»»»»»»»»»»»»»"
+" highlight myComm gui=OCR_A_std
+" highlight link myComm Comment
+
+"»»»»»»»»»»»»»»»»»»»»»»"
+" Swap File Management "
+"»»»»»»»»»»»»»»»»»»»»»»"
+    " augroup NoSimultaneousEdits
+    " autocmd!
+    " autocmd SwapExists *  let v:swapchoice = 'o'
+    " autocmd SwapExists *  echohl ErrorMsg
+    " autocmd SwapExists *  echo 'Duplicate edit session (readonly)'
+    " autocmd SwapExists *  echohl None
+    " autocmd SwapExists *  call Make_session_finder( expand('<afile>') )
+    " autocmd SwapExists *  sleep 2
+    " augroup END
+    " function! Make_session_finder (filename)
+    " exec 'nnoremap ss :!terminal_promote_vim_session ' . a:filename . '<CR>:q!<CR>'
+    " endfunction
+
+"»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»"
+" ColorColumn for more than 80 "
+"»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»"
+augroup ColorColum
+    autocmd!
+    " highlight link WarningMsg ColorColumn
+    highlight ColorColumn ctermbg=red ctermfg=blue
+    autocmd BufNewFile,BufRead,BufWrite *
+            \   call matchadd('ColorColumn', '\%160v', 100)
+augroup end
+
+"»»»»»»»»»»»»»»»»»"
+" Vim Easy Align: "
+"»»»»»»»»»»»»»»»»»"
+    " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+    vmap <Enter> <Plug>(EasyAlign)
+    " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
+    nmap <Leader>a <Plug>(EasyAlign)
+
+"»»»»»»»»»»»»»»»»"
+" VIMRC editing: "
+"»»»»»»»»»»»»»»»»"
+    nnoremap <leader>ev   :e $MYVIMRC<CR>
+    nnoremap <leader>eb   :e C:/Users/doom/Desktop/Vim/vimfiles/dotvim/vimrcs/base_rc<CR>
+    nnoremap <leader>ep   :e C:/Users/doom/Desktop/Vim/vimfiles/dotvim/vimrcs/plugin_rc<CR>
+    nnoremap <leader>eep  :e C:/Users/doom/Desktop/Vim/vimfiles/dotvim/dotvim.vim<CR>
+    nnoremap <leader>ek   :e C:/Users/doom/Desktop/Vim/vimfiles/dotvim/vimrcs/commentator.vim<CR>
+    " nnoremap <leader>eep :e C:/Users/doom/Desktop/Vim/vimfiles/dotvim/vimrcs/plugin_configs/config_rc<CR>
+
+    nnoremap <F10> :NERDTreeToggle<CR>
+    nnoremap <leader>tn  :tabnew<CR>
+    nnoremap <leader>n   :tabNext<CR>
+
+    " Spliting Windows and movements
+    nnoremap <leader>s  :split<cr>
+    nnoremap <leader>v  :vsplit<cr>
+
+    " Save File and Close files
+    nmap <leader>w :w<cr>
+    nmap <leader>q :q<cr>
+
+    nnoremap ü       <C-]>
+    nnoremap Ü       <C-O>
+    nnoremap 0       ^
+
+"»»»»»»»»»»»»»»»»»»»"
+" Extra White Space "
+"»»»»»»»»»»»»»»»»»»»"
+    function! s:Remove_ExtraWhiteSpace()
+        " save last search & cursor position
+        let l:_s=@/
+        let l:l = line(".")
+        let l:c = col(".")
+        if &ft == 'unite' || &ft == 'startify'
+            return
+        else
+            %s/\s\+$//e
+            let @/=l:_s
+            call cursor(l:l, l:c)
+        endif
+    endf
+    autocmd BufWritePre * call s:Remove_ExtraWhiteSpace()
+
+"»»»»»»»»»»»»»»»»»»»»»»»»»»»"
+" Highlight ExTraWhiteSpace "
+"»»»»»»»»»»»»»»»»»»»»»»»»»»»"
+    function! s:MatchExtraWhitespaces()
+        if &ft ==# 'unite' || &ft ==# 'startify'
+            return
+        else
+            highlight ExWhSpace guibg=#008080 guifg=blue
+            if has("gui_running")
+                highlight ExWhSpace guibg=#008080 guifg=blue
+            else
+                highlight ExWhSpace ctermbg=06 ctermfg=blue
+            endif
+            call matchadd('ExWhSpace', '\s\+$', 100)
+        endif
+    endfunction
+    autocmd BufWinEnter     * call s:MatchExtraWhitespaces()
+
+"»»»»»»»»»»"
+" Startify "
+"»»»»»»»»»»"
+    " function! s:filter_header(lines) abort
+        " let longest_line   = max(map(copy(a:lines), 'len(v:val)'))
+        " let centered_lines = map(copy(a:lines),
+            " \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
+        " return centered_lines
+    " endfunction
+    " let g:startify_custom_header = [
+        " \ '                                 ________  __ __      ..',
+        " \ '            __                  /\_____  \/\ \\ \       ',
+        " \ '    __  __ /\_\    ___ ___      \/___//''/''\ \ \\ \    ',
+        " \ '   /\ \/\ \\/\ \ /'' __` __`\        /'' /''  \ \ \\ \_ ',
+        " \ '   \ \ \_/ |\ \ \/\ \/\ \/\ \      /'' /''__  \ \__ ,__\',
+        " \ '    \ \___/  \ \_\ \_\ \_\ \_\    /\_/ /\_\  \/_/\_\_/  ',
+        " \ '     \/__/    \/_/\/_/\/_/\/_/    \//  \/_/     \/_/    ',
+        " \ '..',
+        " \ '..',
+        " \ ]
+    " let g:startify_custom_header = s:filter_header(g:startify_custom_header)
+
+let g:tab_messages = ""
+function! TabMessage(cmd)
+    redir => g:tab_messages
+    silent execute a:cmd
+    redir END
+    " tabnew
+    " silent put=message
+    " set nomodified
+endfunction
+" command! -nargs=+ -complete=command TabMessage call TabMessage(<q-args>)
+
+"Refocus folds
+" nnoremap <leader>z zMzvzz
+" Make zO recursively open whatever top level fold we're in,
+" no matter where the cursor happens to be.
+" nnoremap zO zCzO
+
+vnoremap <  <gv
+vnoremap >  >gv
+nnoremap H  gT
+nnoremap L  gt
+
+nnoremap <leader>fo :call origami#InsertFoldmarker(  "open", "comment" )<CR>
+nnoremap <leader>fc :call origami#InsertFoldmarker( "close", "comment" )<CR>
+nnoremap <leader>fd :call origami#DeleteFoldmarker()<CR>
+
+" »»»»»»»»»»»»»»»»»»"
+" AirLine Symbols: "
+" »»»»»»»»»»»»»»»»»»"
+    if !exists('g:airline_symbols')
+        let g:airline_symbols = {}
+        " Symbols:
+        let g:airline_left_sep         = "\u2B80"
+        let g:airline_left_alt_sep     = "\u2B81"
+        let g:airline_right_sep        = "\u2B82"
+        let g:airline_right_alt_sep    = "\u2B83"
+        let g:airline_symbols.branch   = "\u2B60"
+        let g:airline_symbols.readonly = "\u2B64"
+        let g:airline_symbols.linenr   = "\u2B61"
+
+        " Section:
+        let g:airline_section_c = airline#section#create(['%>',
+                    \   '%{fnamemodify(".", ":p:~")}',
+                    \   'file', 'readonly'])
+        let g:airline_section_y = airline#section#create(["\u2B62\u2B63 ".'[%{&ft}]'])
+        let g:airline_section_b = '%{strftime("%d %b %Y %H:%M")}'
+        let g:airline_section_x = ''
+
+        " Tabline Addon Information:
+        let g:airline#extensions#tabline#left_sep     = "\u2B80"
+        let g:airline#extensions#tabline#left_alt_sep = "\u2B81"
+        let g:airline#extensions#tabline#fnamemod     = ':t'
+        let g:airline#extensions#tabline#enabled      = 1
+
+        " Theme:
+        let g:airline_theme = "powerlineish"
+    endif
+
+" »»»»»»»»»»»»»»"
+" NeoComplete: "
+" »»»»»»»»»»»»»»"
+    let g:neocomplete#enable_at_startup = 1
+    let g:neocomplete#data_directory    = expand("$VIM/vimfiles/cache/neocomplete/")
+    inoremap <expr><S-Tab>  pumvisible() ? "\<C-p>": "<S-Tab>"
+    inoremap <expr><Tab>    pumvisible() ? "\<C-n>": "<Tab>"
+
+" »»»»»»»»"
+" Unite: "
+" »»»»»»»»"
+    let bundle = neobundle#get('unite.vim')
+    function! bundle.hooks.on_source(bundle)
+        call unite#filters#matcher_default#use(['matcher_fuzzy'])
+        call unite#filters#sorter_default#use(['sorter_rank'])
+        call unite#custom#source('line,outline','matchers','matcher_fuzzy')
+        call unite#custom_source('file_rec',
+                    \'file_rec/async',
+                    \'file_mru',
+                    \'file',
+                    \'buffer',
+                    \'grep',
+                    \'matchers',
+                    \'line',
+                    \'outline',
+                    \'matcher_fuzzy',
+                    \'ignore_pattern', join([
+                    \   '\.git/', '\.pyc',   '\.o', '\.beam', '\.pyc',
+                    \   '\.ebin', '\.dll', '\.obj',  '\.bak', '\.exe',
+                    \    '\.pyc', '\.jpg', '\.gif',  '\.png'
+                    \   ], '\|'))
+        call unite#custom#profile('default', 'context', {
+                    \ 'start_insert': 1,
+                    \    'direction': 'botright',
+                    \       'prompt': '» '
+                    \ })
+    endfunction
+
+    " let g:unite_enable_start_insert        = 1
+    let g:unite_split_rule                 = "botright"
+    let g:unite_force_overwrite_statusline = 0
+    let g:unite_winheight                  = 10
+    let g:unite_data_directory             = expand("$VIM/vimfiles/cache/unite/")
+    let g:unite_source_history_yank_enable = 1
+    let g:unite_source_rec_max_cache_files = 5000
+
+    " nmap <space> [unite]
+    " nnoremap [unite] <nop>
+    if executable('ag')
+        let g:unite_source_grep_command       = 'ag'
+        let g:unite_source_grep_default_opts  = '--nocolor --line-numbers --nogroup -S -C4'
+        let g:unite_source_grep_recursive_opt = ''
+    elseif executable('ack')
+        let g:unite_source_grep_command       = 'ack'
+        let g:unite_source_grep_default_opts  = '--no-heading --no-color -C4'
+        let g:unite_source_grep_recursive_opt = ''
+    endif
+
+    nnoremap <C-P> :<C-u>Unite  -buffer-name=files buffer file_rec/async:!<cr>
+    autocmd FileType unite call s:unite_settings()
+    function! s:unite_settings()
+        imap         <buffer>       <C-j>   <Plug>(unite_select_next_line)
+        imap         <buffer>       <C-k>   <Plug>(unite_select_previous_line)
+        imap <silent><buffer><expr> <C-x> unite#do_action('split')
+        imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+        imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+        nmap <buffer> <ESC> <plug>(unite_exit)
+        nmap <buffer>   Q   <Plug>(unite_exit)
+        imap <buffer> <ESC> <plug>(unite_exit)
+    endfunction
+
+    " if s:is_windows
+        " nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec:! buffer file_mru bookmark<cr><c-u>
+        " nnoremap <silent> [unite]fu :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec:!<cr><c-u>
+    " else
+        " nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
+        " nnoremap <silent> [unite]fu :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
+    " endif
+    " nnoremap <silent> [unite]eu :<C-u>Unite -buffer-name=recent file_mru<cr>
+    " nnoremap <silent> [unite]y  :<C-u>Unite -buffer-name=yanks history/yank<cr>
+    " nnoremap <silent> [unite]l  :<C-u>Unite -auto-resize -buffer-name=line line<cr>
+    " nnoremap <silent> [unite]b  :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
+    " nnoremap <silent> [unite]/  :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
+    " nnoremap <silent> [unite]m  :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
+    " nnoremap <silent> [unite]s  :<C-u>Unite -quick-match buffer<cr>
+
+" »»»»»»»»»»»»»»»»»»»»»»"
+" Some Text Formatting "
+" »»»»»»»»»»»»»»»»»»»»»»"
+    " modify selected text using combining diacritics
+        " function! s:CombineSelection(line1, line2, cp)
+            " execute 'let char = "\u'.a:cp.'"'
+            " execute a:line1.','.a:line2.'s/\%V[^[:cntrl:]]/&'.char.'/ge'
+        " endfunction
+        " " Mapping for Function
+        " nnoremap <leader>st :call CombineSelection(line("."), line(".") + 2, '0336')<CR>
+        " nnoremap <leader>ul call CombineSelection(line("."), line("."), '0333')
+        " command! -range -nargs=0 Overline        call s:CombineSelection(<line1>, <line2>, '0305')
+        " command! -range -nargs=0 Underline       call s:CombineSelection(<line1>, <line2>, '0332')
+        " command! -range -nargs=0 DoubleUnderline call s:CombineSelection(<line1>, <line2>, '0333')
+        " command! -range -nargs=0 Strikethrough   call s:CombineSelection(<line1>, <line2>, '0336')
+        " vnoremap <leader>st :Strikethrough<CR>
+
+    function! <SID>Checking_combine_selection(my_line, cp)
+        execute 'let l:char = "\u'.a:cp.'"'
+        call setline(a:my_line, substitute(getline("."), "[^[:blank:]]", "&".l:char, "ge"))
+        call setline(a:my_line, substitute(getline("."), "^[^\s]+", "&".l:char, "ge"))
+    endfunction
+    function! <SID>Checking_combine_select(cp)range
+        execute 'let l:char = "\u'.a:cp.'"'
+        let l:lstart = a:firstline
+        let l:lend = a:lastline
+        for l:line in range(l:lstart, l:lend)
+            call setline(l:line, substitute(getline("."), "[^[:blank:]]", "&".l:char, "ge"))
+        endfor
+    endfunction
+    function! <SID>Checking_del_selection(my_line, cp)
+        execute 'let char = "\u'.a:cp.'"'
+        call setline(a:my_line, substitute(getline("."), char, "", "ge"))
+    endfunction
+
+    nnoremap <leader>et :call <SID>Checking_combine_selection(line("."), '0336')<CR>
+    vnoremap <leader>et :call <SID>Checking_combine_select('0336')<CR>
+    nnoremap <leader>ec :call <SID>Checking_del_selection(line("."), '0336')<CR>
+
+    " ⭠ ⭤ ⭡   ⭠ ⭤ ⭡  ⭠ ⭤ ⭡   ⭠ ⭤ ⭡   ⭠ ⭤ ⭡   ⭠ ⭤ ⭡   ⭠ ⭤ ⭡   ⭠ ⭤ ⭡   ⭠ ⭤ ⭡   ⭠ ⭤ ⭡   ⭠ ⭤ ⭡  ⭠ ⭤ ⭡
+    " command! -range -nargs=0 Overline        call s:CombineSelection(<line1>, <line2>, '0305')
+    " command! -range -nargs=0 Underline       call s:CombineSelection(<line1>, <line2>, '0332')
+    " command! -range -nargs=0 Underline       call s:CombineSelection(<line1>, <line2>, '0332')
+    "̶ c̶o̶m̶m̶a̶n̶d̶!̶ -̶r̶a̶n̶g̶e̶ -̶n̶a̶r̶g̶s̶=̶0̶ D̶o̶u̶b̶l̶e̶U̶n̶d̶e̶r̶l̶i̶n̶e̶ c̶a̶l̶l̶ s̶:̶C̶o̶m̶b̶i̶n̶e̶S̶e̶l̶e̶c̶t̶i̶o̶n̶(̶<̶l̶i̶n̶e̶1̶>̶,̶ <̶l̶i̶n̶e̶2̶>̶,̶ '̶0̶3̶3̶3̶'̶)̶
+
+    " au BufRead,BufNewFile * syntax match StrikeoutMatch /\~\~.*\~\~/
+    " hi def  StrikeoutColor   ctermbg=darkblue ctermfg=black    guibg=darkblue guifg=blue
+    " hi link StrikeoutMatch StrikeoutColor
+
+" »»»»»»»»»»»»"
+" UltiSnips: "
+" »»»»»»»»»»»»"
+    " let g:UltiSnipsExpandTrigger       = "<C-j>"
+    " let g:UltiSnipsJumpForwardTrigger  = "<C-j>"
+    " let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
+    " let g:UltiSnipsListSnippets        = "<F4>"
+
+
