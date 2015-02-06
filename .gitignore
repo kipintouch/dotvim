@@ -1,4 +1,4 @@
 bundle_list.json
 bundle_con.json
 local_settings.vim
-vimrcs/*
+./temp/*
