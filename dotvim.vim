@@ -6,11 +6,6 @@
 "       for installation.
 "   2.bundle_con.json:
 "       Consists of Bundle Configuration.
-" TODO:
-"   1. Create Function for Temporary Directories                   | DONE
-"   2. Remove s:bundle_url dict from vimL                          | DONE
-"   3. Adjusting Installation by global Variable g:dovtim_settings | DONE
-"   4. Using bundle_con.json for generating plugin_rc              | DONE
 
 " Defining Global Functions for Python
 python << EOF
@@ -61,9 +56,9 @@ def print_in_width(inpt, wdth):
         return output
 EOF
 
-"»»»»»»»»»»»»»»»»»"
-" OS Information: "
-"»»»»»»»»»»»»»»»»»"
+"»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»"
+" OS Information And Installation Constants: "
+"»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»"
     let s:is_win   = has('win32') || has('win64')
     let s:is_unix  = has('unix')
     let s:is_term  = has('gui_running')
@@ -73,14 +68,29 @@ EOF
     else
         let s:vimfiles = '~/.vim/'
     endif
+    let s:bundle_list_file = ""
+    if filereadable(expand(s:vimfiles . "dotvim/bundle_list.json"))
+        " Use User Bundle List.
+        let s:bundle_list_file = expand(s:vimfiles . "dotvim/bundle_list.json")
+    else
+        " Or Use the Default Bundle List.
+        let s:bundle_list_file = expand(s:vimfiles. "dotvim/orig/bundle_list.json")
+    endif
+    let s:bundle_config_file = ""
+    if filereadable(expand(s:vimfiles . "dotvim/bundle_con.json"))
+        " Use User Bundle configuration.
+        let s:bundle_config_file = expand(s:vimfiles . "dotvim/bundle_con.json")
+    else
+        " Or Use Default Bundle configurations.
+        let s:bundle_config_file = expand(s:vimfiles. "dotvim/orig/bundle_con.json")
+    endif
 
 " Function Initializes System Values
 " along with bundle list from *.json
-" files in ./dotvim
+" file in ./dotvim
 function! g:Init()
-    let l:ifile = expand(s:vimfiles . "dotvim/bundle_list.json")
 python << EOF
-ss = read_from_json(vim.eval("l:ifile"))
+ss = read_from_json(vim.eval("s:bundle_list_file"))
 vim.command("let new_var = %s"% ss)
 EOF
 return new_var
@@ -113,8 +123,15 @@ let s:bundle_url = g:Init()
 
     " Get Some temp Directories
     function! s:Get_temp_dir(suffix)
-        if isdirectory(expand(s:vimfiles . a:suffix))
+        if isdirectory(expand(s:vimfiles . "dotvim/temp/" . a:suffix))
             return resolve(expand(s:vimfiles . a:suffix ))
+        else
+            if s:is_win
+                " Check with windows.
+            elseif s:is_unix
+                execute "!mkdir " . expand(s:vimfiles . "dotvim/temp/" . a:suffix)
+                return resolve(expand(s:vimfiles . "dotvim/temp/" . a:suffix))
+            endif
         endif
     endfunction
 
@@ -127,7 +144,6 @@ let s:bundle_url = g:Init()
     endfunction
 
     " Local Correction e.g. Autocomplete Engine via detecting OS
-    let s:blist = sort(keys(s:bundle_url))
     function! s:Local_Correct()
         for k in sort(keys(s:local_corr.plugins_to_exclude))
             for l in s:local_corr.plugins_to_exclude[k]
@@ -165,21 +181,22 @@ let s:bundle_url = g:Init()
         endif
 
     " Updating List By Global Correction:
-        if exists('g:bundle_settings') && type(g:bundle_settings) == 4
-            if has_key(g:bundle_settings, "plugins_to_remove")
-                for k in g:bundle_settings.plugins_to_remove
-                    let i = index(s:bundle_url, k)
+        if exists('g:dotvim_settings') && type(g:dotvim_settings) == 4
+            if has_key(g:dotvim_settings, "plugins_to_remove")
+                for k in g:dotvim_settings.plugins_to_remove
+                    let i = index(keys(s:bundle_url), k)
                     if i != -1
-                        call remove(s:bundle_url, i)
+                        call remove(s:bundle_url, k)
                     endif
                 endfor
             endif
-            if has_key(g:bundle_settings, "plugins_to_add")
-                for k in g:bundle_settings.plugins_to_add
-                    call add(s:bundle_url, k)
+            if has_key(g:dotvim_settings, "plugins_to_add")
+                for plug in keys(g:dotvim_settings.plugins_to_add)
+                    call extend(s:bundle_url, {plug : g:dotvim_settings.plugins_to_add[plug]})
                 endfor
             endif
         endif
+        let s:blist = sort(keys(s:bundle_url)) " TO include Changes from g:dotvim_settings
 
 "»»»»»»»»»»»»»»»"
 " Installation: "
@@ -210,7 +227,7 @@ let s:bundle_url = g:Init()
             call neobundle#call_hook('on_source')
         endif
 
-        NeoBundleCheck
+        " NeoBundleCheck
 
 " Vim Dict To Json Dict:
 function! g:Create_Json_dict()
@@ -223,18 +240,17 @@ endfunction
 
 function! g:Get_Plugin_Config()
 python << EOF
-inp_file    = vim.eval('expand(s:vimfiles . "dotvim/bundle_con.json")')
+inp_file    = vim.eval('s:bundle_config_file')
 print inp_file
 config_dict = read_from_json(inp_file)
 for i in config_dict.keys():
     print i, " : ", config_dict[i]
 vim.command("let new_var = '%s'"% config_dict)
 EOF
-    " echom "Get Plugin return dictionary" .string(type(new_var))
-    " return new_var
 endfunction
 
-let g:dotvim_Bundles_Installed = s:blist
+" Some Variables for checking
+" let g:dotvim_Bundles_Installed = s:blist
 " Generate A Template For Plugin Configurations:
 function! g:Create_Plugin_Template(bundle_list)
     let l:ilist  = []
@@ -244,7 +260,7 @@ function! g:Create_Plugin_Template(bundle_list)
 python << EOF
 import os.path, shutil
 pfile         = vim.eval('expand(s:vimfiles . "dotvim/vimrcs/plugin_rc")')
-bundle_config = read_from_json(vim.eval('expand(s:vimfiles . "dotvim/bundle_con.json")'))
+bundle_config = read_from_json(vim.eval('s:bundle_config_file'))
 blist         = vim.eval("s:blist")
 ilist         = vim.eval("l:ilist")
 head          = "\" " + "-"*80 + "\n"
