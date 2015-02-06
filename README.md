@@ -2,14 +2,20 @@
 ## UNIX
     git clone https://github.com/kipintouch/dotvim ~/.vim/
 ## Windows
-    git clone https://github.com/kipintouch/dotvim "$VIM/vimfiles/"
+    git clone https://github.com/kipintouch/dotvim "/path/to/vim/vimfiles/"
 
 ## How it works:
-  1.bundle_list.json:
-      Consists of Bundle to be installed along with options
-      for installation.
-  2.bundle_con.json:
-      Consists of Bundle Configuration.
+    Orig Consists of Initial Configuration for popular bundles to be used and
+    some of their configurations.
+
+    1.bundle_list.json:
+
+    Consists of Bundle to be installed along with options
+    for installation.
+
+    2.bundle_con.json:
+
+    Consists of Bundle Configuration.
 
 # TODO:
     1. Create Function for Temporary Directories                                | DONE
