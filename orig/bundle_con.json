@@ -6,55 +6,106 @@
     },
     "autocomplete_neocomplete": {
         "config": [
-            "let g:neocomplete#enable_at_startup = 1",
-            "let g:neocomplete#data_directory    = expand(\"$VIM/vimfiles/cache/neocomplete/\")",
+            "let g:neocomplete#enable_at_startup = 1                        ",
+            "let g:neocomplete#data_directory    = expand(s:vimfiles .      ",
+            "                           \\  \"temp/cache/neocomplete/\")    ",
             "inoremap <expr><S-Tab>  pumvisible() ? \"\\<C-p>\": \"<S-Tab>\"",
-            "inoremap <expr><Tab>    pumvisible() ? \"\\<C-n>\": \"<Tab>\""
+            "inoremap <expr><Tab>    pumvisible() ? \"\\<C-n>\": \"<Tab>\"  "
         ]
     },
     "autocomplete_ycm": {
         "config": [
-            "\" Config File:",
-            "if s:is_unix",
-            "   let g:ycm_global_ycm_extra_conf = '~/.vim/vimrcs/.ycm_extra_conf.py'",
-            "endif",
-            "\" Close Scratch window",
-            "\" let g:ycm_autoclose_preview_window_after_completion=1",
-            "\" Disable Preview/Scratch window which shows information about",
-            "\" Functions",
-            "\" Not Sure About this",
-            "set completeopt-=preview",
-            "let g:ycm_key_detailed_diagnostics = ''",
-            "\" ECLIM SETTINGS:",
-            "let g:EclimCompletionMethod = 'omnifunc'"
+            "\" Config File:                                                               ",
+            "if s:running_unix                                                             ",
+            "  let g:ycm_global_ycm_extra_conf = expand(\"$VIM/vimfiles/dotvim/vimrcs\") . ",
+            "                                       \\ '.ycm_extra_conf.py'                ",
+            "endif                                                                         ",
+            "\" Close Scratch window                                                       ",
+            "\" let g:ycm_autoclose_preview_window_after_completion=1                      ",
+            "\" Disable Preview/Scratch window which shows information about               ",
+            "\" Functions                                                                  ",
+            "\" Not Sure About this                                                        ",
+            "set completeopt-=preview                                                      ",
+            "let g:ycm_key_detailed_diagnostics = ''                                       ",
+            "\" ECLIM SETTINGS:                                                            ",
+            "let g:EclimCompletionMethod = 'omnifunc'                                      ",
+            "let g:ycm_key_detailed_diagnostics = ''                                       ",
+            "let g:ycm_filetype_blacklist = {                                              ",
+            "            \\ 'tagbar' : 1,                                                  ",
+            "            \\ 'qf' : 1,                                                      ",
+            "            \\ 'notes' : 1,                                                   ",
+            "            \\ 'markdown' : 1,                                                ",
+            "            \\ 'unite' : 1,                                                   ",
+            "            \\ 'text' : 1,                                                    ",
+            "            \\ 'vimwiki' : 1,                                                 ",
+            "            \\ 'pandoc' : 1,                                                  ",
+            "            \\ 'infolog' : 1,                                                 ",
+            "            \\ 'mail' : 1                                                     ",
+            "            \\}                                                               "
         ]
+    },
+    "color_codeschool": {
+        "config": []
     },
     "color_gruvbox": {
-        "config": [
-        ]
+        "config": []
     },
     "color_kolor": {
-        "config": [
-        ]
+        "config": []
     },
     "color_molokai": {
-        "config": [
-        ]
+        "config": []
     },
     "color_seoul256": {
-        "config": [
-        ]
+        "config": []
     },
     "color_solarized": {
         "config": [
+            "let g:solarized_termcolors=256",
+            "\" Not Sure About this!!!",
+            "\" let g:solarized_termtrans=1"
         ]
+    },
+    "color_squil_vim_colors": {
+        "config": []
     },
     "format_easy_align": {
         "config": [
-            "\" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)",
-            "vmap <Enter> <Plug>(EasyAlign)",
-            "\" Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)",
-            "nmap <Leader>a <Plug>(EasyAlign)"
+            "\" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)              ",
+            "vmap <Enter> <Plug>(EasyAlign)                                               ",
+            "\" Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)   ",
+            "nmap <Leader>a <Plug>(EasyAlign)                                             ",
+            "let g:easy_align_delimiters = {                                              ",
+            "  \\   '>': { 'pattern': '>>\\|=>\\|>'                                       ",
+            "  \\   },                                                                    ",
+            "  \\   '/': {                                                                ",
+            "  \\         'pattern':         '//\\+\\|/\\*\\|\\*/',                       ",
+            "  \\         'delimiter_align': 'l',                                         ",
+            "  \\         'ignore_groups':   ['!Comment']                                 ",
+            "  \\   },                                                                    ",
+            "  \\   ']': {                                                                ",
+            "  \\         'pattern':       '[[\\]]',                                      ",
+            "  \\         'left_margin':   0,                                             ",
+            "  \\         'right_margin':  0,                                             ",
+            "  \\         'stick_to_left': 0                                              ",
+            "  \\   },                                                                    ",
+            "  \\   ')': {                                                                ",
+            "  \\         'pattern':       '[()]',                                        ",
+            "  \\         'left_margin':   0,                                             ",
+            "  \\         'right_margin':  0,                                             ",
+            "  \\         'stick_to_left': 0                                              ",
+            "  \\   },                                                                    ",
+            "  \\   'd': {                                                                ",
+            "  \\         'pattern':      ' \\(\\S\\+\\s*[;=]\\)\\@=',                    ",
+            "  \\         'left_margin':  0,                                              ",
+            "  \\         'right_margin': 0                                               ",
+            "  \\   }                                                                     ",
+            "  \\ }                                                                       ",
+            "for ccmt in ['#', '\"']                                                      ",
+            "  let g:easy_align_delimiters[ccmt] = {'pattern': ccmt,                      ",
+            "        \\ 'ignore_groups':    ['String'],                                   ",
+            "        \\ 'ignore_unmatched': 0}                                            ",
+            "endfor                                                                       "
         ]
     },
     "format_goyo": {
@@ -62,8 +113,20 @@
             "\" To Be Figured Out"
         ]
     },
-    "format_multicursor": {
+    "format_multi_cursor": {
         "config": [
+            "\" Called once right before you start selecting multiple cursors            ",
+            "function! Multiple_cursors_before()                                         ",
+            "  if exists(':NeoCompleteLock')==2                                          ",
+            "    exe 'NeoCompleteLock'                                                   ",
+            "  endif                                                                     ",
+            "endfunction                                                                 ",
+            "\" Called once only when the multiple selection is canceled (default <Esc>) ",
+            "function! Multiple_cursors_after()                                          ",
+            "  if exists(':NeoCompleteUnlock')==2                                        ",
+            "    exe 'NeoCompleteUnlock'                                                 ",
+            "  endif                                                                     ",
+            "endfunction                                                                 "
         ]
     },
     "format_surround": {
@@ -71,135 +134,174 @@
             "\" Nothing To Be Done"
         ]
     },
-    "format_vimorigami": {
+    "format_vim_origami": {
         "config": [
+            "function! <SID>MyFoldDelete()                                                   ",
+            "  \" Description: Remove a foldmarker from the current line                     ",
+            "  let s:fmr  = split( &foldmarker, ',' )                                        ",
+            "  let s:comment_str = split( &commentstring, '%s' )                             ",
+            "  if len( s:comment_str ) == 1 | call add( s:comment_str, \"\" ) | endif        ",
+            "  let l:line = getline('.')                                                     ",
+            "  let l:line = substitute( l:line, '\\s*\\('                            .       ",
+            "                               \\   escape(s:comment_str[0], '*')       .       ",
+            "                               \\   '\\)\\?\\s*\\('                     .       ",
+            "                               \\   s:fmr[0] . '\\|' . s:fmr[1] . '\\)' .       ",
+            "                               \\   '\\(\\d*\\)\\s*\\('                 .       ",
+            "                               \\   escape( s:comment_str[1], '*' )     .       ",
+            "                               \\   '\\)\\?\\s*$', '', '' )                     ",
+            "  call setline( '.', l:line )                                                   ",
+            "endfunction                                                                     ",
             "nnoremap <leader>fo :call origami#InsertFoldmarker(  \"open\", \"comment\" )<CR>",
             "nnoremap <leader>fc :call origami#InsertFoldmarker( \"close\", \"comment\" )<CR>",
-            "nnoremap <leader>fd :call origami#DeleteFoldmarker()<CR>"
+            "nnoremap <leader>fd :call <SID>MyFoldDelete()<CR>                               ",
+            "nnoremap <leader>fa :call origami#AlignFoldmarkers()<CR>                        "
         ]
     },
     "gui_airline": {
         "config": [
-            "if !exists('g:airline_symbols')",
-            "    let g:airline_symbols = {}",
-            "    \" Symbols:",
-            "    let g:airline_left_sep         = \"\u2B80\"",
-            "    let g:airline_left_alt_sep     = \"\u2B81\"",
-            "    let g:airline_right_sep        = \"\u2B82\"",
-            "    let g:airline_right_alt_sep    = \"\u2B83\"",
-            "    let g:airline_symbols.branch   = \"\u2B60\"",
-            "    let g:airline_symbols.readonly = \"\u2B64\"",
-            "    let g:airline_symbols.linenr   = \"\u2B61\"",
-            "\n",
-            "    \" Section:",
-            "    let g:airline_section_c = airline#section#create(['%>',",
-            "                           \\   '%{fnamemodify(\".\", \":p:~\")}',",
-            "                           \\   'file', 'readonly'])",
-            "    let g:airline_section_y = airline#section#create([\"\u2B62\u2B63 \".'[%{&ft}]'])",
-            "    let g:airline_section_b = '%{strftime(\"%d %b %Y %H:%M\")}'",
-            "    let g:airline_section_x = ''",
-            "\n",
-            "    \" Tabline Addon Information:",
-            "    let g:airline#extensions#tabline#left_sep     = \"\u2B80\"",
-            "    let g:airline#extensions#tabline#left_alt_sep = \"\u2B81\"",
-            "    let g:airline#extensions#tabline#fnamemod     = ':t'",
-            "    let g:airline#extensions#tabline#enabled      = 1",
-            "\n",
-            "    \" Theme:",
-            "    let g:airline_theme = \"powerlineish\"",
-            "endif"
+            "\" Symbols:                                                             ",
+            "if s:running_unix                                                       ",
+            "  if !exists('g:airline_symbols')                                       ",
+            "    let g:airline_symbols = {}                                          ",
+            "    \" Airline Symbols:                                                 ",
+            "    let g:airline_left_sep         = \"\\u2B80\"                        ",
+            "    let g:airline_left_alt_sep     = \"\\u2B81\"                        ",
+            "    let g:airline_right_sep        = \"\\u2B82\"                        ",
+            "    let g:airline_right_alt_sep    = \"\\u2B83\"                        ",
+            "    let g:airline_symbols.branch   = \"\\u2B60\"                        ",
+            "    let g:airline_symbols.readonly = \"\\u2B64\"                        ",
+            "    let g:airline_symbols.linenr   = \"\\u2B61\"                        ",
+            "    \" Tabline Addon Information:                                       ",
+            "    let g:airline#extensions#tabline#left_sep     = \"\\u2B80\"         ",
+            "    let g:airline#extensions#tabline#left_alt_sep = \"\\u2B81\"         ",
+            "    let g:airline#extensions#tabline#fnamemod     = ':t'                ",
+            "    let g:airline#extensions#tabline#enabled      = 1                   ",
+            "  endif                                                                 ",
+            "else                                                                    ",
+            "  if !exists('g:airline_symbols')                                       ",
+            "    let g:airline_symbols = {}                                          ",
+            "    \" Airline Symbols:                                                 ",
+            "    let g:airline_left_sep         = ''                                 ",
+            "    let g:airline_left_alt_sep     = ''                                 ",
+            "    let g:airline_right_sep        = ''                                 ",
+            "    let g:airline_right_alt_sep    = ''                                 ",
+            "    let g:airline_symbols.branch   = 'µ'                                ",
+            "    let g:airline_symbols.readonly = 'ß'                                ",
+            "    let g:airline_symbols.linenr   = 'ln'                               ",
+            "    let g:airline_sym_ft           = 'FT '                              ",
+            "    \" Tabline Addon Information:                                       ",
+            "    let g:airline#extensions#tabline#left_sep     = ''                  ",
+            "    let g:airline#extensions#tabline#left_alt_sep = ''                  ",
+            "    let g:airline#extensions#tabline#fnamemod     = ':t'                ",
+            "    let g:airline#extensions#tabline#enabled      = 1                   ",
+            "  endif                                                                 ",
+            "endif                                                                   ",
+            "\" Theme:                                                               ",
+            "let g:airline_theme = \"powerlineish\"                                  ",
+            "\" Initializing Airiline:                                               ",
+            "function! s:AirlineSettings()                                           ",
+            "  \" Section: MODE > B > C > gutter> X > Y > Z > Whitespace             ",
+            "  let g:airline_section_c = airline#section#create(['%>',               ",
+            "                       \\   '%{fnamemodify(\".\", \":p:~\")}',          ",
+            "                       \\   'file', '  ', 'readonly'])                  ",
+            "  \" let g:airline_section_x = airline#section#create_right(['tagbar']) ",
+            "  let g:airline_section_x = ''                                          ",
+            "  let g:airline_section_y = airline#section#create([                    ",
+            "                       \\ g:airline_sym_ft . '%{&ft}'])                 ",
+            "  let g:airline_section_b = airline#section#create([                    ",
+            "                       \\  '%{strftime(\"%d %b %Y %H:%M \")}',          ",
+            "                       \\  'hunks','branch'])                           ",
+            "endfunction                                                             ",
+            "autocmd VimEnter * call s:AirlineSettings()                             "
         ]
     },
     "gui_tagbar": {
         "config": [
-            "nnoremap <leader>tg :TagbarOpen<CR>"
+            "nnoremap <leader>tg :TagbarOpen<CR>                             ",
+            "nnoremap       <F7> :TagbarToggle<CR>                           ",
+            "let g:tagbar_ctags_bin = expand(\"$VIM/vimfiles/local_bundle\". ",
+            "                           \\   \"/ctags58/\") . \"ctags.exe\"  ",
+            "let g:tagbar_sort      = 0                                      "
         ]
     },
-    "langcpp_clighter": {
+    "lang_cpp_clighter": {
         "config": [
             "\" To Be Decided"
         ]
     },
     "linter_syntastic": {
         "config": [
-            "\" Syntastic Eclim Problems",
-            "let g:EclimFileTypeValidate = 0",
-            "let g:EclimPythonValidate   = 0",
-            "\n",
-            "\" Better sign interface symbol",
-            "let g:syntastic_check_on_open = 1",
-            "if s:is_win",
-            "    let g:syntastic_error_symbol         = \">>\"",
-            "    let g:syntastic_style_error_symbol   = \"S>\"",
-            "    let g:syntastic_warning_symbol       = \"**\"",
-            "    let g:syntastic_style_warning_symbol = \"S*\"",
-            "else",
-            "    let g:syntastic_error_symbol         = \"✗\"",
-            "    let g:syntastic_style_error_symbol   = \"✰\"",
-            "    let g:syntastic_warning_symbol       = \"\u2620\"",
-            "    let g:syntastic_style_warning_symbol = \"\u2621\"",
-            "endif",
-            "\" Vim-Lint",
-            "let g:syntastic_vim_checkers            = ['vimlint']",
-            "\" Syntastic Debug Info",
-            "\" let g:syntastic_debug = 1",
-            "\" let g:syntastic_debug_file='~/.vim/some.log'",
-            "\n",
-            "\" Syntastic Lisp Setting",
-            "\" let g:syntastic_lisp_clisp_post_args = \"-o /tmp/\"",
-            "\n",
-            "\" Making Syntastic Passive and TO activate it with <F5>",
-            "    \" let g:syntastic_mode_map = { 'mode': 'passive',",
-            "                             \" \\ 'active_filetypes': [],",
-            "                             \" \\ 'passive_filetypes': [] }",
-            "    \" let g:syntastic_auto_loc_list=1",
-            "    \" nnoremap <silent> <F5> :SyntasticCheck<CR>"
+            "\" Syntastic Eclim Problems                                 ",
+            "let g:EclimFileTypeValidate = 0                             ",
+            "let g:EclimPythonValidate   = 0                             ",
+            "\n                                                          ",
+            "\" Better sign interface symbol                             ",
+            "let g:syntastic_check_on_open = 1                           ",
+            "if s:running_windows                                        ",
+            "  let g:syntastic_error_symbol         = \"\\u2717\\u2717\" ",
+            "  let g:syntastic_style_error_symbol   = \"\\u2652\\u2652\" ",
+            "  let g:syntastic_warning_symbol       = \"\\u264E\\u264E\" ",
+            "  let g:syntastic_style_warning_symbol = \"\\u2630\\u2630\" ",
+            "else                                                        ",
+            "  let g:syntastic_error_symbol         = \"\\u2717\\u2717\" ",
+            "  let g:syntastic_style_error_symbol   = \"\\u2652\\u2652\" ",
+            "  let g:syntastic_warning_symbol       = \"\\u264E\\u264E\" ",
+            "  let g:syntastic_style_warning_symbol = \"\\u2630\\u2630\" ",
+            "endif                                                       ",
+            "\" Vim-Lint                                                 ",
+            "let g:syntastic_vim_checkers            = ['vimlint']       ",
+            "\" Syntastic Debug Info                                     ",
+            "\" let g:syntastic_debug = 1                                ",
+            "\" let g:syntastic_debug_file='~/.vim/some.log'             ",
+            "\n                                                          ",
+            "\" Syntastic Lisp Setting                                   ",
+            "\" let g:syntastic_lisp_clisp_post_args = \"-o /tmp/\"      ",
+            "\n                                                          ",
+            "\" Making Syntastic Passive and TO activate it with <F5>    ",
+            "  \" let g:syntastic_mode_map = { 'mode': 'passive',        ",
+            "                     \" \\ 'active_filetypes': [],          ",
+            "                     \" \\ 'passive_filetypes': [] }        ",
+            "  \" let g:syntastic_auto_loc_list=1                        ",
+            "  \" nnoremap <silent> <F5> :SyntasticCheck<CR>             "
         ]
     },
-    "linter_vimlint": {
+    "linter_vim_lint": {
         "config": [
             "\" To Be Decided"
         ]
     },
     "misc_ack": {
-        "config": [
-        ]
+        "config": []
     },
     "misc_fugitive": {
-        "config": [
-        ]
+        "config": []
     },
     "misc_gitgutter": {
-        "config": [
-        ]
+        "config": []
     },
     "navigate_nerdtree": {
         "config": [
-            "let NERDTreeIgnore = ['\\.beam$', '\\.pyc$', 'ebin$', '\\.obj$', '\\.out$', '\\.aux$', '\\.pdf$']",
-            "let NERDChristmasTree = 1",
-            "\" let NERDTreeMinimalUI = 1",
-            "\" let NERDTreeDirArrows = 0"
+            "let NERDTreeIgnore = ['\\.beam$', '\\.pyc$', 'ebin$', '\\.obj$', '\\.out$', '\\.aux$', '\\.pdf$'] ",
+            "let NERDChristmasTree = 1                                                                         ",
+            "let NERDTreeMinimalUI = 1                                                                         ",
+            "let NERDTreeDirArrows = 0                                                                         ",
+            "nnoremap <F10> :NERDTreeToggle<CR>                                                                "
         ]
     },
     "snippet_honza": {
-        "config": [
-        ]
+        "config": []
     },
     "snippet_ultisnips": {
         "config": [
-            "let g:snips_author = \"Doom\"",
-            "let g:snips_email  = \"kipintouch29@gmail.com\"",
-            "let g:snips_github = \"kipintouch29\"",
-            "\" let g:UltiSnipsSnippetDirectories = ['Ultisnips', expand('~/.vim/myUltiSnips/')]",
-            "let g:UltiSnipsEditSplit=\"horizontal\"",
-            "let g:UltiSnipsListSnippets=\"<F4>\"",
-            "\" UltiSnips Expand Trigger",
-            "\" let g:UltiSnipsExpandTrigger       = \"<C-d>\"",
-            "\" let g:UltiSnipsJumpForwardTrigger  = \"<C-d>\"",
-            "\" let g:UltiSnipsJumpBackwardTrigger = \"<C-s>\"",
-            "\" let g:UltiSnipsExpandTrigger       = \"<C-j>\"",
-            "\" let g:UltiSnipsJumpForwardTrigger  = \"<C-j>\"",
-            "\" let g:UltiSnipsJumpBackwardTrigger = \"<C-k>\""
+            "let g:snips_author = \"Doom\"                                           ",
+            "let g:snips_email  = \"kipintouch29@gmail.com\"                         ",
+            "let g:snips_github = \"kipintouch29\"                                   ",
+            "let g:UltiSnipsSnippetsDir         = expand(s:vimfiles. 'myUltiSnips/') ",
+            "let g:UltiSnipsEditSplit           = \"horizontal\"                     ",
+            "let g:UltiSnipsListSnippets        = \"<F4>\"                           ",
+            "let g:UltiSnipsExpandTrigger       = \"<C-j>\"                          ",
+            "let g:UltiSnipsJumpForwardTrigger  = \"<C-j>\"                          ",
+            "let g:UltiSnipsJumpBackwardTrigger = \"<C-k>\"                          "
         ]
     },
     "unite_airline": {
@@ -214,7 +316,62 @@
     },
     "unite_core": {
         "config": [
-            "\" To Be Decided "
+            "\" Basics                                                                   ",
+            "  call unite#filters#matcher_default#use(['matcher_fuzzy'])                 ",
+            "  call unite#filters#sorter_default#use(['sorter_rank'])                    ",
+            "  call unite#custom#source('line,outline','matchers','matcher_fuzzy')       ",
+            "  call unite#custom_source('file_rec,file_rec/async,file_mru,' .            ",
+            "         \\ 'file,buffer,grep',                                             ",
+            "         \\ 'ignore_pattern', join([                                        ",
+            "         \\   '\\.git/', '\\.pyc',   '\\.o', '\\.beam', '\\.pyc',           ",
+            "         \\   '\\.ebin', '\\.dll', '\\.obj', '\\.bak', '\\.exe',            ",
+            "         \\    '\\.pyc', '\\.jpg', '\\.gif',  '\\.png'], '\\|'))            ",
+            "  call unite#custom#profile('default', 'context', {                         ",
+            "       \\     'start_insert':       1,                                      ",
+            "       \\        'direction': 'below',                                      ",
+            "       \\        'winheight':      10,                                      ",
+            "       \\ 'prompt_direction': 'below',                                      ",
+            "       \\   'prompt_visible':       1,                                      ",
+            "       \\           'prompt': '» '                                          ",
+            "       \\ })                                                                ",
+            "\" Unite Variables:                                                         ",
+            "  let g:unite_force_overwrite_statusline = 0                                ",
+            "  let g:unite_data_directory             = expand(s:vimfiles .              ",
+            "                                       \\  \"temp/cache/unite/\")           ",
+            "  let g:unite_source_history_yank_enable = 1                                ",
+            "  let g:unite_source_rec_max_cache_files = 5000                             ",
+            "  if executable('ack')                                                      ",
+            "    let g:unite_source_grep_command       = 'ack'                           ",
+            "    let g:unite_source_rec_async_command  = 'ack'                           ",
+            "    let g:unite_source_grep_default_opts  = '-iw --no-heading --no-color'   ",
+            "    let g:unite_source_grep_recursive_opt = ''                              ",
+            "  endif                                                                     ",
+            "\" Unite MAPPINGS:                                                          ",
+            "  nmap <leader><space> [unite]                                              ",
+            "  nnoremap [unite] <nop>                                                    ",
+            "  autocmd FileType unite call s:unite_settings()                            ",
+            "  function! s:unite_settings()                                              ",
+            "    nmap <buffer> <C-Space> <plug>(unite_restart)                           ",
+            "    nmap <buffer> <ESC>     <plug>(unite_exit)                              ",
+            "    nmap <buffer> Q         <Plug>(unite_exit)                              ",
+            "    imap <buffer> <Tab>     <Plug>(unite_skip_next_line)                    ",
+            "    imap <buffer> <S-Tab>   <Plug>(unite_skip_previous_line)                ",
+            "  endfunction                                                               ",
+            "  nnoremap <silent> <C-P>     :<C-U>Unite                                   ",
+            "                        \\   -buffer-name=files buffer  file_rec:../<cr>    ",
+            "  nnoremap <silent> [unite]eu :Unite -buffer-name=recent file_mru<cr>       ",
+            "  nnoremap <silent> [unite]c  :Unite -auto-preview                          ",
+            "                        \\   -buffer-name=colorscheme colorscheme<cr>       ",
+            "  nnoremap <silent> [unite]a  :Unite -auto-preview                          ",
+            "                        \\   -buffer-name=airline_themes airline_themes<cr> ",
+            "  nnoremap <silent> [unite]y  :Unite -buffer-name=yanks history/yank<cr>    ",
+            "  nnoremap <silent> [unite]l  :Unite -auto-resize                           ",
+            "                        \\   -buffer-name=line line<cr>                     ",
+            "  nnoremap <silent> [unite]b  :Unite -auto-resize                           ",
+            "                        \\   -buffer-name=buffers buffer<cr>                ",
+            "  nnoremap <silent> [unite]m  :Unite -auto-resize                           ",
+            "                        \\   -buffer-name=mappings mapping<cr>              ",
+            "  nnoremap <silent> [unite]s  :Unite -quick-match buffer<cr>                "
         ]
     },
     "unite_mru": {
