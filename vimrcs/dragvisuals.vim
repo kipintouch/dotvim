@@ -54,7 +54,7 @@
 
 " If already loaded, we're done...                        " {{{1
 if exists("loaded_dragvirtualblocks")
-    finish
+  finish
 endif
 let loaded_dragvirtualblocks = 1
 

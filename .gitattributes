@@ -1,0 +1,12 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+*.gitattributes     text
+*.gitignore         text
+*.json              text
+*.md                text
+*.sample            text
+*.snippets          text
+*.vim               text
+
+
