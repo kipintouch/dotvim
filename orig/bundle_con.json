@@ -171,6 +171,7 @@
             "    let g:airline_symbols.branch   = \"\\u2B60\"                        ",
             "    let g:airline_symbols.readonly = \"\\u2B64\"                        ",
             "    let g:airline_symbols.linenr   = \"\\u2B61\"                        ",
+      	    "    let g:airline_sym_ft           = \"\\u2B62\\u2B63 \"                ",
             "    \" Tabline Addon Information:                                       ",
             "    let g:airline#extensions#tabline#left_sep     = \"\\u2B80\"         ",
             "    let g:airline#extensions#tabline#left_alt_sep = \"\\u2B81\"         ",
@@ -375,6 +376,11 @@
         ]
     },
     "unite_mru": {
+        "config": [
+            "\" To Be Decided "
+        ]
+    },
+    "unite_outline": {
         "config": [
             "\" To Be Decided "
         ]

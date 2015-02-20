@@ -173,6 +173,15 @@
         },
         "url": "Shougo/neomru.vim"
     },
+    "unite_outline": {
+        "opt": {
+            "autoload": {
+                "unite_sources": "outline"
+            },
+            "lazy": "1"
+        },
+        "url": "h1mesuke/unite-outline"
+    },
     "unite_vimproc": {
         "opt": {
             "build": {
