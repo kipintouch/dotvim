@@ -1,0 +1,142 @@
+priority -50
+
+######################################
+#  Some Simple Snippets For Fortran  #
+######################################
+
+######################################
+# Function and Data type Declaration #
+######################################
+# Main Program
+snippet main "The Main Program" b
+program main
+	IMPLICIT NONE
+	${1:!Some Description about main}
+end program main
+endsnippet
+# Program In General
+snippet "pro(gram)?" "Writting a Program" br
+program ${1:prog_name}
+	IMPLICIT NONE
+	${2:!Some Description about your Program}
+end program $1
+endsnippet
+# function shorthand
+snippet "fun(ction)?" "function shorthand" br
+${1:return_type }function ${2:function-name} (${3:Arg_list}) ${4:results(${5:var})}
+	${6:Some Description about your function}
+end function $1
+endsnippet
+# Subroutine shorthand
+snippet "sub(routine)?" "Subroutine shorthand" br
+subroutine ${1:sub-name} (${2:Arg_list})
+	${3:!Some Description about your subroutine}
+end subroutine $1
+endsnippet
+# Type Declaration
+snippet type "Declaring a type" b
+type ${1:type-name}
+	! ${2:Some Description about your type}
+end type $1
+endsnippet
+
+####################################################
+# Basic constructs if else, do end do, switch etc. #
+####################################################
+# IF
+snippet if "simple if condition" b
+if (${1:cond}) then
+	${2:If_True}
+end if
+endsnippet
+# IF Else
+snippet "ife(lse)?" "simple if condition" br
+if (${1:cond}) then
+	${2:If_true}
+else
+	${3:Else}
+end if
+endsnippet
+# simple do
+snippet do "Simple Do-construct" b
+do ${1:i} = ${2:start}, ${3:end}
+	${4:loop}
+end do
+endsnippet
+# do with incremental control
+snippet doi "Simple Do-construct" b
+do ${1:i} = ${2:start}, ${3:end}, ${4:increment-decrement}
+	${5:loop}
+end do
+endsnippet
+snippet "wr(ite)?" "write(*, *) function" br
+write(*, ${1:*}) ${2:"${3:HelloWorld}"}${4:, }
+endsnippet
+
+#########################
+# Variale Declaration!! #
+#########################
+# Integer
+snippet "int(eger)?" "Declaring a Integer" br
+integer :: ${2:Var_1}
+endsnippet
+# Character
+snippet "char(acter)?" "Declaring a Integer" br
+character :: ${2:Var_1}
+endsnippet
+# Logical
+snippet "log(ical)?" "Declaring a Integer" br
+logical :: ${2:Var_1}
+endsnippet
+# Float
+snippet "re(al)?" "Declaring a Integer" br
+real :: ${2:Var_1}
+endsnippet
+
+######################################################################################
+# Variables / Type shorthand   for subroutines and functions (intent) in, out, inout #
+######################################################################################
+# Integer var in Subroutines
+snippet sint "Declaring a Integer" b
+integer, intent(${2:in}) :: ${3:Var_1}
+endsnippet
+# Character var in Subroutines
+snippet "schar(acter)?" "Declaring a Integer" br
+character, intent(${2:in}) :: ${3:Var_1}
+endsnippet
+# Logical var in Subroutines
+snippet slog "Declaring a Integer" b
+logical, intent(${2:in}) :: ${3:Var_1}
+endsnippet
+# Float var in Subroutines
+snippet sreal "Declaring a Integer" b
+real, intent(${2:in}) :: ${3:Var_1}
+endsnippet
+# Declaring integer array
+snippet sintd "Declaring a integer array" b
+integer, dimension(${2::}), intent(${3:in}) :: ${4:Array_name}
+endsnippet
+# Declaring real array
+snippet sreald "Declaring a integer array" b
+real, dimension(${2::}), intent(${3:in}) :: ${4:Array_name}
+endsnippet
+
+#####################
+# Array Declaration #
+#####################
+# Declaring integer array
+snippet intd "Declaring a integer array" b
+integer, dimension(${2::}) :: ${3:Array_name}
+endsnippet
+# Declaring real array
+snippet reald "Declaring a real array" b
+real, dimension(${2::}) :: ${3:Array_name}
+endsnippet
+
+#################
+# General Stuff #
+#################
+snippet "intp(arameter)?" "Declares a Integer Parameter" br
+integer, parameter :: ${1:Parameter}
+endsnippet
+
