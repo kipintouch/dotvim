@@ -110,10 +110,10 @@ let s:bundle_url = s:Init()
     let s:blist = sort(keys(s:bundle_url), 'i')
     " echom "Input: " . string(s:local_correction.plugins_to_exclude)
     for l:k in s:local_correction.plugins_to_exclude
-      let i = index(s:blist, l:k)
-      if i != -1
+      let l:ii = index(s:blist, l:k)
+      if l:ii != -1
         " echom "Removing Plugin: " . string(l:k)
-        call remove(s:blist, i)
+        call remove(s:blist, l:ii)
       else
         echom "-------------------------------------------------------"
         echom "Local Plugin REmoval Didn't Work"

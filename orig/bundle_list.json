@@ -41,6 +41,10 @@
         "opt": {},
         "url": "tomasr/molokai"
     },
+    "color_monokai": {
+        "opt": {},
+        "url": "sickill/vim-monokai"
+    },
     "color_seoul256": {
         "opt": {},
         "url": "szw/seoul256.vim"
