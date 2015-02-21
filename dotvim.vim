@@ -100,14 +100,21 @@ let s:bundle_url = s:Init()
   function! s:MY_Install_All(mylist)
     for k in a:mylist
       let l:my_bundle = s:Get_Bundle(k)
-      call neobundle#bundle(l:my_bundle[0], l:my_bundle[1])
+        if l:my_bundle[0] =~ "YouCompleteMe"
+          let l:some_temp_for_timeout = g:neobundle#install_process_timeout
+          let g:neobundle#install_process_timeout = 1800
+          call neobundle#bundle(l:my_bundle[0], l:my_bundle[1])
+          let g:neobundle#install_process_timeout = l:some_temp_for_timeout
+        else
+          call neobundle#bundle(l:my_bundle[0], l:my_bundle[1])
+        endif
     endfor
   endfunction
 
   " Local Correction e.g. Autocomplete Engine via detecting OS" {{{2
   let s:blist = []
   function! s:MY_Local_Correct()
-    let s:blist = sort(keys(s:bundle_url), 'i')
+    let s:blist = sort(keys(s:bundle_url))
     " echom "Input: " . string(s:local_correction.plugins_to_exclude)
     for l:k in s:local_correction.plugins_to_exclude
       let l:ii = index(s:blist, l:k)

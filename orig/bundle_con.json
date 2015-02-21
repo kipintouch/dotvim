@@ -15,39 +15,35 @@
     },
     "autocomplete_ycm": {
         "config": [
-            "\" Config File:                                                        ",
-            "if s:running_unix                                                      ",
-            "  let g:ycm_global_ycm_extra_conf = expand(\"~/.vim/dotvim/vimrcs\") . ",
-            "                                       \\ '.ycm_extra_conf.py'         ",
-            "endif                                                                  ",
-            "\" Close Scratch window                                                ",
-            "\" let g:ycm_autoclose_preview_window_after_completion=1               ",
-            "\" Disable Preview/Scratch window which shows information about        ",
-            "\" Functions                                                           ",
-            "\" Not Sure About this                                                 ",
-            "set completeopt-=preview                                               ",
-            "let g:ycm_key_detailed_diagnostics = ''                                ",
-            "\" ECLIM SETTINGS:                                                     ",
-            "let g:EclimCompletionMethod = 'omnifunc'                               ",
-            "let g:ycm_key_detailed_diagnostics = ''                                ",
-            "let g:ycm_filetype_blacklist = {                                       ",
-            "            \\ 'tagbar' : 1,                                           ",
-            "            \\ 'qf' : 1,                                               ",
-            "            \\ 'notes' : 1,                                            ",
-            "            \\ 'markdown' : 1,                                         ",
-            "            \\ 'unite' : 1,                                            ",
-            "            \\ 'text' : 1,                                             ",
-            "            \\ 'vimwiki' : 1,                                          ",
-            "            \\ 'pandoc' : 1,                                           ",
-            "            \\ 'infolog' : 1,                                          ",
-            "            \\ 'mail' : 1                                              ",
-            "            \\}                                                        "
+            "\" Close Scratch window                                         ",
+            "  let g:ycm_autoclose_preview_window_after_completion=1         ",
+            "\" View the Preview/Scratch window for words used in completion ",
+            "\" set completeopt-=preview                                     ",
+            "\" let g:ycm_key_detailed_diagnostics = ''                      ",
+            "\" ECLIM SETTINGS:                                              ",
+            "let g:EclimCompletionMethod = 'omnifunc'                        ",
+            "let g:ycm_key_detailed_diagnostics = ''                         ",
+            "let g:ycm_filetype_blacklist = {                                ",
+            "           \\   'tagbar': 1,                                    ",
+            "           \\       'qf': 1,                                    ",
+            "           \\    'notes': 1,                                    ",
+            "           \\ 'markdown': 1,                                    ",
+            "           \\    'unite': 1,                                    ",
+            "           \\     'text': 1,                                    ",
+            "           \\  'vimwiki': 1,                                    ",
+            "           \\   'pandoc': 1,                                    ",
+            "           \\  'infolog': 1,                                    ",
+            "           \\     'mail': 1                                     ",
+            "           \\}                                                  "
         ]
     },
     "color_codeschool": {
         "config": []
     },
     "color_gruvbox": {
+        "config": []
+    },
+    "color_kalisi": {
         "config": []
     },
     "color_kolor": {
@@ -68,9 +64,6 @@
             "\" Not Sure About this!!!",
             "\" let g:solarized_termtrans=1"
         ]
-    },
-    "color_squil_vim_colors": {
-        "config": []
     },
     "format_easy_align": {
         "config": [
@@ -158,6 +151,18 @@
             "nnoremap <leader>fc :call origami#InsertFoldmarker( \"close\", \"comment\" )<CR>",
             "nnoremap <leader>fd :call <SID>MyFoldDelete()<CR>                               ",
             "nnoremap <leader>fa :call origami#AlignFoldmarkers()<CR>                        "
+        ]
+    },
+    "githelpers_fugitive": {
+        "config": []
+    },
+    "githelpers_gitgutter": {
+        "config": [
+            "let g:gitgutter_sign_added            = \"\\u27F9\"  \" Default: +  ",
+            "let g:gitgutter_sign_removed          = \"\\u27F8\"  \" Default: _  ",
+            "let g:gitgutter_sign_modified         = \"\\u27Fa\"  \" Default: ~  ",
+            "let g:gitgutter_sign_modified_removed = \"\\u2b45\"  \" Default: _~ ",
+            "let g:gitgutter_map_keys              = 0                           "
         ]
     },
     "gui_airline": {
@@ -277,12 +282,6 @@
         ]
     },
     "misc_ack": {
-        "config": []
-    },
-    "misc_fugitive": {
-        "config": []
-    },
-    "misc_gitgutter": {
         "config": []
     },
     "navigate_nerdtree": {

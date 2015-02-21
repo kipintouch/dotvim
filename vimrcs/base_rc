@@ -238,7 +238,8 @@
         let &t_Sb="\ESC[4%dm"
       endif
       " Color Settings required before setting colorschemes
-      let g:solarized_termcolors=256
+      let g:gruvbox_italicize_comments = 0
+      let g:solarized_termcolors       = 256
       colorscheme solarized
     else
       colorscheme desert
@@ -286,7 +287,7 @@ endfunction
 function! s:ColorColumnSetting(ftype)
   if  a:ftype ==# 'unite' || a:ftype ==# 'json' ||
     \ a:ftype ==# 'help'  || a:ftype ==# ''     ||
-    \ a:ftype ==# 'text'
+    \ a:ftype ==# 'text'  || a:ftype ==# 'markdown'
     " echom "Exclude FT Detected: " . string(a:ftype)
     return
   else

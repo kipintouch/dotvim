@@ -20,8 +20,10 @@
     },
     "autocomplete_ycm": {
         "opt": {
-            "lazy": "1",
-            "vim_version": "7.3.584"
+            "vim_version": "7.3.584",
+            "build" : {
+                "unix" : "./install.sh --clang-completer"
+            }
         },
         "url": "Valloric/YouCompleteMe"
     },
@@ -32,6 +34,10 @@
     "color_gruvbox": {
         "opt": {},
         "url": "morhetz/gruvbox"
+    },
+    "color_kalisi": {
+        "opt": {},
+        "url": "freeo/vim-kalisi"
     },
     "color_kolor": {
         "opt": {},
@@ -52,10 +58,6 @@
     "color_solarized": {
         "opt": {},
         "url": "altercation/vim-colors-solarized.git"
-    },
-    "color_squil_vim_colors": {
-        "opt": {},
-        "url": "squil/vim_colors"
     },
     "format_easy_align": {
         "opt": {},
@@ -83,6 +85,14 @@
     "format_vim_origami": {
         "opt": {},
         "url": "kshenoy/vim-origami"
+    },
+    "githelpers_fugitive": {
+        "opt": {},
+        "url": "tpope/vim-fugitive"
+    },
+    "githelpers_gitgutter": {
+        "opt": {},
+        "url": "airblade/vim-gitgutter"
     },
     "gui_airline": {
         "opt": {},
@@ -116,14 +126,6 @@
     "misc_ack": {
         "opt": {},
         "url": "mileszs/ack.vim"
-    },
-    "misc_fugitive": {
-        "opt": {},
-        "url": "tpope/vim-fugitive"
-    },
-    "misc_gitgutter": {
-        "opt": {},
-        "url": "airblade/vim-gitgutter"
     },
     "navigate_nerdtree": {
         "opt": {
