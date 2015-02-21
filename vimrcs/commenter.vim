@@ -120,6 +120,7 @@ endfunction"}}}1
 " Toggle Block Comments With Header                          " {{{1
 function! s:ToggleBlockHeader(lin, comment, pattern)
   let l:saved_reg = @@
+  let l:old_pos   = getpos('.')
   let l:inden = min( map(copy(a:lin), 'indent(v:val)') )
   for l:i in a:lin
     let l:line = getline(l:i)
@@ -133,20 +134,23 @@ function! s:ToggleBlockHeader(lin, comment, pattern)
     call append( a:lin[0] - 1, repeat(' ', l:inden) . b:scmt)
     call append(a:lin[-1] + 1, repeat(' ', l:inden) . b:ecmt)
   else
-    if strlen(getline(a:lin[0]))
-      if strlen(getline(a:lin[-1]))
+    if getline(a:lin[0]) !~ '^\s*$'
+      if getline(a:lin[-1]) !~ '^\s*$'
       else
         execute  " normal! " . string(a:lin[-1]) . "ggdd\<cr>"
       endif
     else
       execute  " normal! " . string(a:lin[0] ) . "ggdd\<cr>"
-      if strlen(getline(a:lin[-1] - 1))
+      if getline(a:lin[-1] - 1) !~ '^\s*$'
       else
         execute  " normal! " . string(a:lin[-1] - 1) . "ggdd\<cr>"
       endif
     endif
   endif
   let @@ = l:saved_reg
+  call setpos('.', l:old_pos)
+
+
 endfunction"}}}1
 " Toggle Block comments Linewise                             " {{{1
 function! s:ToggleBlockLinewise(lin, comment, pattern)

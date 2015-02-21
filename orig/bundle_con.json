@@ -261,7 +261,7 @@
             "endif                                                       ",
             "\" Python Lint                                              ",
             "let g:syntastic_python_pylint_post_args = \"--rcfile=\" .   ",
-            "           \ expand(s:vimfiles . \"vimrcs/pylint_std.rc\")  ",
+            "          \\ expand(s:vimfiles . \"vimrcs/pylint_std.rc\")  ",
             "\" Syntastic Debug Info                                     ",
             "\" let g:syntastic_debug = 1                                ",
             "\" let g:syntastic_debug_file='~/some.log'                  ",
