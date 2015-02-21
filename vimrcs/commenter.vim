@@ -172,7 +172,7 @@ function! <SID>ToggleBlock()range
       let l:lines = add(l:lines, i)
     endif
   endfor
-  echom string(l:lines)
+  " echom string(l:lines)
   let l:pattern = ''
   if b:scmt == '' " Single Line Commenter                    " {{{2
     if getline(l:lines[0]) =~ '\v^\s*' . b:cmt
@@ -184,7 +184,7 @@ function! <SID>ToggleBlock()range
       "                     Everything Else -----+
       call s:ToggleBlockLinewise(l:lines, 0, l:pattern)
     else
-      echom "Start Commenting"
+      " echom "Start Commenting"
       let l:inden = min( map(copy(l:lines), 'indent(v:val)') )
       let l:pattern = '\v^(\s{'.string(l:inden).'})(\s*)(.*)'
       " Match               |             |          |    |

@@ -42,7 +42,7 @@
   " super low delay
   set timeout timeoutlen=1000 ttimeoutlen=100
   set viminfo+=!     " Store upper-case registers in viminfo
-  set nomore         " Short nomore and bullets, too
+  " set nomore         " Short nomore and bullets, too
   set formatlistpat=^\\s*\\(\\d\\\|[-*]\\)\\+[\\]:.)}\\t\ ]\\s*
 "}}}1
 " General:                                                          " {{{1
@@ -55,7 +55,6 @@
     set clipboard+=unnamedplus
   endif
   set noswapfile
-  set fileformats=unix,dos,mac " support all three, in this order
   set hidden                   " you can change buffers without saving
   " (XXX: #VIM/tpope warns the line below could break things)
   set iskeyword+=_,$,@,%,# " none of these are word dividers
@@ -79,7 +78,7 @@
 " VIM UI:                                                           " {{{1
   " set list " we do what to show tabs, to ensure we get them out of my files
   set nohlsearch               " Do not highlight searched for phrases
-  set incsearch                " BUT do highlight as you type you
+  set incsearch                " BUT do highlight as you type your
                                " search phrase
   set lazyredraw               " do not redraw while running macros
   set linespace=0              " don't insert any extra pixel lines
@@ -94,7 +93,7 @@
                                " the bottom
   set scrolloff=10             " Keep 10 lines (top/bottom) for scope
   set shortmess=aOstT          " Shortens messages to avoid 'press a
-                               " key' prompt
+                               " key' prompt (Default: filnxtToO)
   set showcmd                  " Show the command being typed
   set showmatch                " Show matching brackets
   set matchtime=2              " How many tenths of a second to blink
@@ -230,7 +229,7 @@
     if s:colorful_term
       " 256 color --
       let &t_Co=256
-      " restore screen after quitting
+      " Restore screen after quitting
       if has("terminfo")
         let &t_Sf="\ESC[3%p1%dm"
         let &t_Sb="\ESC[4%p1%dm"
@@ -238,9 +237,8 @@
         let &t_Sf="\ESC[3%dm"
         let &t_Sb="\ESC[4%dm"
       endif
-      let g:solarized_termcolors = 256
-      let g:solarized_termtrans  = 1
-      set background=dark
+      " Color Settings required before setting colorschemes
+      let g:solarized_termcolors=256
       colorscheme solarized
     else
       colorscheme desert
@@ -511,7 +509,7 @@ endfunction
     au!
     " Fold | Indent                                                 " {{{3
     autocmd FileType python,sh,json,conf
-          \ setl foldmethod=indent sts=4 sw=4
+          \ setl foldmethod=indent sts=4 sw=4 ts=4
     " ColorColumn Settings                                          " {{{3
     autocmd FileType *      :call s:ColorColumnSetting(&ft)
     " Whitespace
