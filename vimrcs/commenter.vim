@@ -149,8 +149,6 @@ function! s:ToggleBlockHeader(lin, comment, pattern)
   endif
   let @@ = l:saved_reg
   call setpos('.', l:old_pos)
-
-
 endfunction"}}}1
 " Toggle Block comments Linewise                             " {{{1
 function! s:ToggleBlockLinewise(lin, comment, pattern)
