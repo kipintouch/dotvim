@@ -8,5 +8,5 @@
 *.sample            text
 *.snippets          text
 *.vim               text
-
+*.py                text
 
