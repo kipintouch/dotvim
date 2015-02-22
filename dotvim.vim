@@ -1,11 +1,15 @@
-" Consists of Functionalities for installation of Bundle's as listed in
-" bundle_list.json
-" Requirements:
-"           1.  bundle_list.json:
-"                   Consists of Bundle to be installed along with options
-"                   for installation.
-"           2.  bundle_con.json:
-"                   Consists of Bundle Configuration.
+
+
+  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  " Consists of Functionalities for installation of Bundle's as listed in   "
+  " bundle_list.json                                                        "
+  " Requirements:                                                           "
+  "           1.  bundle_list.json:                                         "
+  "                   Consists of Bundle to be installed along with options "
+  "                   for installation.                                     "
+  "           2.  bundle_con.json:                                          "
+  "                   Consists of Bundle Configuration.                     "
+  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Defining Global Functions for Python                        " {{{1
 python << EOF
@@ -167,24 +171,27 @@ con_dict = read_from_json(conffile)
 pfile    = vim.eval("l:pfile")
 blist    = vim.eval("a:bundle_list")
 ilist    = vim.eval("l:ilist")
-head     = "\" " + "-"*80 + "\n"
+head     = "\" " + "-"*72 + "\n"
 s        = "\" vim: fdm=marker:et:ts=2:sts=2:sw=2\n\n"
 s       += "let s:running_windows  = has('win16') || has('win32') ||" + \
            " has('win64')\n"
 s       += "let s:running_unix     = has('unix')\n\n"
-s       += "if s:running_windows                           \n"
-s       += "  let s:vimfiles = \"$VIM/vimfiles/dotvim/\"   \n"
-s       += "else                                           \n"
-s       += "  let s:vimfiles = \"~/.vim/dotvim/\"          \n"
-s       += "endif                                          \n"
+s       += "if s:running_windows\n"
+s       += "  let s:vimfiles = \"$VIM/vimfiles/dotvim/\"\n"
+s       += "else\n"
+s       += "  let s:vimfiles = \"~/.vim/dotvim/\"\n"
+s       += "endif\n"
 s       += head
 for i in range(len(ilist)):
   s += "\" {0:>3}{1:<35}{2:>35}\n".format(str(i+1) + ".", ilist[i][0],
                                           "*"+ilist[i][0].split("/")[1]+"*")
 s += head
 for i in range(len(ilist)):
-  if len(con_dict[blist[i]]["config"]):
-    s += "\" {0:<40}{1:>40}\n".format(ilist[i][0], "| "
+  if blist[i] not in con_dict:
+    # Skipping Adding configuration for unlisted plugins in bundle_con.json
+    pass
+  elif len(con_dict[blist[i]]["config"]):
+    s += "\" {0:<35}{1:>35}\n".format(ilist[i][0], "| "
             + ilist[i][0].split("/")[1] + ' | "' + '{'*3 + '1')
     s += head
     if len(ilist[i][1].keys()):
@@ -192,7 +199,7 @@ for i in range(len(ilist)):
       s += head
     oo = ""
     for lin in con_dict[blist[i]]["config"]:
-      oo += "  " + lin + "\n"
+      oo += "  " + lin.rstrip() + "\n"
     s += oo
     s += "\n"
 # Check if file exists
@@ -253,14 +260,14 @@ EOF
       endif
       if has_key(g:bundle_settings, "plugins_to_add")
         for kk in g:bundle_settings.plugins_to_add
-            if has_key(kk, "opt") && has_key(kk, "url")
-              call add(some_temp_to_check, kk)
+            if (index(keys(kk), "opt") >= 0) && (index(keys(kk), "url") >= 0)
+              call extend(s:bundle_url, {kk['name'] : kk})
             else
               echom "-----------------------------------------------------"
               echom "To Add Plugins you need a list of dict "
               echom "'plugins_to_add': "
-              echom "[{\"some_key\": "
-              echom "    {\"url\": 'some/url',\"opt\": 'some/options'}, ...]"
+              echom "[{\"name\": \"plugin_name\", "
+              echom "  \\  \"url\": 'some/url',\"opt\": 'some/options'}, ...]"
               echom "You have: "
               echom string(kk)
             endif

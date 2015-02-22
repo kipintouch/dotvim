@@ -516,11 +516,10 @@ endfunction
   " FileType Specific (indent, tabs etc )                           " {{{2
   augroup MYFILETYPE
     au!
+    " ColorColumn Settings                                          " {{{3
+    autocmd FileType *      :call s:ColorColumnSetting(&ft)
     " Fold | Indent                                                 " {{{3
     autocmd FileType python,sh,json,conf
           \ setl foldmethod=indent sts=4 sw=4 ts=4
-    " ColorColumn Settings                                          " {{{3
-    autocmd FileType *      :call s:ColorColumnSetting(&ft)
-    " Whitespace
     "}}}3
   augroup end

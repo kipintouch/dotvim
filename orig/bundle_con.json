@@ -17,6 +17,9 @@
         "config": [
             "\" Close Scratch window                                         ",
             "  let g:ycm_autoclose_preview_window_after_completion=1         ",
+            "\" Extra Configuration Required !!                              ",
+            "  let g:ycm_global_ycm_extra_conf = expand(s:vimfiles .         ",
+            "                       \\     'vimrcs/.ycm_extra_conf.py')      ",
             "\" View the Preview/Scratch window for words used in completion ",
             "\" set completeopt-=preview                                     ",
             "\" let g:ycm_key_detailed_diagnostics = ''                      ",
@@ -158,11 +161,13 @@
     },
     "githelpers_gitgutter": {
         "config": [
-            "let g:gitgutter_sign_added            = \"\\u27F9\"  \" Default: +  ",
-            "let g:gitgutter_sign_removed          = \"\\u27F8\"  \" Default: _  ",
-            "let g:gitgutter_sign_modified         = \"\\u27Fa\"  \" Default: ~  ",
-            "let g:gitgutter_sign_modified_removed = \"\\u2b45\"  \" Default: _~ ",
-            "let g:gitgutter_map_keys              = 0                           "
+            "if s:running_unix                                                     ",
+            "  let g:gitgutter_sign_added            = \"\\u27F9\"  \" Default: +  ",
+            "  let g:gitgutter_sign_removed          = \"\\u27F8\"  \" Default: _  ",
+            "  let g:gitgutter_sign_modified         = \"\\u27Fa\"  \" Default: ~  ",
+            "  let g:gitgutter_sign_modified_removed = \"\\u2b45\"  \" Default: _~ ",
+            "endif                                                                 ",
+            "let g:gitgutter_map_keys              = 0                             "
         ]
     },
     "gui_airline": {
@@ -242,54 +247,54 @@
     },
     "linter_syntastic": {
         "config": [
-            "\" Syntastic Eclim Problems                                 ",
-            "let g:EclimFileTypeValidate = 0                             ",
-            "let g:EclimPythonValidate   = 0                             ",
-            "\n                                                          ",
-            "\" Better sign interface symbol                             ",
-            "let g:syntastic_check_on_open = 1                           ",
-            "if s:running_windows                                        ",
-            "  let g:syntastic_error_symbol         = \"\\u2717\\u2717\" ",
-            "  let g:syntastic_style_error_symbol   = \"\\u2652\\u2652\" ",
-            "  let g:syntastic_warning_symbol       = \"\\u264E\\u264E\" ",
-            "  let g:syntastic_style_warning_symbol = \"\\u2630\\u2630\" ",
-            "else                                                        ",
-            "  let g:syntastic_error_symbol         = \"\\u2717\\u2717\" ",
-            "  let g:syntastic_style_error_symbol   = \"\\u2652\\u2652\" ",
-            "  let g:syntastic_warning_symbol       = \"\\u264E\\u264E\" ",
-            "  let g:syntastic_style_warning_symbol = \"\\u2630\\u2630\" ",
-            "endif                                                       ",
-            "\" Python Lint                                              ",
-            "let g:syntastic_python_pylint_post_args = \"--rcfile=\" .   ",
-            "          \\ expand(s:vimfiles . \"vimrcs/pylint_std.rc\")  ",
-            "\" Syntastic Debug Info                                     ",
-            "\" let g:syntastic_debug = 1                                ",
-            "\" let g:syntastic_debug_file='~/some.log'                  ",
-            "\" Syntastic Lisp Setting                                   ",
-            "\" let g:syntastic_lisp_clisp_post_args = \"-o /tmp/\"      ",
-            "\" Making Syntastic Passive and TO activate it with <F5>    ",
-            "     let g:syntastic_mode_map = { 'mode': 'passive',        ",
-            "                         \\ 'active_filetypes': [],         ",
-            "                         \\ 'passive_filetypes': [] }       ",
-            "     let g:syntastic_auto_loc_list=1                        ",
-            "nnoremap <silent> <F5> :SyntasticCheck<CR>                  "
+            "\" Syntastic Eclim Problems                               ",
+            "let g:EclimFileTypeValidate = 0                           ",
+            "let g:EclimPythonValidate   = 0                           ",
+            "\" Better sign interface symbol                           ",
+            "let g:syntastic_auto_loc_list            = 1              ",
+            "let g:syntastic_always_populate_loc_list = 1              ",
+            "let g:syntastic_check_on_open            = 1              ",
+            "let g:syntastic_error_symbol         = \"\\u2717\\u2717\" ",
+            "let g:syntastic_style_error_symbol   = \"\\u2652\\u2652\" ",
+            "let g:syntastic_warning_symbol       = \"\\u264E\\u264E\" ",
+            "let g:syntastic_style_warning_symbol = \"\\u2630\\u2630\" ",
+            "\" Python Lint                                            ",
+            "let g:syntastic_python_pylint_post_args = \"--rcfile=\" . ",
+            "         \\ expand(s:vimfiles . \"vimrcs/pylint_std.rc\") ",
+            "\" Syntastic Debug Info                                   ",
+            "\" let g:syntastic_debug = 1                              ",
+            "\" let g:syntastic_debug_file='~/some.log'                ",
+            "\" Syntastic Lisp Setting                                 ",
+            "\" let g:syntastic_lisp_clisp_post_args = \"-o /tmp/\"    ",
+            "\" Making Syntastic Passive and TO activate it with <F5>  ",
+            "  let g:syntastic_mode_map = { 'mode': 'passive',         ",
+            "                     \\ 'active_filetypes': [],           ",
+            "                     \\ 'passive_filetypes': [] }         ",
+            "augroup SYNTAS_CHECK                                      ",
+            "  au!                                                     ",
+            "  autocmd BufRead,BufNewFile,BufWinEnter *                ",
+            "             \\   let b:syntastic_check_is_executed = 0   ",
+            "augroup end                                               ",
+            "fun! TOggleSyntasticCHECK()                               ",
+            "  if b:syntastic_check_is_executed == 0                   ",
+            "    let b:syntastic_check_is_executed = 1                 ",
+            "    silent! SyntasticCheck                                ",
+            "  else                                                    ",
+            "    let b:syntastic_check_is_executed = 0                 ",
+            "    silent! SyntasticReset                                ",
+            "  endif                                                   ",
+            "endf                                                      ",
+            "nnoremap <silent> <F5> :call TOggleSyntasticCHECK()<CR>   "
         ]
-    },
-    "linter_vim_lint": {
-        "config": [
-            "\" To Be Decided"
-        ]
-    },
-    "misc_ack": {
-        "config": []
     },
     "navigate_nerdtree": {
         "config": [
-            "let NERDTreeIgnore = ['\\.beam$', '\\.pyc$', 'ebin$', '\\.obj$', '\\.out$', '\\.aux$', '\\.pdf$'] ",
-            "let NERDChristmasTree = 1                                                                         ",
-            "let NERDTreeMinimalUI = 1                                                                         ",
-            "let NERDTreeDirArrows = 0                                                                         ",
-            "nnoremap <F10> :NERDTreeToggle<CR>                                                                "
+            "let NERDTreeIgnore = ['\\.beam$', '\\.pyc$', 'ebin$', ",
+            "   \\  '\\.obj$', '\\.out$', '\\.aux$', '\\.pdf$']    ",
+            "let NERDChristmasTree = 1                             ",
+            "let NERDTreeMinimalUI = 1                             ",
+            "let NERDTreeDirArrows = 0                             ",
+            "nnoremap <F10> :NERDTreeToggle<CR>                    "
         ]
     },
     "snippet_honza": {
