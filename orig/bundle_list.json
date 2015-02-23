@@ -199,5 +199,21 @@
             "lazy": "1"
         },
         "url": "Shougo/vimproc.vim"
+    },
+    "vim_textobj_user": {
+        "opt": {},
+        "url": "kana/vim-textobj-user"
+    },
+    "vim_textobj_indent": {
+        "opt": {},
+        "url": "kana/vim-textobj-indent"
+    },
+    "vim_textobj_comment": {
+        "opt": {},
+        "url": "glts/vim-textobj-comment"
+    },
+    "vim_textobj_wellle_targets":   {
+        "opt": {},
+        "url": "wellle/targets.vim"
     }
 }

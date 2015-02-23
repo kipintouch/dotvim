@@ -403,7 +403,22 @@
     },
     "unite_vimproc": {
         "config": [
-            "\" To Be Decided "
+        ]
+    },
+    "vim_textobj_user": {
+        "config": [
+        ]
+    },
+    "vim_textobj_indent": {
+        "config": [
+        ]
+    },
+    "vim_textobj_comment": {
+        "config": [
+        ]
+    },
+    "vim_textobj_wellle_targets":   {
+        "config": [
         ]
     }
 }
