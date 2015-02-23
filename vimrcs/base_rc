@@ -521,5 +521,7 @@ endfunction
     " Fold | Indent                                                 " {{{3
     autocmd FileType python,sh,json,conf
           \ setl foldmethod=indent sts=4 sw=4 ts=4
+    autocmd FileType fortran
+          \ setl foldmethod=indent
     "}}}3
   augroup end
