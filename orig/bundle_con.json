@@ -167,6 +167,7 @@
             "  let g:gitgutter_sign_modified         = \"\\u27Fa\"  \" Default: ~  ",
             "  let g:gitgutter_sign_modified_removed = \"\\u2b45\"  \" Default: _~ ",
             "endif                                                                 ",
+            "nnoremap <F3>    :GitGutterLineHighlightsToggle<CR>                   ",
             "let g:gitgutter_map_keys              = 0                             "
         ]
     },
@@ -305,7 +306,10 @@
             "let g:snips_author = \"Doom\"                                           ",
             "let g:snips_email  = \"kipintouch29@gmail.com\"                         ",
             "let g:snips_github = \"kipintouch29\"                                   ",
+            "\" Required by UltiSnipsEdit: command                                   ",
             "let g:UltiSnipsSnippetsDir         = expand(s:vimfiles. 'myUltiSnips/') ",
+            "\" Search path for snippets                                             ",
+            "let g:UltiSnipsSnippetDirectories  = [\"UltiSnips\", \"myUltiSnips\"]   ",
             "let g:UltiSnipsEditSplit           = \"horizontal\"                     ",
             "let g:UltiSnipsListSnippets        = \"<F4>\"                           ",
             "let g:UltiSnipsExpandTrigger       = \"<C-j>\"                          ",
