@@ -134,28 +134,28 @@
 "}}}1
 " Text Formatting:                                                  " {{{1
   " set completeopt=menuone " don't use a pop up menu for completions
-  " set nowrap         " do not wrap line
-  set formatoptions=rq " Automatically insert comment leader on return, and
-                       " let gq format comments
-  set formatoptions+=n " Recognize numbered lists
-  set ignorecase       " case insensitive by default
-  set infercase        " case inferred by default
-  set shiftround       " when at 3 spaces, and I hit > ... go to 4, not 5
-  set smartcase        " if there are caps, go case-sensitive
-  set shiftwidth=2     " auto-indent amount when using cindent, >>, << and
-                       " stuff like that
-  set expandtab        " no real tabs please!
-  set softtabstop=2    " when hitting tab or backspace, how many spaces should
-                       " a tab be (see expandtab)
-  set tabstop=2        " real tabs should be 8, and they will show with set
-                       " list on
-  set autoindent       " Auto Indent
-  set smartindent      " Smart Ident
-  set wrap             " Wrap Lines
-  set wrapmargin=0     " Controls when to wrap based on terminal size
-  set cursorline       " Set CursorLine
-  set cmdheight=2      " Setting Command-Pane Height
-  set textwidth=80     " Textwidth
+  " set nowrap          " do not wrap line
+  set formatoptions=rq  " Automatically insert comment leader on return, and
+                        " let gq format comments
+  set formatoptions+=nt " Recognize numbered lists and auto-wrap
+  set ignorecase        " case insensitive by default
+  set infercase         " case inferred by default
+  set shiftround        " when at 3 spaces, and I hit > ... go to 4, not 5
+  set smartcase         " if there are caps, go case-sensitive
+  set shiftwidth=2      " auto-indent amount when using cindent, >>, << and
+                        " stuff like that
+  set expandtab         " no real tabs please!
+  set softtabstop=2     " when hitting tab or backspace, how many spaces should
+                        " a tab be (see expandtab)
+  set tabstop=2         " real tabs should be 8, and they will show with set
+                        " list on
+  set autoindent        " Auto Indent
+  set smartindent       " Smart Ident
+  set wrap              " Wrap Lines
+  set wrapmargin=0      " Controls when to wrap based on terminal size
+  set cursorline        " Set CursorLine
+  set cmdheight=2       " Setting Command-Pane Height
+  set textwidth=80      " Textwidth
   " Work--In Progress Yet to do Temp-Directories
   set nobackup         " No Backup File
   set nowritebackup    " No WriteBackUP
@@ -472,7 +472,8 @@ endfunction
     nnoremap Ü <C-O>
   endif
   " Toggle Paste                                                    " {{{3
-  nnoremap <leader>pp :setlocal paste!<cr>
+  " Turned Off Due To YCM-Confilict. <Tab> is disabled due to this in terminal.
+  " nnoremap <leader>pp :setlocal paste!<cr>
   set pastetoggle=<F2>
   " Some Text Formatting (overline, strikethrough)                  " {{{3
   nnoremap <leader>eo :call <SID>Combine_line(line("."), '0305')<CR>

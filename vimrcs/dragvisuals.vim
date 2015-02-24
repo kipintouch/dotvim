@@ -1,16 +1,19 @@
 " Originally Created by: Damian Conway
 " Vim global plugin for dragging virtual blocks
-" Last change: Tue Jul 24 07:19:35 EST 2012
+" Last change: February 24, 2015 23:24
 
-""""""""""""""""""""""""""""""""""""""""""""""""""
-"   M̳a̳p̳p̳i̳n̳g̳ ̳f̳o̳r̳ ̳P̳l̳u̳g̳i̳n̳:̳                          "
-"                                                "
-"     vmap  <expr>  <S-LEFT>   DVB_Drag('left')  "
-"     vmap  <expr>  <S-RIGHT>  DVB_Drag('right') "
-"     vmap  <expr>  <S-DOWN>   DVB_Drag('down')  "
-"     vmap  <expr>  <S-UP>     DVB_Drag('up')    "
-"                                                "
-""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                                             "
+"   M̳a̳p̳p̳i̳n̳g̳ ̳f̳o̳r̳ ̳P̳l̳u̳g̳i̳n̳:̳                                       "
+"                                                             "
+"   vmap <expr> K DVB_Drag('up')                              "
+"   vmap <expr> J DVB_Drag('down')                            "
+"   vmap <expr> H DVB_Drag('left')                            "
+"   vmap <expr> L DVB_Drag('right')                           "
+"   vmap <expr> P DVB_Duplicate()                             "
+"                                                             "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " Original Information on Mapping:                        " {{{1
   "#########################################################################
   "##                                                                     ##
@@ -378,9 +381,8 @@ endfunction
 let &cpo = s:save_cpo
 
 " Mappings:                                               " {{{1
-  if has("gui_running")
-    vmap  <expr>  <S-LEFT>   DVB_Drag('left')
-    vmap  <expr>  <S-RIGHT>  DVB_Drag('right')
-    vmap  <expr>  <S-DOWN>   DVB_Drag('down')
-    vmap  <expr>  <S-UP>     DVB_Drag('up')
-  endif
+    vmap <expr> K DVB_Drag('up')
+    vmap <expr> J DVB_Drag('down')
+    vmap <expr> H DVB_Drag('left')
+    vmap <expr> L DVB_Drag('right')
+    vmap <expr> P DVB_Duplicate()
