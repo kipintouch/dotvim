@@ -100,6 +100,7 @@
             "  \\         'right_margin': 0                                               ",
             "  \\   }                                                                     ",
             "  \\ }                                                                       ",
+            "vmap <Space> :'<,'>EasyAlign/::/{'is':['String'], 'iu': 1}<CR>g0             ",
             "for ccmt in ['#', '\"']                                                      ",
             "  let g:easy_align_delimiters[ccmt] = {'pattern': ccmt,                      ",
             "        \\ 'ignore_groups':    ['String'],                                   ",
@@ -161,14 +162,23 @@
     },
     "githelpers_gitgutter": {
         "config": [
-            "if s:running_unix                                                     ",
-            "  let g:gitgutter_sign_added            = \"\\u27F9\"  \" Default: +  ",
-            "  let g:gitgutter_sign_removed          = \"\\u27F8\"  \" Default: _  ",
-            "  let g:gitgutter_sign_modified         = \"\\u27Fa\"  \" Default: ~  ",
-            "  let g:gitgutter_sign_modified_removed = \"\\u2b45\"  \" Default: _~ ",
-            "endif                                                                 ",
-            "nnoremap <F3>    :GitGutterLineHighlightsToggle<CR>                   ",
-            "let g:gitgutter_map_keys              = 0                             "
+            "let g:gitgutter_signs    = 0                                                   ",
+            "let g:gitgutter_realtime = 0                                                   ",
+            "if s:running_unix                                                              ",
+            "    let g:gitgutter_sign_added            = \"\\u27F9\"  \" Default: +         ",
+            "    let g:gitgutter_sign_removed          = \"\\u27F8\"  \" Default: _         ",
+            "    let g:gitgutter_sign_modified         = \"\\u27Fa\"  \" Default: ~         ",
+            "    let g:gitgutter_sign_modified_removed = \"\\u2b45\"  \" Default: _~        ",
+            "endif                                                                          ",
+            "nnoremap <F3> :GitGutterSignsToggle<CR> \\| :GitGutterLineHighlightsToggle<CR> ",
+            "let g:gitgutter_map_keys              = 0                                      ",
+            "if has(\"gui_running\") && g:local_settings_place == \"home\"                  ",
+            "    nmap <leader>ö <plug>GitGutterNextHunk                                     ",
+            "    nmap <leader>ä <plug>GitGutterPrevHunk                                     ",
+            "elseif  g:local_settings_place == \"home\"                                     ",
+            "    nmap <A-ä> <plug>GitGutterPrevHunk                                         ",
+            "    nmap <A-ö> <plug>GitGutterNextHunk                                         ",
+            "endif                                                                          "
         ]
     },
     "gui_airline": {
@@ -268,9 +278,9 @@
             "\" Syntastic Lisp Setting                                 ",
             "\" let g:syntastic_lisp_clisp_post_args = \"-o /tmp/\"    ",
             "\" Making Syntastic Passive and TO activate it with <F5>  ",
-            "  let g:syntastic_mode_map = { 'mode': 'passive',         ",
-            "                     \\ 'active_filetypes': [],           ",
-            "                     \\ 'passive_filetypes': [] }         ",
+            "\" let g:syntastic_mode_map = { 'mode': 'passive',        ",
+            "\"                    \\ 'active_filetypes': [],          ",
+            "\"                    \\ 'passive_filetypes': [] }        ",
             "augroup SYNTAS_CHECK                                      ",
             "  au!                                                     ",
             "  autocmd BufRead,BufNewFile,BufWinEnter *                ",
@@ -280,12 +290,15 @@
             "  if b:syntastic_check_is_executed == 0                   ",
             "    let b:syntastic_check_is_executed = 1                 ",
             "    silent! SyntasticCheck                                ",
+            "    if len(getloclist(0)) == 0                            ",
+            "        echom 'NO ERRORS'                                 ",
+            "    endif                                                 ",
             "  else                                                    ",
             "    let b:syntastic_check_is_executed = 0                 ",
             "    silent! SyntasticReset                                ",
             "  endif                                                   ",
             "endf                                                      ",
-            "nnoremap <silent> <F5> :call TOggleSyntasticCHECK()<CR>   "
+            "nnoremap <silent><F5> :SyntasticToggleMode<CR>            "
         ]
     },
     "navigate_nerdtree": {

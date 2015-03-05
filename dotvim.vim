@@ -301,6 +301,7 @@ EOF
     syntax on
 
   " Import Configuration For Vim:                             " {{{2
+    execute "source " . expand(s:vimfiles . "dotvim/vimrcs/Term_Mapping_rc")
     execute "source " . expand(s:vimfiles . "dotvim/vimrcs/base_rc"      )
     execute "source " . expand(s:vimfiles . "dotvim/vimrcs/commenter.vim")
     " Check for Plugin_Config

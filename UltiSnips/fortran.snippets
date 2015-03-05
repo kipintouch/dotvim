@@ -10,34 +10,52 @@ priority -50
 # Main Program
 snippet main "The Main Program" b
 program main
-	IMPLICIT NONE
-	${1:!Some Description about main}
+	implicit none
+	!${1: Some Description about main}
+	$0
 end program main
 endsnippet
 # Program In General
-snippet "pro(gram)?" "Writting a Program" br
+snippet prog "Writting a Program" b
 program ${1:prog_name}
-	IMPLICIT NONE
-	${2:!Some Description about your Program}
+	implicit none
+	!${2: Some Description about your Program}
+	$0
 end program $1
 endsnippet
 # function shorthand
-snippet "fun(ction)?" "function shorthand" br
+snippet fun "function shorthand" b
 ${1:return_type }function ${2:function-name} (${3:Arg_list}) ${4:results(${5:var})}
-	${6:Some Description about your function}
-end function $1
+	!${6: Some Description about your function}
+	$0
+end function $2
 endsnippet
 # Subroutine shorthand
-snippet "sub(routine)?" "Subroutine shorthand" br
+snippet sub "Subroutine shorthand" b
 subroutine ${1:sub-name} (${2:Arg_list})
-	${3:!Some Description about your subroutine}
+	!${3: Some Description about your subroutine}
+	$0
 end subroutine $1
 endsnippet
 # Type Declaration
-snippet type "Declaring a type" b
+snippet dty "Declaring a type" b
 type ${1:type-name}
 	! ${2:Some Description about your type}
+	$0
 end type $1
+endsnippet
+# Module In General
+snippet mod "Basic Module Constructor" b
+module ${1:mod_name}
+	IMPLICIT NONE
+	!${2: Some Description about your Program}
+end module $1
+endsnippet
+# Interface for Module
+snippet inte "Interface Constructor" b
+interface ${1:interface_name}
+	module procedure ${2:interface_name}
+end interface $1
 endsnippet
 
 ####################################################
@@ -50,7 +68,7 @@ if (${1:cond}) then
 end if
 endsnippet
 # IF Else
-snippet "ife(lse)?" "simple if condition" br
+snippet ife "simple if condition" b
 if (${1:cond}) then
 	${2:If_true}
 else
@@ -64,62 +82,84 @@ do ${1:i} = ${2:start}, ${3:end}
 end do
 endsnippet
 # do with incremental control
-snippet doi "Simple Do-construct" b
+snippet doi "Do-construct with Increment Control" b
 do ${1:i} = ${2:start}, ${3:end}, ${4:increment-decrement}
 	${5:loop}
 end do
 endsnippet
-snippet "wr(ite)?" "write(*, *) function" br
+snippet wr "write(*, *) function" b
 write(*, ${1:*}) ${2:"${3:HelloWorld}"}${4:, }
+endsnippet
+# Case Construct
+snippet cc "Case Statement" b
+case (${1:COND})
+	${2:do something}
+endsnippet
+snippet scase "Case Block Constructor" b
+select case (${1:input})
+	case (${2:COND})
+		${3:do something}
+	case default
+		${4:default_work}
+end select
 endsnippet
 
 #########################
 # Variale Declaration!! #
 #########################
 # Integer
-snippet "int(eger)?" "Declaring a Integer" br
-integer :: ${2:Var_1}
+snippet int "Declaring a Integer" b
+integer :: ${2:var}
 endsnippet
 # Character
-snippet "char(acter)?" "Declaring a Integer" br
-character :: ${2:Var_1}
+snippet char "Declaring a Integer" b
+character (len=${1:*}):: ${2:var}
 endsnippet
 # Logical
-snippet "log(ical)?" "Declaring a Integer" br
-logical :: ${2:Var_1}
+snippet log "Declaring a Integer" b
+logical :: ${2:var}
 endsnippet
 # Float
-snippet "re(al)?" "Declaring a Integer" br
-real :: ${2:Var_1}
+snippet re "Declaring a Integer" b
+real :: ${2:var}
+endsnippet
+# Float
+snippet vty "Declaring a variable of type" b
+type(${1:type}) :: ${2:var}
 endsnippet
 
 ######################################################################################
 # Variables / Type shorthand   for subroutines and functions (intent) in, out, inout #
 ######################################################################################
 # Integer var in Subroutines
-snippet sint "Declaring a Integer" b
+snippet sint "Subroutine Declaring a Integer" b
 integer, intent(${2:in}) :: ${3:Var_1}
 endsnippet
 # Character var in Subroutines
-snippet "schar(acter)?" "Declaring a Integer" br
+snippet schar "Subroutine Declaring a Integer" b
 character, intent(${2:in}) :: ${3:Var_1}
 endsnippet
 # Logical var in Subroutines
-snippet slog "Declaring a Integer" b
+snippet slog "Subroutine Declaring a Integer" b
 logical, intent(${2:in}) :: ${3:Var_1}
 endsnippet
 # Float var in Subroutines
-snippet sreal "Declaring a Integer" b
+snippet sre "Subroutine Declaring a Integer" b
 real, intent(${2:in}) :: ${3:Var_1}
 endsnippet
 # Declaring integer array
-snippet sintd "Declaring a integer array" b
+snippet sintd "Subroutine Declaring a integer array" b
 integer, dimension(${2::}), intent(${3:in}) :: ${4:Array_name}
 endsnippet
 # Declaring real array
-snippet sreald "Declaring a integer array" b
+snippet sred "Subroutine Declaring a integer array" b
 real, dimension(${2::}), intent(${3:in}) :: ${4:Array_name}
 endsnippet
+# Declaring type in subroutines
+snippet sty "Subroutine Declaring a type" b
+type(${1:type}), intent(${2:in}) :: ${3:type_var}
+endsnippet
+
 
 #####################
 # Array Declaration #
@@ -129,14 +169,27 @@ snippet intd "Declaring a integer array" b
 integer, dimension(${2::}) :: ${3:Array_name}
 endsnippet
 # Declaring real array
-snippet reald "Declaring a real array" b
+snippet red "Declaring a real array" b
 real, dimension(${2::}) :: ${3:Array_name}
+endsnippet
+# Declaring Character Array
+snippet chard "Declaring a character array" b
+character(len=${1:len}), dimension(${2:dim}) :: ${3:char_array}
+endsnippet
+# Declaring type Array
+snippet aty "Declaring a type array" b
+type(${1:type}), dimension(${2:dim}) :: ${3:type_array}
 endsnippet
 
 #################
 # General Stuff #
 #################
-snippet "intp(arameter)?" "Declares a Integer Parameter" br
+snippet intp "Declares a Integer Parameter" b
 integer, parameter :: ${1:Parameter}
 endsnippet
-
+snippet rep "Declares a Integer Parameter" b
+real, parameter :: ${1:Parameter}
+endsnippet
+snippet poin "Declares a pointer variable" b
+${1:type}, pointer :: ${2:pointer_1} ${3:=> null()}
+endsnippet

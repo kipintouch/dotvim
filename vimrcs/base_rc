@@ -155,7 +155,7 @@
   set wrapmargin=0      " Controls when to wrap based on terminal size
   set cursorline        " Set CursorLine
   set cmdheight=2       " Setting Command-Pane Height
-  set textwidth=80      " Textwidth
+  " set textwidth=80      " Textwidth
   " Work--In Progress Yet to do Temp-Directories
   set nobackup         " No Backup File
   set nowritebackup    " No WriteBackUP
@@ -188,7 +188,8 @@
     let foldLevelStr    = repeat("+--", v:foldlevel)
     let lineCount       = line("$")
     let foldPercentage  = printf("[%.1f", (foldSize*1.0)/lineCount*100) . "%] "
-    let expansionString = repeat(".", w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
+    let expansionString =
+      \ repeat(".", w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
     return line . expansionString . foldSizeStr . foldPercentage . foldLevelStr
   endf
   set foldtext=CustomFoldText()
@@ -272,11 +273,12 @@
 function! s:MatchExtraWhitespaces()
   " echom "MATCHING WHITESPACES"
   if    &ft ==# 'unite'   || &ft ==# 'startify' ||
-    \   &ft ==# 'tagbar'  || &ft ==# ''
-    " echom "Exlcude FT Detected: " . string(&ft)
+    \   &ft ==# 'tagbar'  || &ft ==# 'qf'       ||
+    \   &ft ==# 'help'    || &ft ==# ''
+    " echom 'Match Whitespaces Excluding: ' . string(&ft)
     return
   else
-    " echom "Include FT Detected: " . string(&ft)
+    " echom 'Match Whitespaces Including: ' . string(&ft)
     highlight ExWhSpace ctermbg=06 ctermfg=blue guibg=#008080 guifg=blue
     call matchadd('ExWhSpace', '\s\+$', 101)
     return
@@ -284,14 +286,15 @@ function! s:MatchExtraWhitespaces()
 endfunction
 
 " Match ColorColumn                                                 " {{{2
-function! s:ColorColumnSetting(ftype)
-  if  a:ftype ==# 'unite' || a:ftype ==# 'json' ||
-    \ a:ftype ==# 'help'  || a:ftype ==# ''     ||
-    \ a:ftype ==# 'text'  || a:ftype ==# 'markdown'
-    " echom "Exclude FT Detected: " . string(a:ftype)
+function! s:ColorColumnSetting()
+  if  &ft ==# 'unite' || &ft ==# 'json'     ||
+    \ &ft ==# 'help'  || &ft ==# 'qf'       ||
+    \ &ft ==# 'text'  || &ft ==# 'markdown' ||
+    \ &ft ==# ''
+    " echom "Exclude FT Detected: " . string(&ft)
     return
   else
-    " echom "Include FT Detected: " . string(a:ftype)
+    " echom 'ColorColumn Detected: ' . string(&ft)
     " highlight! link ColorColumn ErrorMsg
     setlocal colorcolumn=+1
   endif
@@ -346,6 +349,21 @@ function! TabMessage(cmd)
   " tabnew
   " silent put=message
   " set nomodified
+endfunction
+" Toggle Numbers in Vim                                             " {{{2
+function! NumberToggle()
+  if  &ft ==# 'unite' || &ft ==# ''   ||
+    \ &ft ==# 'help'  || &ft ==# 'qf'
+    return
+  else
+    if(&relativenumber == 1)
+      set relativenumber!
+      set number
+    else
+      set number!
+      set relativenumber
+    endif
+  endif
 endfunction
 " Some Text Formatting:                                             " {{{2
   "  Overline 0305 Underline 0332 DoubleUnderline 0333 Strikethrough 0336
@@ -434,16 +452,16 @@ endfunction
 " Mappings:                                                         " {{{1
 " Basic Editing                                                     " {{{2
   " Save Split                                                      " {{{3
-  nnoremap <leader>s :split<CR>
-  nnoremap <leader>v :vsplit<CR>
-  nnoremap <leader>w :w<CR>
-  nnoremap <leader>q :q<CR>
+    nnoremap <leader>s :split<CR>
+    nnoremap <leader>v :vsplit<CR>
+    nnoremap <leader>w :w<CR>
+    nnoremap <leader>q :q<CR>
   " Maintain Selection when Indenting text <left> | <right>         " {{{3
-  vnoremap < <gv
-  vnoremap > >gv
+    vnoremap < <gv
+    vnoremap > >gv
   " HLNext Mapping                                                  " {{{3
-  nnoremap <silent> n nzz:call <SID>HLNext(0.1)<cr>
-  nnoremap <silent> N Nzz:call <SID>HLNext(0.1)<cr>
+    nnoremap <silent> n nzz:call <SID>HLNext(0.1)<cr>
+    nnoremap <silent> N Nzz:call <SID>HLNext(0.1)<cr>
   " Movements                                                       " {{{3
     " First Non-blank Character on the line
     nnoremap 0       ^
@@ -455,8 +473,8 @@ endfunction
     nnoremap k       gk
   " Tab Movements:                                                  " {{{3
     nnoremap <leader>tn :tabnew<CR>
-    nnoremap H          gT
-    nnoremap L          gt
+    nnoremap <Tab>   gt
+    nnoremap <S-Tab> gT
   if g:local_settings_place == "home"
     " Jump To Fold Downwards
     nnoremap ö zjzz
@@ -484,19 +502,23 @@ endfunction
   vnoremap <leader>et :call <SID>Combine_select('0336')<CR>
   nnoremap <leader>ec :call <SID>Del_combine_line()<CR>
   vnoremap <leader>ec :call <SID>Del_combine_selection()<CR>
+  " Toggle Number Use                                               " {{{3
+  nnoremap <silent><A-n> :call NumberToggle()<CR>
 " Acessing Files                                                    " {{{2
   execute   " nnoremap <leader>ev   :e " .
-      \ expand("$MYVIMRC")                                  . "\<CR>"
+      \ expand("$MYVIMRC")                                   . "\<CR>"
   execute   " nnoremap <leader>eb   :e " .
-      \ expand(s:vimfiles . "dotvim/vimrcs/base_rc")       . "\<CR>"
+      \ expand(s:vimfiles . "dotvim/vimrcs/base_rc")         . "\<CR>"
   execute   " nnoremap <leader>ep   :e " .
-      \ expand(s:vimfiles . "dotvim/vimrcs/plugin_rc")     . "\<CR>"
+      \ expand(s:vimfiles . "dotvim/vimrcs/plugin_rc")       . "\<CR>"
   execute   " nnoremap <leader>eep  :e " .
-      \ expand(s:vimfiles . "dotvim/dotvim.vim")           . "\<CR>"
+      \ expand(s:vimfiles . "dotvim/dotvim.vim")             . "\<CR>"
   execute   " nnoremap <leader>ek   :e " .
-      \ expand(s:vimfiles . "dotvim/vimrcs/commenter.vim") . "\<CR>"
+      \ expand(s:vimfiles . "dotvim/vimrcs/commenter.vim")   . "\<CR>"
   execute   " nnoremap <leader>ed   :e " .
       \ expand(s:vimfiles . "dotvim/vimrcs/dragvisuals.vim") . "\<CR>"
+  execute   " nnoremap <leader>em   :e " .
+      \ expand(s:vimfiles . "dotvim/vimrcs/Term_Mapping_rc") . "\<CR>"
 " Autocomd                                                          " {{{1
   " WhiteSpaces:                                                    " {{{2
     augroup WHITESPACES
@@ -506,23 +528,27 @@ endfunction
       else
         nnoremap <leader>rs  :call <SID>Remove_ExtraWhiteSpace()<CR>
       endif
-      autocmd BufWinEnter,BufReadPost,BufWritePost
-            \     * call s:MatchExtraWhitespaces()
+      " For pFUnit Testing
+      autocmd BufWinEnter
+            \     *.pf   setfiletype fortran
     augroup end
-  " Last Edit Position                                              " {{{2
-  autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
+  " Last Edit Position:                                             " {{{2
+    autocmd BufReadPost *
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+      \   exe "normal! g`\"" |
+      \ endif
   " FileType Specific (indent, tabs etc )                           " {{{2
   augroup MYFILETYPE
     au!
-    " ColorColumn Settings                                          " {{{3
-    autocmd FileType *      :call s:ColorColumnSetting(&ft)
     " Fold | Indent                                                 " {{{3
-    autocmd FileType python,sh,json,conf
-          \ setl foldmethod=indent sts=4 sw=4 ts=4
-    autocmd FileType fortran
-          \ setl foldmethod=indent
-    "}}}3
-  augroup end
+      autocmd FileType python,json,conf,sh,cmake
+            \ setl foldmethod=indent sts=4 sw=4 ts=4
+      autocmd FileType fortran
+            \ setl foldmethod=indent  | setl tw=120               |
+            \ nmap <buffer><C-F> :set syntax=fortran             \|
+            \ let b:fortran_fixed_source=!b:fortran_fixed_source \|
+            \ :set syntax=text                                   \|
+            \ :set syntax=fortran<CR>
+      autocmd FileType  * call s:ColorColumnSetting()     |
+                        \ call s:MatchExtraWhitespaces()
+    augroup end
