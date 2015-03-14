@@ -1,6 +1,6 @@
 " vim: fdm=marker:et:ts=2:sw=2:sts=2
 
-" Initialization:                                                   " {{{1
+" Initialization:                                                    " {{{1
   " Map Leader
   let mapleader   = ","
   let g:mapleader = ","
@@ -19,7 +19,7 @@
   " Xterm2 -- Odd Config
   set ttymouse=xterm2 " makes it work in everything
 "}}}1
-" Basis:                                                            " {{{1
+" Basis:                                                             " {{{1
   " set noexrc        " don't use local version of .(g)vimrc, .exrc
   set nocompatible    " explicitly get out of vi-compatible mode
   set cpoptions=aABceFsmq
@@ -37,7 +37,7 @@
     let g:skip_loading_mswin=1 " Just in case :)
   endif
 "}}}1
-" Newish:                                                           " {{{1
+" Newish:                                                            " {{{1
   set history=9999   " big old history
   " super low delay
   set timeout timeoutlen=1000 ttimeoutlen=100
@@ -45,9 +45,9 @@
   " set nomore         " Short nomore and bullets, too
   set formatlistpat=^\\s*\\(\\d\\\|[-*]\\)\\+[\\]:.)}\\t\ ]\\s*
 "}}}1
-" General:                                                          " {{{1
+" General:                                                           " {{{1
   filetype plugin indent on      " load filetype plugins/indent settings
-  set autochdir                  " always switch to the current file directory
+  " set autochdir                  " always switch to the current file directory
   set backspace=indent,eol,start " make backspace a more flexible
   if s:running_windows           " share System clipboard. Will not work in X11
     set clipboard+=unnamed
@@ -75,7 +75,7 @@
   " set wildmode=full (Default) | set wildmode=list:longest " turn on wild
   " mode huge list
 "}}}1
-" VIM UI:                                                           " {{{1
+" VIM UI:                                                            " {{{1
   " set list " we do what to show tabs, to ensure we get them out of my files
   set nohlsearch               " Do not highlight searched for phrases
   set incsearch                " BUT do highlight as you type your
@@ -107,7 +107,7 @@
   catch
   endtry
   set noerrorbells novisualbell t_vb= " No Annoying Sounds
-  " Format the status line. Skip for Airline                        " {{{2
+  " Format the status line. Skip for Airline                         " {{{2
   if !exists('g:loaded_airline')
     " HasPaste Function
     set laststatus=2 " always show the status line
@@ -132,7 +132,7 @@
     " H̅a̅s̅P̅a̅s̅t̅e̅(̅)̅:̅ Paste Toggle
   endif"}}}2
 "}}}1
-" Text Formatting:                                                  " {{{1
+" Text Formatting:                                                   " {{{1
   " set completeopt=menuone " don't use a pop up menu for completions
   " set nowrap          " do not wrap line
   set formatoptions=rq  " Automatically insert comment leader on return, and
@@ -155,47 +155,48 @@
   set wrapmargin=0      " Controls when to wrap based on terminal size
   set cursorline        " Set CursorLine
   set cmdheight=2       " Setting Command-Pane Height
-  " set textwidth=80      " Textwidth
+  set textwidth=80      " Textwidth
   " Work--In Progress Yet to do Temp-Directories
   set nobackup         " No Backup File
   set nowritebackup    " No WriteBackUP
   set noswapfile       " No SwapFile
 "}}}1
-" Folding:                                                          " {{{1
+" Folding:                                                           " {{{1
   " Turn on folding
   set foldenable
-  " Fold on the indent (damn you python)
+  " Foldmethod Unset for Unusual Behaviour for other filetypes
   set foldmethod=marker
   set foldlevel=0
   " Don't autofold anything (but I can still fold manually) what movements
   " open folds
   set foldopen=block,hor,mark,percent,quickfix,tag
-  " Custom fold text function (cleaner than default)                " {{{2
-  " Important to keep function Global                               " {{{3
-  function! CustomFoldText()
-    "get first non-blank line
-    let fs = v:foldstart
-    while getline(fs) =~ '^\s*$' | let fs = nextnonblank(fs + 1)
-    endwhile
-    if fs > v:foldend
-      let line = getline(v:foldstart)
-    else
-      let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
-    endif
-    let w               = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
-    let foldSize        = 1 + v:foldend - v:foldstart
-    let foldSizeStr     = " " . foldSize . " lines "
-    let foldLevelStr    = repeat("+--", v:foldlevel)
-    let lineCount       = line("$")
-    let foldPercentage  = printf("[%.1f", (foldSize*1.0)/lineCount*100) . "%] "
-    let expansionString =
+  " Custom fold text function (cleaner than default)                 " {{{2
+    " Important to keep function Global
+    function! CustomFoldText()
+      "get first non-blank line
+      let fs = v:foldstart
+      while getline(fs) =~ '^\s*$' | let fs = nextnonblank(fs + 1)
+      endwhile
+      if fs > v:foldend
+        let line = getline(v:foldstart)
+      else
+        let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
+      endif
+      let w               = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
+      let foldSize        = 1 + v:foldend - v:foldstart
+      let foldSizeStr     = " " . foldSize . " lines "
+      let foldLevelStr    = repeat("+--", v:foldlevel)
+      let lineCount       = line("$")
+      let foldPercentage  = printf("[%.1f",(foldSize*1.0)/lineCount*100)."%] "
+      let expansionString =
       \ repeat(".", w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
-    return line . expansionString . foldSizeStr . foldPercentage . foldLevelStr
-  endf
-  set foldtext=CustomFoldText()
+      return  line . expansionString . foldSizeStr .
+              \ foldPercentage . foldLevelStr
+    endf
+    set foldtext=CustomFoldText()
 "}}}1
-" GUI:                                                              " {{{1
-  if has("gui_running")                                             " {{{2
+" GUI:                                                               " {{{1
+  if has("gui_running")                                              " {{{2
     set guioptions-=T
     set guioptions-=r
     set guioptions-=l
@@ -205,7 +206,7 @@
     set guitablabel=%M\ %t
     " Requried Specifically for GVIM for bells | noise
     autocmd GUIENTER  * set vb t_vb=
-    set background=light
+    " set background=light
     colorscheme solarized
     if s:running_windows " Working on GUI_FONT
       set guifont=Consolas\ for\ Powerline\ FixedD:h10,Monaco\ for\ Powerline:h10,Ubuntu\ Mono\ derivative\ Powerline:h10,DejaVu_Sans_Mono_for_Powerline:h10:i:cANSI
@@ -226,7 +227,7 @@
       \ '[:h]*\zs\d\+',
       \ '\=eval(submatch(0)-1)',
       \ 'g')<CR>
-  else " *ONLY ON LINUX* Term Color Settings                        " {{{2
+  else " *ONLY ON LINUX* Term Color Settings                         " {{{2
     if s:colorful_term
       " 256 color --
       let &t_Co=256
@@ -241,14 +242,15 @@
       " Color Settings required before setting colorschemes
       let g:gruvbox_italicize_comments = 0
       let g:solarized_termcolors       = 256
-      colorscheme solarized
+      " colorscheme solarized
+      colorscheme dracula
     else
       colorscheme desert
     endif
   endif
 "}}}1
-" File Encoding:                                                    " {{{1
-  " Set utf8 as standard encoding and en_US as the standard language" {{{2
+" File Encoding:                                                     " {{{1
+  " Set utf8 as standard encoding and en_US as the standard language " {{{2
   if has("multi_byte")
     if &termencoding == ""
       let &termencoding = &encoding
@@ -261,15 +263,15 @@
   else
     set encoding=utf8
   endif
-  " Use Unix as the standard file type                              " {{{2
+  " Use Unix as the standard file type                               " {{{2
   if s:running_windows
     set ffs=dos,unix,mac
   else
     set ffs=unix,dos,mac
   endif
-"}}}1
-" HELP FUNCTIONS:                                                   " {{{1
-" Match Extra White Spaces                                          " {{{2
+" }}}1
+" HELP FUNCTIONS:                                                    " {{{1
+" Match Extra White Spaces                                           " {{{2
 function! s:MatchExtraWhitespaces()
   " echom "MATCHING WHITESPACES"
   if    &ft ==# 'unite'   || &ft ==# 'startify' ||
@@ -285,7 +287,7 @@ function! s:MatchExtraWhitespaces()
   endif
 endfunction
 
-" Match ColorColumn                                                 " {{{2
+" Match ColorColumn                                                  " {{{2
 function! s:ColorColumnSetting()
   if  &ft ==# 'unite' || &ft ==# 'json'     ||
     \ &ft ==# 'help'  || &ft ==# 'qf'       ||
@@ -300,7 +302,7 @@ function! s:ColorColumnSetting()
   endif
 endf
 
-" HL NEXT                                                           " {{{2
+" HL NEXT                                                            " {{{2
 function! <SID>HLNext(blinktime)
   highlight WhiteOnRed ctermfg=red ctermbg=white cterm=bold
   if has("gui_running")
@@ -310,7 +312,7 @@ function! <SID>HLNext(blinktime)
     let [bufnum, lnum, col, off] = getpos('.')
     let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
     let target_pat = '\c\%#'.@/
-    " let ring_pat = (lnum > 1 ? '\%'.(lnum-1).'l\%>'               " {{{3
+    " let ring_pat = (lnum > 1 ? '\%'.(lnum-1).'l\%>'                " {{{3
           " \ . max([col-4,1]) .'v\%<'.(col+matchlen+3).'v.\|' : '')
           " \ . '\%'.lnum.'l\%>'.max([col-4,1]) .'v\%<'.col.'v.'
           " \ . '\|'
@@ -326,7 +328,7 @@ function! <SID>HLNext(blinktime)
     redraw
   endfor
 endfunction
-" Remove White Spaces                                               " {{{2
+" Remove White Spaces                                                " {{{2
 function! <SID>Remove_ExtraWhiteSpace()
   " save last search & cursor position
   let l:_s=@/
@@ -340,7 +342,7 @@ function! <SID>Remove_ExtraWhiteSpace()
     call cursor(l:l, l:c)
   endif
 endfunction
-" Help Function to capture output of ex commands                    " {{{2
+" Help Function to capture output of ex commands                     " {{{2
 let g:tab_messages = ""
 function! TabMessage(cmd)
   redir => g:tab_messages
@@ -350,7 +352,7 @@ function! TabMessage(cmd)
   " silent put=message
   " set nomodified
 endfunction
-" Toggle Numbers in Vim                                             " {{{2
+" Toggle Numbers in Vim                                              " {{{2
 function! NumberToggle()
   if  &ft ==# 'unite' || &ft ==# ''   ||
     \ &ft ==# 'help'  || &ft ==# 'qf'
@@ -365,9 +367,9 @@ function! NumberToggle()
     endif
   endif
 endfunction
-" Some Text Formatting:                                             " {{{2
+" Some Text Formatting:                                              " {{{2
   "  Overline 0305 Underline 0332 DoubleUnderline 0333 Strikethrough 0336
-  function! <SID>Combine_line(my_line, cp)                          " {{{3
+  function! <SID>Combine_line(my_line, cp)                           " {{{3
     execute 'let l:char = "\u'.a:cp.'"'
     let l:initial = matchstr(getline(a:my_line),'\v^\s*'.b:cmt.'?\s*')
     let l:str_val = substitute(substitute(getline(a:my_line),
@@ -375,7 +377,7 @@ endfunction
                   \   '[^[:cntrl:]]', '&'.l:char, 'g')
     call setline(a:my_line, l:initial . l:str_val)
   endfunction
-  function! <SID>Combine_select(cp)range                            " {{{3
+  function! <SID>Combine_select(cp)range                             " {{{3
     execute 'let l:char = "\u'.a:cp.'"'
     for l:line in range(a:firstline, a:lastline)
       let l:initial = matchstr(getline(l:line),'\v^\s*'.b:cmt.'?\s*')
@@ -385,7 +387,7 @@ endfunction
       call setline(l:line, l:initial . l:str_val)
     endfor
   endfunction
-  function! <SID>Del_combine_line()                                 " {{{3
+  function! <SID>Del_combine_line()                                  " {{{3
     let l:saved_cpo = &cpo
     let l:saved_reg = @@
     let l:pos       = getpos('.')
@@ -414,7 +416,7 @@ endfunction
     let @@   = l:saved_reg
     call setpos('.', l:pos)
   endfunction
-  function! <SID>Del_combine_selection()range                       " {{{3
+  function! <SID>Del_combine_selection()range                        " {{{3
     let l:saved_cpo = &cpo
     let l:saved_reg = @@
     let l:pos       = getpos('.')
@@ -448,21 +450,57 @@ endfunction
     let @@   = l:saved_reg
     call setpos('.', l:pos)
   endfunction
+
+" Close All but this buffer (original BufOnly.vim                    " {{{2
+function! <SID>BufOnly()
+  let l:buffer = bufnr('%')
+  if l:buffer == -1
+    echohl ErrorMsg
+    echomsg "No matching buffer for" l:buffer
+    echohl None
+    return
+  endif
+  let l:last_buffer = bufnr('$')
+  let l:delete_count = 0
+  let l:n = 1
+  let l:bang = '!'
+  while l:n <= l:last_buffer
+    if l:n != l:buffer && buflisted(l:n)
+      if l:bang == '' && getbufvar(l:n, '&modified')
+        echohl ErrorMsg
+        echomsg 'No write since last change for buffer'
+              \ l:n '(add ! to override)'
+        echohl None
+      else
+        silent exe 'bdel' . l:bang . ' ' . l:n
+        if ! buflisted(l:n)
+          let delete_count = l:delete_count+1
+        endif
+      endif
+    endif
+    let l:n = l:n + 1
+  endwhile
+  if l:delete_count == 1
+    echomsg l:delete_count "buffer deleted"
+  elseif l:delete_count > 1
+    echomsg l:delete_count "buffers deleted"
+  endif
+endfunction
 "}}}1
-" Mappings:                                                         " {{{1
-" Basic Editing                                                     " {{{2
-  " Save Split                                                      " {{{3
+" Mappings:                                                          " {{{1
+" Basic Editing                                                      " {{{2
+  " Save Split                                                       " {{{3
     nnoremap <leader>s :split<CR>
     nnoremap <leader>v :vsplit<CR>
     nnoremap <leader>w :w<CR>
     nnoremap <leader>q :q<CR>
-  " Maintain Selection when Indenting text <left> | <right>         " {{{3
+  " Maintain Selection when Indenting text <left> | <right>          " {{{3
     vnoremap < <gv
     vnoremap > >gv
-  " HLNext Mapping                                                  " {{{3
+  " HLNext Mapping                                                   " {{{3
     nnoremap <silent> n nzz:call <SID>HLNext(0.1)<cr>
     nnoremap <silent> N Nzz:call <SID>HLNext(0.1)<cr>
-  " Movements                                                       " {{{3
+  " Movements                                                        " {{{3
     " First Non-blank Character on the line
     nnoremap 0       ^
     " Search and replace
@@ -471,10 +509,11 @@ endfunction
     nnoremap j       gj
     " Going Up and down in Wrap lines
     nnoremap k       gk
-  " Tab Movements:                                                  " {{{3
+  " Tab Movements:                                                   " {{{3
     nnoremap <leader>tn :tabnew<CR>
     nnoremap <Tab>   gt
     nnoremap <S-Tab> gT
+    nnoremap <C-Tab> :echom "HELLO"<CR>
   if g:local_settings_place == "home"
     " Jump To Fold Downwards
     nnoremap ö zjzz
@@ -489,11 +528,15 @@ endfunction
     " Jump back to Last Position
     nnoremap Ü <C-O>
   endif
-  " Toggle Paste                                                    " {{{3
+  " Change to CWD                                                    " {{{3
+    nnoremap <leader>cd :lcd%:h<CR>
+  " BufOnly Mapping Close all but this buffer                        " {{{3
+    nnoremap <leader>bd :call <SID>BufOnly()<CR>
+  " Toggle Paste                                                     " {{{3
   " Turned Off Due To YCM-Confilict. <Tab> is disabled due to this in terminal.
   " nnoremap <leader>pp :setlocal paste!<cr>
   set pastetoggle=<F2>
-  " Some Text Formatting (overline, strikethrough)                  " {{{3
+  " Some Text Formatting (overline, strikethrough)                   " {{{3
   nnoremap <leader>eo :call <SID>Combine_line(line("."), '0305')<CR>
   vnoremap <leader>eo :call <SID>Combine_select('0305')<CR>
   nnoremap <leader>eu :call <SID>Combine_line(line("."), '0333')<CR>
@@ -502,9 +545,9 @@ endfunction
   vnoremap <leader>et :call <SID>Combine_select('0336')<CR>
   nnoremap <leader>ec :call <SID>Del_combine_line()<CR>
   vnoremap <leader>ec :call <SID>Del_combine_selection()<CR>
-  " Toggle Number Use                                               " {{{3
+  " Toggle Number Use                                                " {{{3
   nnoremap <silent><A-n> :call NumberToggle()<CR>
-" Acessing Files                                                    " {{{2
+" Acessing Files                                                     " {{{2
   execute   " nnoremap <leader>ev   :e " .
       \ expand("$MYVIMRC")                                   . "\<CR>"
   execute   " nnoremap <leader>eb   :e " .
@@ -519,8 +562,8 @@ endfunction
       \ expand(s:vimfiles . "dotvim/vimrcs/dragvisuals.vim") . "\<CR>"
   execute   " nnoremap <leader>em   :e " .
       \ expand(s:vimfiles . "dotvim/vimrcs/Term_Mapping_rc") . "\<CR>"
-" Autocomd                                                          " {{{1
-  " WhiteSpaces:                                                    " {{{2
+" Autocomd                                                           " {{{1
+  " WhiteSpaces:                                                     " {{{2
     augroup WHITESPACES
       au!
       if g:local_settings_place == "home" || g:local_settings_place == "collg"
@@ -529,26 +572,26 @@ endfunction
         nnoremap <leader>rs  :call <SID>Remove_ExtraWhiteSpace()<CR>
       endif
       " For pFUnit Testing
-      autocmd BufWinEnter
-            \     *.pf   setfiletype fortran
+      autocmd BufWinEnter *.pf set ft=fortran
     augroup end
-  " Last Edit Position:                                             " {{{2
+  " Last Edit Position:                                              " {{{2
     autocmd BufReadPost *
       \ if line("'\"") > 0 && line("'\"") <= line("$") |
       \   exe "normal! g`\"" |
       \ endif
-  " FileType Specific (indent, tabs etc )                           " {{{2
+  " FileType Specific (indent, tabs etc )                            " {{{2
   augroup MYFILETYPE
     au!
-    " Fold | Indent                                                 " {{{3
-      autocmd FileType python,json,conf,sh,cmake
-            \ setl foldmethod=indent sts=4 sw=4 ts=4
-      autocmd FileType fortran
-            \ setl foldmethod=indent  | setl tw=120               |
-            \ nmap <buffer><C-F> :set syntax=fortran             \|
-            \ let b:fortran_fixed_source=!b:fortran_fixed_source \|
-            \ :set syntax=text                                   \|
-            \ :set syntax=fortran<CR>
-      autocmd FileType  * call s:ColorColumnSetting()     |
-                        \ call s:MatchExtraWhitespaces()
-    augroup end
+    autocmd Filetype plaintex set ft=tex
+    autocmd Filetype tex setl tw=120
+    autocmd FileType python,json,conf,sh,cmake,javascript
+          \ setl foldmethod=indent sts=4 sw=4 ts=4
+    autocmd FileType fortran
+          \ setl foldmethod=indent \| setl tw=120              \|
+          \ nmap <buffer><C-F> :set syntax=fortran             \|
+          \ let b:fortran_fixed_source=!b:fortran_fixed_source \|
+          \ :set syntax=text                                   \|
+          \ :set syntax=fortran<CR>
+    autocmd FileType  * call s:ColorColumnSetting()     |
+                      \ call s:MatchExtraWhitespaces()
+  augroup end

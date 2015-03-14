@@ -1,4 +1,4 @@
-
+" vim: fdm=marker:et:ts=2:sw=2:sts=2
 
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " Consists of Functionalities for installation of Bundle's as listed in   "
@@ -312,6 +312,7 @@ EOF
       execute "source " . expand(s:vimfiles . "dotvim/vimrcs/plugin_rc")
     endif
     execute "source " . expand(s:vimfiles . "dotvim/vimrcs/dragvisuals.vim")
+    execute "source " . expand(s:vimfiles . "dotvim/vimrcs/switch_colors_rc")
 " Bundle Configuration:                                       " {{{1
 " let s:bundle_url = {}
   " AutoComplete:                                             " {{{2

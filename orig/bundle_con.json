@@ -40,10 +40,19 @@
             "           \\}                                                  "
         ]
     },
+    "color_bluedrake": {
+        "config": []
+    },
+    "color_iceberg": {
+        "config": []
+    },
     "color_codeschool": {
         "config": []
     },
     "color_gruvbox": {
+        "config": []
+    },
+    "color_dracula": {
         "config": []
     },
     "color_kalisi": {
@@ -55,7 +64,13 @@
     "color_molokai": {
         "config": []
     },
+    "color_molokayo": {
+        "config": []
+    },
     "color_monokai": {
+        "config": []
+    },
+    "color_pencil": {
         "config": []
     },
     "color_seoul256": {
@@ -67,6 +82,9 @@
             "\" Not Sure About this!!!",
             "\" let g:solarized_termtrans=1"
         ]
+    },
+    "color_xoria256": {
+        "config": []
     },
     "format_easy_align": {
         "config": [
@@ -136,25 +154,47 @@
     },
     "format_vim_origami": {
         "config": [
-            "function! <SID>MyFoldDelete()                                                   ",
-            "  \" Description: Remove a foldmarker from the current line                     ",
-            "  let s:fmr  = split( &foldmarker, ',' )                                        ",
-            "  let s:comment_str = split( &commentstring, '%s' )                             ",
-            "  if len( s:comment_str ) == 1 | call add( s:comment_str, \"\" ) | endif        ",
-            "  let l:line = getline('.')                                                     ",
-            "  let l:line = substitute( l:line, '\\s*\\('                            .       ",
-            "                               \\   escape(s:comment_str[0], '*')       .       ",
-            "                               \\   '\\)\\?\\s*\\('                     .       ",
-            "                               \\   s:fmr[0] . '\\|' . s:fmr[1] . '\\)' .       ",
-            "                               \\   '\\(\\d*\\)\\s*\\('                 .       ",
-            "                               \\   escape( s:comment_str[1], '*' )     .       ",
-            "                               \\   '\\)\\?\\s*$', '', '' )                     ",
-            "  call setline( '.', l:line )                                                   ",
-            "endfunction                                                                     ",
-            "nnoremap <leader>fo :call origami#InsertFoldmarker(  \"open\", \"comment\" )<CR>",
-            "nnoremap <leader>fc :call origami#InsertFoldmarker( \"close\", \"comment\" )<CR>",
-            "nnoremap <leader>fd :call <SID>MyFoldDelete()<CR>                               ",
-            "nnoremap <leader>fa :call origami#AlignFoldmarkers()<CR>                        "
+            "\"let g:OrigamiMap = {                                                                 ",
+            "\"  \\ 'Align'            : \"a\",                                                     ",
+            "\"  \\ 'Leader'           : \"Z\",                                                     ",
+            "\"  \\ 'AlignAll'         : \"A\",                                                     ",
+            "\"  \\ 'CommentedOpen'    : \"F\",                                                     ",
+            "\"  \\ 'UncommentedOpen'  : \"f\",                                                     ",
+            "\"  \\ 'CommentedClose'   : \"C\",                                                     ",
+            "\"  \\ 'UncommentedClose' : \"c\",                                                     ",
+            "\"  \\ 'Delete'           : \"\",                                                      ",
+            "\"  \\ }                                                                               ",
+            "let g:OrigamiPadding = 1                                                               ",
+            "function! s:Get(var, ...)                                                              ",
+            "  \" Description:                                                                      ",
+            "  \" Returns the buffer-local variable, global variable or the default value           ",
+            "  if exists('b:' . a:var)                                                              ",
+            "    return eval('b:' . a:var)                                                          ",
+            "  elseif exists('g:' . a:var)                                                          ",
+            "    return eval('g:' . a:var)                                                          ",
+            "  elseif a:0                                                                           ",
+            "    return a:1                                                                         ",
+            "  endif                                                                                ",
+            "endfunction                                                                            ",
+            "function! <SID>DeleteFoldmarker()                                                      ",
+            "  \" Description: Remove a foldmarker from the current line                            ",
+            "  let l:OrigamiCommentString      =                                                    ",
+            "        \\ split(s:Get('OrigamiCommentString', &commentstring), '%s')                  ",
+            "  if len(l:OrigamiCommentString) == 0 |                                                ",
+            "        \\ let l:OrigamiCommentString = [\"\", \"\"] | endif                           ",
+            "  if len(l:OrigamiCommentString) == 1 |                                                ",
+            "        \\ call add(l:OrigamiCommentString, \"\")  | endif                             ",
+            "  let l:line = getline('.')                                                            ",
+            "  let l:fmr  = split( &foldmarker, ',' )                                               ",
+            "  let l:line =                                                                         ",
+            "    \\ substitute(l:line,                                                              ",
+            "    \\ '\\s*\\(' . escape(l:OrigamiCommentString[0], '*')                              ",
+            "    \\ . '\\)\\?\\s*\\(' . l:fmr[0] . '\\|' . l:fmr[1] . '\\)'                         ",
+            "    \\ . '\\(\\d*\\)\\s*\\(' . escape(l:OrigamiCommentString[1], '*') . '\\)\\?\\s*$', ",
+            "    \\ '', \"\" )                                                                      ",
+            "  call setline('.', l:line )                                                           ",
+            "endfunction                                                                            ",
+            "nnoremap <silent>ZD :call <SID>DeleteFoldmarker()<CR>                                  "
         ]
     },
     "githelpers_fugitive": {
@@ -227,7 +267,6 @@
             "function! s:AirlineSettings()                                           ",
             "  \" Section: MODE > B > C > gutter> X > Y > Z > Whitespace             ",
             "  let g:airline_section_c = airline#section#create(['%>',               ",
-            "                       \\   '%{fnamemodify(\".\", \":p:~\")}',          ",
             "                       \\   'file', '  ', 'readonly'])                  ",
             "  \" let g:airline_section_x = airline#section#create_right(['tagbar']) ",
             "  let g:airline_section_x = ''                                          ",
@@ -254,6 +293,20 @@
     "lang_cpp_clighter": {
         "config": [
             "\" To Be Decided"
+        ]
+    },
+    "lang_cpp_enhanced_highlight": {
+        "config": [
+            "\" Remember to have vim-shell with win for async!                                ",
+            "let &tags                      = expand(s:vimfiles . 'temp/TAGS/')  . ','        ",
+            "let g:easytags_async           = 1                                               ",
+            "let g:easytags_auto_highlight  = 1                                               ",
+            "let g:easytags_events          = ['BufWritePost']                                ",
+            "let g:easytags_resolve_links   = 1                                               ",
+            "\" Remove in favour of Performance                                               ",
+            "\"let g:easytags_syntax_keyword  = 'always'                                      ",
+            "let g:easytags_include_members = 1                                               ",
+            "\" let g:easytags_by_filetype  = expand(s:vimfiles . 'temp/TAGS/')               "
         ]
     },
     "linter_syntastic": {

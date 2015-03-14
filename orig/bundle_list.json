@@ -27,9 +27,21 @@
         },
         "url": "Valloric/YouCompleteMe"
     },
+    "color_bluedrake": {
+        "opt": {},
+        "url": "MichaelMalick/vim-colors-bluedrake"
+    },
+    "color_iceberg": {
+        "opt": {},
+        "url": "cocopon/iceberg.vim"
+    },
     "color_codeschool": {
         "opt": {},
         "url": "29decibel/codeschool-vim-theme"
+    },
+    "color_dracula": {
+        "opt": {},
+        "url": "crusoexia/vim-dracula"
     },
     "color_gruvbox": {
         "opt": {},
@@ -47,9 +59,17 @@
         "opt": {},
         "url": "tomasr/molokai"
     },
+    "color_molokayo": {
+        "opt": {},
+        "url": "fmoralesc/molokayo"
+    },
     "color_monokai": {
         "opt": {},
         "url": "sickill/vim-monokai"
+    },
+    "color_pencil": {
+        "opt": {},
+        "url": "reedes/vim-colors-pencil"
     },
     "color_seoul256": {
         "opt": {},
@@ -58,6 +78,10 @@
     "color_solarized": {
         "opt": {},
         "url": "altercation/vim-colors-solarized.git"
+    },
+    "color_xoria256": {
+        "opt": {},
+        "url": "vim-scripts/xoria256.vim"
     },
     "format_easy_align": {
         "opt": {},
@@ -107,17 +131,9 @@
         },
         "url": "majutsushi/tagbar"
     },
-    "lang_cpp_clighter": {
-        "opt": {
-            "autoload": {
-                "filetypes": [
-                    "c",
-                    "cpp"
-                ]
-            },
-            "lazy": "1"
-        },
-        "url": "bbchung/clighter"
+    "lang_cpp_enhanced_highlight": {
+        "url": "octol/vim-cpp-enhanced-highlight",
+        "opt": {}
     },
     "linter_syntastic": {
         "opt": {},
