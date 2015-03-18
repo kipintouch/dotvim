@@ -8,7 +8,7 @@
   let s:colorful_term = (&term =~ "xterm") || (&term =~ "screen")
   " OS Information
   let s:running_windows  = has("win16") || has("win32") || has("win64")
-  let s:running_terminal = has('gui_running')
+  let s:running_terminal = !has('gui_running')
   let s:place            = g:local_settings_place
   let s:vimfiles         = ""
   if s:running_windows
@@ -207,9 +207,9 @@
     " Requried Specifically for GVIM for bells | noise
     autocmd GUIENTER  * set vb t_vb=
     " set background=light
-    colorscheme solarized
+    colorscheme codeschool
     if s:running_windows " Working on GUI_FONT
-      set guifont=Consolas\ for\ Powerline\ FixedD:h10,Monaco\ for\ Powerline:h10,Ubuntu\ Mono\ derivative\ Powerline:h10,DejaVu_Sans_Mono_for_Powerline:h10:i:cANSI
+      set guifont=Consolas\ for\ Powerline\ FixedD:h10,Ubuntu\ Mono\ derivative\ Powerline:h10,Monaco\ for\ Powerline:h10,DejaVu_Sans_Mono_for_Powerline:h10:i:cANSI
     else
       set guifont=Consolas\ for\ Powerline\ FixedD\ 10,Monaco\ for\ Powerline\ 10,Ubuntu\ Mono\ derivative\ Powerline\ 10,DejaVu\ Sans\ Mono\ for\ Powerline\ 10,Anonymous\ Pro\ for\ Powerline\ 10,Liberation\ Mono\ for\ Powerline\ 10
     endif
@@ -514,20 +514,54 @@ endfunction
     nnoremap <Tab>   gt
     nnoremap <S-Tab> gT
     nnoremap <C-Tab> :echom "HELLO"<CR>
-  if g:local_settings_place == "home"
-    " Jump To Fold Downwards
-    nnoremap ö zjzz
-    " Jump To Fold Upwards
-    nnoremap ä zkzz
-    " Jump Paragraph Upwards
-    nnoremap Ö {
-    " Jump Paragraph Downwards
-    nnoremap Ä }
-    " Jump to Definition
-    nnoremap ü <C-]>
-    " Jump back to Last Position
-    nnoremap Ü <C-O>
-  endif
+    if g:local_settings_place == "home"
+      " Jump To Fold Downwards
+      nnoremap ö zjzz
+      " Jump To Fold Upwards
+      nnoremap ä zkzz
+      " Jump Paragraph Upwards
+      nnoremap Ö {
+      " Jump Paragraph Downwards
+      nnoremap Ä }
+      " Jump to Definition
+      nnoremap ü <C-]>
+      " Jump back to Last Position
+      nnoremap Ü <C-O>
+    endif
+  " Moving Lines Up and Down                                         " {{{3
+  " <move> (LineNumber: . )<to-location><CR><reselect::realign::reselect>
+    nnoremap <silent><A-j> :m .+1<CR>==
+    nnoremap <silent><A-k> :m .-2<CR>==
+    vnoremap <silent><A-j> :m '>+1<CR>gv=gv
+    vnoremap <silent><A-k> :m '<-2<CR>gv=gv
+  " Moving In-between Location List                                  " {{{3
+    nnoremap <silent><A-.> :lprev<CR>
+    nnoremap <silent><A-,> :lnext<CR>
+    " nnoremap <A-Space> :echom "HELLO < A - SPacee >"<CR>
+  " Window Navigations                                               " {{{3
+    " Change Window Size                                             " {{{4
+      if s:running_terminal
+        nnoremap <silent><S-A-H> :vertical resize +5<CR>
+        nnoremap <silent><S-A-J> :resize +5<CR>
+        nnoremap <silent><S-A-K> :resize -5<CR>
+        nnoremap <silent><S-A-L> :vertical resize -5<CR>
+      else
+        nnoremap <silent>H       :vertical resize +5<CR>
+        nnoremap <silent><S-A-J> :resize +5<CR>
+        nnoremap <silent><S-A-K> :resize -5<CR>
+        nnoremap <silent><S-A-L> :vertical resize -5<CR>
+      endif
+    " Move Btwn split Windows                                        " {{{4
+      nnoremap <silent><C-h> :wincmd h<CR>
+      nnoremap <silent><C-l> :wincmd l<CR>
+      nnoremap <silent><C-j> :wincmd j<CR>
+      nnoremap <silent><C-k> :wincmd k<CR>
+  " Colorscheme Background Toggle                                    " {{{3
+    nnoremap <A-#>
+      \ :let &background = ( &background=='dark' ? 'light' : 'dark' ) \|
+      \ :redraw                                                       \|
+      \ :echom &background<CR>
+
   " Change to CWD                                                    " {{{3
     nnoremap <leader>cd :lcd%:h<CR>
   " BufOnly Mapping Close all but this buffer                        " {{{3
@@ -535,18 +569,18 @@ endfunction
   " Toggle Paste                                                     " {{{3
   " Turned Off Due To YCM-Confilict. <Tab> is disabled due to this in terminal.
   " nnoremap <leader>pp :setlocal paste!<cr>
-  set pastetoggle=<F2>
+    set pastetoggle=<F2>
   " Some Text Formatting (overline, strikethrough)                   " {{{3
-  nnoremap <leader>eo :call <SID>Combine_line(line("."), '0305')<CR>
-  vnoremap <leader>eo :call <SID>Combine_select('0305')<CR>
-  nnoremap <leader>eu :call <SID>Combine_line(line("."), '0333')<CR>
-  vnoremap <leader>eu :call <SID>Combine_select('0333')<CR>
-  nnoremap <leader>et :call <SID>Combine_line(line("."), '0336')<CR>
-  vnoremap <leader>et :call <SID>Combine_select('0336')<CR>
-  nnoremap <leader>ec :call <SID>Del_combine_line()<CR>
-  vnoremap <leader>ec :call <SID>Del_combine_selection()<CR>
+    nnoremap <leader>eo :call <SID>Combine_line(line("."), '0305')<CR>
+    vnoremap <leader>eo :call <SID>Combine_select('0305')<CR>
+    nnoremap <leader>eu :call <SID>Combine_line(line("."), '0333')<CR>
+    vnoremap <leader>eu :call <SID>Combine_select('0333')<CR>
+    nnoremap <leader>et :call <SID>Combine_line(line("."), '0336')<CR>
+    vnoremap <leader>et :call <SID>Combine_select('0336')<CR>
+    nnoremap <leader>ec :call <SID>Del_combine_line()<CR>
+    vnoremap <leader>ec :call <SID>Del_combine_selection()<CR>
   " Toggle Number Use                                                " {{{3
-  nnoremap <silent><A-n> :call NumberToggle()<CR>
+    nnoremap <silent><A-n> :call NumberToggle()<CR>
 " Acessing Files                                                     " {{{2
   execute   " nnoremap <leader>ev   :e " .
       \ expand("$MYVIMRC")                                   . "\<CR>"
@@ -586,12 +620,23 @@ endfunction
     autocmd Filetype tex setl tw=120
     autocmd FileType python,json,conf,sh,cmake,javascript
           \ setl foldmethod=indent sts=4 sw=4 ts=4
-    autocmd FileType fortran
-          \ setl foldmethod=indent \| setl tw=120              \|
-          \ nmap <buffer><C-F> :set syntax=fortran             \|
-          \ let b:fortran_fixed_source=!b:fortran_fixed_source \|
-          \ :set syntax=text                                   \|
-          \ :set syntax=fortran<CR>
-    autocmd FileType  * call s:ColorColumnSetting()     |
+    if s:running_windows
+      autocmd FileType fortran
+            \ setl foldmethod=indent                                |
+            \ setl tw=120                                           |
+            \ nmap <silent><buffer><C-F> :set syntax=fortran       \|
+              \ let b:fortran_fixed_source=!b:fortran_fixed_source \|
+              \ set syntax=text                                    \|
+              \ set syntax=fortran<CR>
+    else
+      autocmd FileType fortran
+            \ setl foldmethod=indent                               \|
+            \ setl tw=120                                          \|
+            \ nmap <silent><buffer><C-F> :set syntax=fortran       \|
+              \ let b:fortran_fixed_source=!b:fortran_fixed_source \|
+              \ set syntax=text                                    \|
+              \ set syntax=fortran<CR>
+    endif
+    autocmd FileType  * call s:ColorColumnSetting()                 |
                       \ call s:MatchExtraWhitespaces()
   augroup end

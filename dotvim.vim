@@ -231,14 +231,18 @@ EOF
   " AutoComplete Plugin:                                      " {{{2
     let s:local_correction.plugins_to_exclude = ["autocomplete_neocomplete",
                                         \        "autocomplete_neocomplcache"]
-    if s:is_win || (g:local_settings_place == "collg")
+    if s:is_win && (g:local_settings_place == "collg")
       if has('lua')
-          let s:local_correction.plugins_to_exclude =
-          \ ["autocomplete_ycm", "autocomplete_neocomplcache"]
+        let s:local_correction.plugins_to_exclude =
+              \ ["autocomplete_ycm", "autocomplete_neocomplcache"]
       else
-          let s:local_correction.plugins_to_exclude =
-          \ ["autocomplete_neocomplete", "autocomplete_ycm"]
+        let s:local_correction.plugins_to_exclude =
+              \ ["autocomplete_neocomplete", "autocomplete_ycm"]
       endif
+    elseif s:is_win && (g:local_settings_place == "home")
+      let s:local_correction.plugins_to_exclude =
+            \ ["autocomplete_neocomplete", "autocomplete_ycm",
+            \ "autocomplete_neocomplcache"]
     endif
 
   " Updating List By Global Correction:                       " {{{2

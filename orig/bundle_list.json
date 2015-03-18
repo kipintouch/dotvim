@@ -135,6 +135,10 @@
         "url": "octol/vim-cpp-enhanced-highlight",
         "opt": {}
     },
+    "lang_latex_textlint": {
+        "url": "kipintouch/textlint-syntastic",
+        "opt": {}
+    },
     "linter_syntastic": {
         "opt": {},
         "url": "scrooloose/syntastic"
