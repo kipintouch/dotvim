@@ -211,22 +211,22 @@
     if s:running_windows " Working on GUI_FONT
       set guifont=Consolas\ for\ Powerline\ FixedD:h10,Ubuntu\ Mono\ derivative\ Powerline:h10,Monaco\ for\ Powerline:h10,DejaVu_Sans_Mono_for_Powerline:h10:i:cANSI
     else
-      set guifont=Consolas\ for\ Powerline\ FixedD\ 10,Monaco\ for\ Powerline\ 10,Ubuntu\ Mono\ derivative\ Powerline\ 10,DejaVu\ Sans\ Mono\ for\ Powerline\ 10,Anonymous\ Pro\ for\ Powerline\ 10,Liberation\ Mono\ for\ Powerline\ 10
+      set guifont=Consolas\ for\ Powerline\ FixedD\ 10,Monaco\ for\ Powerline\ 10,Ubuntu\ Mono\ derivative\ Powerline\ 10,DejaVu\ Sans\ Mono\ for\ Powerline\ 10,Anonymous\ Pro\ for\ Powerline\ 10,Liberation\ Mono\ for\ Powerline\ 10,Source\ Code\ Pro\ Medium\ 10
     endif
     set guicursor+=n-v-c:blinkon0
     nnoremap <A-Up> :silent! let &guifont = join(
       \ split(&guifont, ',')[1:], ',') . ',' .
-      \ split(&guifont, ',')[0]<CR>
+      \ split(&guifont, ',')[0]<CR> \| :echom split(&guifont, ',')[0]<CR>
     nnoremap <C-Up> :silent! let &guifont = substitute(
       \ &guifont,
       \ '[:h]*\zs\d\+',
       \ '\=eval(submatch(0)+1)',
-      \ 'g')<CR>
+      \ 'g')<CR> \| :echom split(&guifont, ',')[0]<CR>
     nnoremap <C-Down> :silent! let &guifont = substitute(
       \ &guifont,
       \ '[:h]*\zs\d\+',
       \ '\=eval(submatch(0)-1)',
-      \ 'g')<CR>
+      \ 'g')<CR> \| :echom split(&guifont, ',')[0]<CR>
   else " *ONLY ON LINUX* Term Color Settings                         " {{{2
     if s:colorful_term
       " 256 color --
@@ -451,41 +451,98 @@ endfunction
     call setpos('.', l:pos)
   endfunction
 
-" Close All but this buffer (original BufOnly.vim                    " {{{2
+" Close All but this buffer on a tab (original BufOnly.vim           " {{{2
 function! <SID>BufOnly()
-  let l:buffer = bufnr('%')
-  if l:buffer == -1
-    echohl ErrorMsg
-    echomsg "No matching buffer for" l:buffer
-    echohl None
-    return
+    " let l:buffer = bufnr('%')                                      " {{{3
+    " if l:buffer == -1
+    "   echohl ErrorMsg
+    "   echomsg "No matching buffer for" l:buffer
+    "   echohl None
+    "   return
+    " endif
+    " let l:last_buffer = bufnr('$')
+    " let l:delete_count = 0
+    " let l:n = 1
+    " let l:bang = '!'
+    " while l:n <= l:last_buffer
+    "   if l:n != l:buffer && buflisted(l:n)
+    "     if l:bang == '' && getbufvar(l:n, '&modified')
+    "       echohl ErrorMsg
+    "       echomsg 'No write since last change for buffer'
+    "             \ l:n '(add ! to override)'
+    "       echohl None
+    "     else
+    "       silent exe 'bdel' . l:bang . ' ' . l:n
+    "       if ! buflisted(l:n)
+    "         let delete_count = l:delete_count+1
+    "       endif
+    "     endif
+    "   endif
+    "   let l:n = l:n + 1
+    " endwhile
+    " if l:delete_count == 1
+    "   echomsg l:delete_count "buffer deleted"
+    " elseif l:delete_count > 1
+    "   echomsg l:delete_count "buffers deleted"
+    " endif "}}}3
+  " Define Some local variables
+  let l:curr_buffer  = bufnr('%')
+  let l:buflist      = tabpagebuflist()
+  if tabpagenr("$") == 1
+    let l:buflist      = range(1, bufnr('$'))
   endif
-  let l:last_buffer = bufnr('$')
   let l:delete_count = 0
-  let l:n = 1
-  let l:bang = '!'
-  while l:n <= l:last_buffer
-    if l:n != l:buffer && buflisted(l:n)
+  let l:bang         = '!'
+  for l:n in l:buflist
+    if l:n != l:curr_buffer && buflisted(l:n)
       if l:bang == '' && getbufvar(l:n, '&modified')
         echohl ErrorMsg
         echomsg 'No write since last change for buffer'
               \ l:n '(add ! to override)'
         echohl None
       else
-        silent exe 'bdel' . l:bang . ' ' . l:n
-        if ! buflisted(l:n)
-          let delete_count = l:delete_count+1
+          silent exe 'bdel' . l:bang . ' ' . l:n
+          if ! buflisted(l:n)
+            let delete_count = l:delete_count+1
+          endif
         endif
       endif
+    endfor
+    if l:delete_count == 1
+      echomsg l:delete_count "buffer deleted"
+    elseif l:delete_count > 1
+      echomsg l:delete_count "buffers deleted"
     endif
-    let l:n = l:n + 1
-  endwhile
-  if l:delete_count == 1
-    echomsg l:delete_count "buffer deleted"
-  elseif l:delete_count > 1
-    echomsg l:delete_count "buffers deleted"
-  endif
-endfunction
+  endfunction
+" Folding for Indent                                                 " {{{2
+  function! Get_indent_Fold(lnum)
+    function! s:NextNonBlankLine(lnum)                               " {{{3
+      let numlines = line('$')
+      let current = a:lnum + 1
+      while current <= numlines
+        if getline(current) =~? '\v\S'
+          return current
+        endif
+        let current += 1
+      endwhile
+      return -2
+    endfunction "}}}3
+    function! s:IndentLevel(lnum)                                    " {{{3
+      return indent(a:lnum) / &shiftwidth
+    endfunction "}}}3
+    if getline(a:lnum) =~? '\v^\s*$'
+      return '-1'
+    endif
+    let this_indent = s:IndentLevel(a:lnum)
+    let next_indent = s:IndentLevel(s:NextNonBlankLine(a:lnum))
+    if next_indent == this_indent
+      return this_indent
+    elseif next_indent < this_indent
+      return this_indent
+    elseif next_indent > this_indent
+      return '>' . next_indent
+    endif
+  endfunction
 "}}}1
 " Mappings:                                                          " {{{1
 " Basic Editing                                                      " {{{2
@@ -616,27 +673,30 @@ endfunction
   " FileType Specific (indent, tabs etc )                            " {{{2
   augroup MYFILETYPE
     au!
+    autocmd FileType perl,sh
+      \ setl foldmethod=expr foldexpr=Get_indent_Fold(v:lnum)
     autocmd Filetype plaintex set ft=tex
     autocmd Filetype tex setl tw=120
-    autocmd FileType python,json,conf,sh,cmake,javascript
-          \ setl foldmethod=indent sts=4 sw=4 ts=4
-    if s:running_windows
+    autocmd FileType python,json,conf,cmake,javascript
+      \ setl sts=4 sw=4 ts=4
+      \ foldmethod=expr foldexpr=Get_indent_Fold(v:lnum)
+    " if s:running_windows
+    "   autocmd FileType fortran
+    "         \ setl foldmethod=expr foldexpr=Get_indent_Fold(v:lnum) |
+    "         \ setl tw=120                                           |
+    "         \ nmap <silent><buffer><C-F> :set syntax=fortran       \|
+    "           \ let b:fortran_fixed_source=!b:fortran_fixed_source \|
+    "           \ set syntax=text                                    \|
+    "           \ set syntax=fortran<CR>
+    " else
       autocmd FileType fortran
-            \ setl foldmethod=indent                                |
-            \ setl tw=120                                           |
-            \ nmap <silent><buffer><C-F> :set syntax=fortran       \|
-              \ let b:fortran_fixed_source=!b:fortran_fixed_source \|
-              \ set syntax=text                                    \|
-              \ set syntax=fortran<CR>
-    else
-      autocmd FileType fortran
-            \ setl foldmethod=indent                               \|
-            \ setl tw=120                                          \|
-            \ nmap <silent><buffer><C-F> :set syntax=fortran       \|
-              \ let b:fortran_fixed_source=!b:fortran_fixed_source \|
-              \ set syntax=text                                    \|
-              \ set syntax=fortran<CR>
-    endif
+        \ setl foldmethod=expr foldexpr=Get_indent_Fold(v:lnum) |
+        \ setl tw=120                                           |
+        \ nmap <silent><buffer><C-F> :set syntax=fortran       \|
+          \ let b:fortran_fixed_source=!b:fortran_fixed_source \|
+          \ set syntax=text                                    \|
+          \ set syntax=fortran<CR>
+    " endif
     autocmd FileType  * call s:ColorColumnSetting()                 |
                       \ call s:MatchExtraWhitespaces()
   augroup end

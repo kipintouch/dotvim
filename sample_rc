@@ -1,0 +1,169 @@
+" vim: fdm=marker:et:ts=2:sts=2:sw=2
+
+" Additional Plugin Settings:       " {{{1
+  " Initializing Globals:           " {{{2
+    let g:local_settings_place = "home"
+    let g:bundle_settings      = {  'plugins_to_exclude': [],
+                                  \     'plugins_to_add': []}
+
+  " Excluding Some Plugins:         " {{{2
+    " call extend(g:bundle_settings.plugins_to_exclude, ['lang_cpp_clighter'])
+
+  " Adding Some Extra Plugins:      " {{{2
+    call extend(g:bundle_settings.plugins_to_add,
+    \ [{'url': 'edkolev/promptline.vim', 'opt': {}, 'name': 'bash_prompt_line'},
+    \ ])
+    " \  {'url': 'octol/vim-cpp-enhanced-highlight', 'opt': {},
+    " \   'name': 'lang_cpp_highlight'}
+    " \ ])
+
+" Source Dotvim:                    " {{{1
+  execute "source " . expand("~/.vim/dotvim/dotvim.vim")
+
+" Source Local Bundles:             " {{{1
+  " NeoBundleLocal /home/doom/.vim/local/
+
+" PromptLineVIM:                    " {{{1
+  " Generate Prompt:                " {{{2
+  fun! Generate_Promptline_files()
+    " Collect_system_config:        " {{{3
+      let l:original_airline_theme = g:airline_theme
+      let g:promptline_powerline_symbols = 1
+    " Get_Airline_Themes_on_system: " {{{3
+      let airline_themes =
+        \ systemlist("ls ~/.vim/bundle/vim-airline/autoload/airline/themes/")
+      let airline_themes =
+        \ map(airline_themes, 'substitute(v:val, "\.vim", "", "")')
+    " Creating Files:               " {{{3
+      let dir = "~/.bash_prompt/promptline_vim/"
+      for atheme in airline_themes
+        let g:airline_theme = atheme
+        execute ":AirlineRefresh"
+        " Airline_Normal_Mode:
+        let file   = dir . atheme . '.sh'
+        let prompt = 'airline'
+        execute ":PromptlineSnapshot! " . file . ' ' . prompt
+        echom "Working on " . file . " with " . prompt
+        " Airline_Insert_Mode:
+        let file   = dir . atheme . '_insert.sh'
+        let prompt = 'airline_insert'
+        execute ":PromptlineSnapshot! " . file . ' ' . prompt
+        echom "Working on " . file . " with " . prompt
+      endfor "}}}3
+    let g:airline_theme = l:original_airline_theme
+    execute ":AirlineRefresh"
+  endf
+  " MY Promptline Settings:         " {{{2
+    fun! PromptLineSettings(...)    " {{{3
+      let options = get(a:, 1, {})
+      return {
+            \'function_name': '__promptline_vcs_branch',
+            \'function_body': My_Vcs_Branch(options)}
+    endfun
+    fun! My_Vcs_Branch(options)     " {{{3
+      let branch_symbol = promptline#symbols#get().vcs_branch
+      let dirty_branch  = '✗ '
+      let push_symbol   = '⇡'
+      let pull_symbol   = '⇣'
+      let git           = get(a:options, 'git', 1)
+      let svn           = get(a:options, 'svn', 0)
+      let hg            = get(a:options, 'hg', 0)
+      let fossil        = get(a:options, 'fossil', 0)
+
+      let lines = [
+        \'function __promptline_vcs_branch {',
+        \'  local branch',
+        \'  local branch_symbol="' . branch_symbol . '"',
+        \'  local dirty_branch="'  . dirty_branch  . '"',
+        \'  local push_symbol="'   . push_symbol   . '"',
+        \'  local pull_symbol="'   . pull_symbol   . '"']
+
+      if git
+        let lines += [
+          \'',
+          \'  # git',
+          \'  if hash git 2>/dev/null; then',
+          \'    if branch=$( { git symbolic-ref --quiet HEAD || git rev-parse --short HEAD; } 2>/dev/null ); then',
+          \'      branch=${branch##*/}',
+          \'      local stat="$(git status --porcelain --branch | ' .
+                  \ "grep '^##' | grep -o '\\[.\\+\\]$')\"",
+          \'      local aheadN="$(echo $stat | '  . "grep -o 'ahead [0-9]' | grep -o '[0-9]')\"",
+          \'      local behindN="$(echo $stat | ' . "grep -o 'behind [0-9]' | grep -o '[0-9]')\"",
+          \'      [ -n "$aheadN" ] && branch+=" $push_symbol $aheadN "',
+          \'      [ -n "$behindN" ] && branch+=" $pull_symbol $behindN "',
+          \'      # Git Branch check',
+          \'      if [[ -n "$(git status --porcelain)" ]]; then',
+          \'        branch="${dirty_branch}${branch}"',
+          \'      else',
+          \'        branch="${branch_symbol}${branch}"',
+          \'      fi',
+          \'      printf "%s" "${branch:-unknown}"',
+          \'      return',
+          \'    fi',
+          \'  fi']
+      endif
+
+      if hg
+        let lines += [
+          \'',
+          \'  # mercurial',
+          \'  if hash hg 2>/dev/null; then',
+          \'    if branch=$(hg branch 2>/dev/null); then',
+          \'      printf "%s" "${branch_symbol}${branch:-unknown}"',
+          \'      return',
+          \'    fi',
+          \'  fi']
+      endif
+
+      if svn
+        let lines += [
+          \'',
+          \'  # svn',
+          \'  if hash svn 2>/dev/null; then',
+          \'    local svn_info',
+          \'    if svn_info=$(svn info 2>/dev/null); then',
+          \'      local svn_url=${svn_info#*URL:\ }',
+          \'      svn_url=${svn_url/$' . "'" . '\n' . "'" . '*/}',
+          \'',
+          \'      local svn_root=${svn_info#*Repository\ Root:\ }',
+          \'      svn_root=${svn_root/$' . "'" . '\n' . "'" . '*/}',
+          \'',
+          \'      if [[ -n $svn_url ]] && [[ -n $svn_root ]]; then',
+          \'        # https://github.com/tejr/dotfiles/blob/master/bash/bashrc.d/prompt.bash#L179',
+          \'        branch=${svn_url/$svn_root}',
+          \'        branch=${branch#/}',
+          \'        branch=${branch#branches/}',
+          \'        branch=${branch%%/*}',
+          \'',
+          \'        printf "%s" "${branch_symbol}${branch:-unknown}"',
+          \'        return',
+          \'      fi',
+          \'    fi',
+          \'  fi',
+          \'']
+      endif
+
+      if fossil
+        let lines += [
+          \'',
+          \'  # fossil',
+          \'  if hash fossil 2>/dev/null; then',
+          \'    if branch=$( fossil branch 2>/dev/null ); then',
+          \'      branch=${branch##* }',
+          \'      printf "%s" "${branch_symbol}${branch:-unknown}"',
+          \'      return',
+          \'    fi',
+          \'  fi']
+      endif
+
+      let lines += [
+          \'  return 1',
+          \'}']
+      return lines
+    endfun "}}}3
+  " Promptline Preset:              " {{{2
+  let g:promptline_preset = {
+    \ 'a'    : [ PromptLineSettings({'git': 1, 'hg': 1}) ],
+    \ 'b'    : [ promptline#slices#host(), promptline#slices#user() ],
+    \ 'c'    : [ promptline#slices#cwd() ],
+    \ 'warn' : [ promptline#slices#last_exit_code() ]}
