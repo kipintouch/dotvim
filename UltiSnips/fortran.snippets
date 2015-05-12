@@ -87,6 +87,12 @@ do ${1:i} = ${2:start}, ${3:end}, ${4:increment-decrement}
 	${5:loop}
 end do
 endsnippet
+# do while
+snippet dow "Do-While Construct" b
+do while(${1:Conditions})
+	${2:Do Something}
+end do ! while
+endsnippet
 snippet wr "write(*, *) function" b
 write(*, ${1:*}) ${2:"${3:HelloWorld}"}${4:, }
 endsnippet
@@ -127,6 +133,10 @@ endsnippet
 snippet vty "Declaring a variable of type" b
 type(${1:type}) :: ${2:var}
 endsnippet
+# Double
+snippet double "Declaring a Double of Type" b
+double precision :: ${1:var}
+endsnippet
 
 ######################################################################################
 # Variables / Type shorthand   for subroutines and functions (intent) in, out, inout #
@@ -147,6 +157,10 @@ endsnippet
 snippet sre "Subroutine Declaring a Integer" b
 real, intent(${2:in}) :: ${3:Var_1}
 endsnippet
+# Double var in Subroutines
+snippet sdouble "Declaring a Double in Sub" b
+double precision, intent(${1:in}) :: ${2:var}
+endsnippet
 # Declaring integer array
 snippet sintd "Subroutine Declaring a integer array" b
 integer, dimension(${2::}), intent(${3:in}) :: ${4:Array_name}
@@ -159,7 +173,6 @@ endsnippet
 snippet sty "Subroutine Declaring a type" b
 type(${1:type}), intent(${2:in}) :: ${3:type_var}
 endsnippet
-
 
 #####################
 # Array Declaration #
@@ -179,6 +192,10 @@ endsnippet
 # Declaring type Array
 snippet aty "Declaring a type array" b
 type(${1:type}), dimension(${2:dim}) :: ${3:type_array}
+endsnippet
+# Double Array var in Subroutines
+snippet adouble "Declaring a Double in Sub" b
+double precision, dimension(${1:1}) :: ${2:var}
 endsnippet
 
 #################
