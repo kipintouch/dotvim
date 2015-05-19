@@ -543,6 +543,25 @@ function! <SID>BufOnly()
       return '>' . next_indent
     endif
   endfunction
+" Fold Jumper                                                        " {{{2
+  fun! FoldJump(dir)
+    let l:start = line('.')
+    let l:new = l:start
+    if (a:dir == 1) " Moving Next fold or Down
+      normal zjzz
+      let l:new = line('.')
+      if l:new == l:start
+        normal }}
+      endif
+    else            " Moving Previous Fold or UP
+      " normal zkzzzkzjzz
+      normal zkzz
+      let l:new = line('.')
+      if l:new == l:start
+        normal {{
+      endif
+    endif
+  endf
 "}}}1
 " Mappings:                                                          " {{{1
 " Basic Editing                                                      " {{{2
@@ -571,11 +590,12 @@ function! <SID>BufOnly()
     nnoremap <Tab>   gt
     nnoremap <S-Tab> gT
     nnoremap <C-Tab> :echom "HELLO"<CR>
+  " Buffer Movements Fold Movement:                                  " {{{3
     if g:local_settings_place == "home"
-      " Jump To Fold Downwards
-      nnoremap ö zjzz
-      " Jump To Fold Upwards
-      nnoremap ä zkzz
+      " Jump To Next Fold or Downwards
+      nnoremap ö :call FoldJump(1)<CR>
+      " Jump To Previous Fold or Upwards
+      nnoremap ä :call FoldJump(0)<CR>
       " Jump Paragraph Upwards
       nnoremap Ö {
       " Jump Paragraph Downwards
@@ -584,6 +604,11 @@ function! <SID>BufOnly()
       nnoremap ü <C-]>
       " Jump back to Last Position
       nnoremap Ü <C-O>
+    else
+      " Jump To Next Fold or Downwards
+      nnoremap <A-/> :call FoldJump(1)<CR>
+      " Jump To Previous Fold or Upwards
+      nnoremap <A-?> :call FoldJump(0)<CR>
     endif
   " Moving Lines Up and Down                                         " {{{3
   " <move> (LineNumber: . )<to-location><CR><reselect::realign::reselect>
