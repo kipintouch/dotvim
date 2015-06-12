@@ -83,6 +83,10 @@
         "opt": {},
         "url": "vim-scripts/xoria256.vim"
     },
+    "color_colortuner": {
+        "opt": {},
+        "url": "zefei/vim-colortuner"
+    },
     "format_easy_align": {
         "opt": {},
         "url": "junegunn/vim-easy-align"

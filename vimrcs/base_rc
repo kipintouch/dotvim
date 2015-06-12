@@ -209,9 +209,9 @@
     " set background=light
     colorscheme codeschool
     if s:running_windows " Working on GUI_FONT
-      set guifont=Consolas\ for\ Powerline\ FixedD:h10,Ubuntu\ Mono\ derivative\ Powerline:h10,Monaco\ for\ Powerline:h10,DejaVu_Sans_Mono_for_Powerline:h10:i:cANSI
+      set guifont=Source_Code_Pro_Medium:h10:cANSI,Source_Code_Pro_Semibold:h10:cANSI,Source_Code_Powerline:h10:b:cANSI,Consolas\ for\ Powerline\ FixedD:h10,Ubuntu\ Mono\ derivative\ Powerline:h10,Monaco\ for\ Powerline:h10,DejaVu_Sans_Mono_for_Powerline:h10:i:cANSI
     else
-      set guifont=Consolas\ for\ Powerline\ FixedD\ 10,Monaco\ for\ Powerline\ 10,Ubuntu\ Mono\ derivative\ Powerline\ 10,DejaVu\ Sans\ Mono\ for\ Powerline\ 10,Anonymous\ Pro\ for\ Powerline\ 10,Liberation\ Mono\ for\ Powerline\ 10,Source\ Code\ Pro\ Medium\ 10
+      set guifont=Source\ Code\ Pro\ Medium\ 10,Source\ Code\ Pro\ Semi-Bold\ 10,Source\ Code\ Pro\ Bold\ 10,Consolas\ for\ Powerline\ FixedD\ 10,Monaco\ for\ Powerline\ 10,Ubuntu\ Mono\ derivative\ Powerline\ 10,DejaVu\ Sans\ Mono\ for\ Powerline\ 10,Anonymous\ Pro\ for\ Powerline\ 10,Liberation\ Mono\ for\ Powerline\ 10
     endif
     set guicursor+=n-v-c:blinkon0
     nnoremap <A-Up> :silent! let &guifont = join(
@@ -698,7 +698,8 @@ function! <SID>BufOnly()
   " FileType Specific (indent, tabs etc )                            " {{{2
   augroup MYFILETYPE
     au!
-    autocmd FileType perl,sh
+    autocmd BufNewFile,BufRead .bash*,*bash_* set ft=sh
+    autocmd FileType perl,sh,c,cpp,matlab
       \ setl foldmethod=expr foldexpr=Get_indent_Fold(v:lnum)
     autocmd Filetype plaintex set ft=tex
     autocmd Filetype tex setl tw=120
