@@ -231,7 +231,8 @@ EOF
   " AutoComplete Plugin:                                       " {{{2
     let s:local_correction.plugins_to_exclude = ["autocomplete_neocomplete",
                                         \        "autocomplete_neocomplcache"]
-    if s:is_win && (g:local_settings_place == "collg")
+    if ((g:local_settings_place == "collg") ||
+      \ (g:local_settings_place == "work"))
       if has('lua')
         let s:local_correction.plugins_to_exclude =
               \ ["autocomplete_ycm", "autocomplete_neocomplcache"]
@@ -310,18 +311,24 @@ EOF
     syntax on
 
   " Import Configuration For Vim:                              " {{{2
-    execute "source " . expand(s:vimfiles . "dotvim/vimrcs/Term_Mapping_rc")
-    execute "source " . expand(s:vimfiles . "dotvim/vimrcs/base_rc"      )
-    execute "source " . expand(s:vimfiles . "dotvim/vimrcs/commenter.vim")
-    " Check for Plugin_Config
-    if filereadable(expand(s:vimfiles . "dotvim/vimrcs/plugin_rc"))
-      execute "source " . expand(s:vimfiles . "dotvim/vimrcs/plugin_rc")
-    else
-      call s:Create_Plugin_Template(s:blist)
-      execute "source " . expand(s:vimfiles . "dotvim/vimrcs/plugin_rc")
+    let s:local_place = g:local_settings_place
+    if ('17217' ==
+      \ join(split(split(system("echo $SSH_CLIENT"), " ")[0], '\.')[:1], "") )
+      let g:local_settings_place = "home"
     endif
-    execute "source " . expand(s:vimfiles . "dotvim/vimrcs/dragvisuals.vim")
-    execute "source " . expand(s:vimfiles . "dotvim/vimrcs/switch_colors_rc")
+    execute "source " . expand(s:vimfiles . "dotvim/vimrcs/Term_Mapping_rc"  )
+    execute "source " . expand(s:vimfiles . "dotvim/vimrcs/base_rc"          )
+    execute "source " . expand(s:vimfiles . "dotvim/vimrcs/commenter.vim"    )
+    " Check for Plugin_Config
+    if filereadable(expand(s:vimfiles . "dotvim/vimrcs/plugin_rc")           )
+      execute "source " . expand(s:vimfiles . "dotvim/vimrcs/plugin_rc"      )
+    else
+      call s:Create_Plugin_Template(s:blist                                  )
+      execute "source " . expand(s:vimfiles . "dotvim/vimrcs/plugin_rc"      )
+    endif
+    execute "source " . expand(s:vimfiles . "dotvim/vimrcs/dragvisuals.vim"  )
+    execute "source " . expand(s:vimfiles . "dotvim/vimrcs/switch_colors_rc" )
+    let g:local_settings_place = s:local_place
 " Bundle Configuration:                                        " {{{1
 " let s:bundle_url = {}
   " AutoComplete:                                              " {{{2
