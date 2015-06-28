@@ -38,7 +38,7 @@ subroutine ${1:sub-name} (${2:Arg_list})
 end subroutine $1
 endsnippet
 # Type Declaration
-snippet dty "Declaring a type" b
+snippet ty "Declaring a type" b
 type ${1:type-name}
 	! ${2:Some Description about your type}
 	$0
@@ -56,6 +56,10 @@ snippet inte "Interface Constructor" b
 interface ${1:interface_name}
 	module procedure ${2:interface_name}
 end interface $1
+endsnippet
+# Procedure Refrence name for modules
+snippet vproc "New Name Refrence a Procedure within Modules" b
+procedure :: ${1:NEW_NAME} => ${2:ORIGINAL_NAME}
 endsnippet
 
 ####################################################
@@ -114,27 +118,27 @@ endsnippet
 # Variale Declaration!! #
 #########################
 # Integer
-snippet int "Declaring a Integer" b
-integer :: ${2:var}
+snippet vin "Declaring a Integer" b
+integer :: ${1:var}
 endsnippet
 # Character
-snippet char "Declaring a Integer" b
+snippet vch "Declaring a Integer" b
 character (len=${1:*}):: ${2:var}
 endsnippet
 # Logical
-snippet log "Declaring a Integer" b
-logical :: ${2:var}
+snippet vlog "Declaring a Integer" b
+logical :: ${1:var}
 endsnippet
 # Float
-snippet re "Declaring a Integer" b
-real :: ${2:var}
+snippet vre "Declaring a Integer" b
+real :: ${1:var}
 endsnippet
 # Float
 snippet vty "Declaring a variable of type" b
 type(${1:type}) :: ${2:var}
 endsnippet
 # Double
-snippet double "Declaring a Double of Type" b
+snippet vdb "Declaring a Double of Type" b
 double precision :: ${1:var}
 endsnippet
 
@@ -142,71 +146,86 @@ endsnippet
 # Variables / Type shorthand   for subroutines and functions (intent) in, out, inout #
 ######################################################################################
 # Integer var in Subroutines
-snippet sint "Subroutine Declaring a Integer" b
-integer, intent(${2:in}) :: ${3:Var_1}
+snippet sin "Subroutine Declaring a Integer" b
+integer, intent(${1:in}) :: ${2:int_var}
 endsnippet
 # Character var in Subroutines
-snippet schar "Subroutine Declaring a Integer" b
-character, intent(${2:in}) :: ${3:Var_1}
+snippet sch "Subroutine Declaring a Integer" b
+character, intent(${1:in}) :: ${2:char_var}
 endsnippet
 # Logical var in Subroutines
 snippet slog "Subroutine Declaring a Integer" b
-logical, intent(${2:in}) :: ${3:Var_1}
+logical, intent(${1:in}) :: ${2:logical_var}
 endsnippet
 # Float var in Subroutines
 snippet sre "Subroutine Declaring a Integer" b
-real, intent(${2:in}) :: ${3:Var_1}
-endsnippet
-# Double var in Subroutines
-snippet sdouble "Declaring a Double in Sub" b
-double precision, intent(${1:in}) :: ${2:var}
-endsnippet
-# Declaring integer array
-snippet sintd "Subroutine Declaring a integer array" b
-integer, dimension(${2::}), intent(${3:in}) :: ${4:Array_name}
-endsnippet
-# Declaring real array
-snippet sred "Subroutine Declaring a integer array" b
-real, dimension(${2::}), intent(${3:in}) :: ${4:Array_name}
+real, intent(${1:in}) :: ${2:real_var}
 endsnippet
 # Declaring type in subroutines
 snippet sty "Subroutine Declaring a type" b
 type(${1:type}), intent(${2:in}) :: ${3:type_var}
+endsnippet
+# Declaring type array in subroutines
+snippet saty "Subroutine Declaring a type array" b
+type({$1:type}), dimension(${2:dim}), ${3:allocatable,} intent(${4:in}) :: ${5:type_array}
+endsnippet
+# Declaring integer array in subroutines
+snippet sain "Subroutine Declaring a integer array" b
+integer, dimension(${1:dim}), ${2:allocatable,} intent(${3:in}) :: ${4:int_array}
+endsnippet
+# Declaring real array in subroutines
+snippet sare "Subroutine Declaring a integer array" b
+real, dimension(${1:dim}), ${2:allocatable,} intent(${3:in}) :: ${4:real_array}
+endsnippet
+# Declaring Double array in subroutines
+snippet sadb "Subroutine Declaring a Double array" b
+double precision, dimension(${1:dim}), ${2:allocatable,} intent(${3:in}) :: ${4:double_array}
+endsnippet
+# Declaring integer array in subroutines
+snippet salog "Subroutine Declaring a integer array" b
+logical, dimension(${1:dim}), ${2:allocatable,} intent(${3:in}) :: ${4:logical_array}
 endsnippet
 
 #####################
 # Array Declaration #
 #####################
 # Declaring integer array
-snippet intd "Declaring a integer array" b
-integer, dimension(${2::}) :: ${3:Array_name}
+snippet ain "Declaring a integer array" b
+integer, ${1:allocatable,} dimension(${2:dim}) :: ${3:int_array}
 endsnippet
 # Declaring real array
-snippet red "Declaring a real array" b
-real, dimension(${2::}) :: ${3:Array_name}
+snippet are "Declaring a real array" b
+real, ${1:allocatable,} dimension(${2:dim}) :: ${3:real_array}
 endsnippet
 # Declaring Character Array
-snippet chard "Declaring a character array" b
-character(len=${1:len}), dimension(${2:dim}) :: ${3:char_array}
+snippet ach "Declaring a character array" b
+character(len=${1:len}), ${2:allocatable,} dimension(${3:dim}) :: ${4:char_array}
 endsnippet
 # Declaring type Array
 snippet aty "Declaring a type array" b
-type(${1:type}), dimension(${2:dim}) :: ${3:type_array}
+type({$1:type}), ${2:allocatable,} dimension(${3:dim}) :: ${4:type_array}
 endsnippet
 # Double Array var in Subroutines
-snippet adouble "Declaring a Double in Sub" b
-double precision, dimension(${1:1}) :: ${2:var}
+snippet adb "Declaring a Double" b
+double precision, ${1:allocatable,} dimension(${2:dim}) :: ${3:double_array}
+endsnippet
+# logical Array var in Subroutines
+snippet alog "Declaring a logical" b
+logical, ${1:allocatable,} dimension(${2:dim}) :: ${3:double_array}
 endsnippet
 
-#################
-# General Stuff #
-#################
-snippet intp "Declares a Integer Parameter" b
-integer, parameter :: ${1:Parameter}
+##################
+#    Pointers    #
+##################
+snippet pin "Declares a Integer Parameter" b
+integer, pointer :: ${1:int_pointer} ${2:=> null()}
 endsnippet
-snippet rep "Declares a Integer Parameter" b
-real, parameter :: ${1:Parameter}
+snippet pre "Declares a Integer Parameter" b
+real, pointer :: ${1:real_pointer} ${2:=> null()}
 endsnippet
-snippet poin "Declares a pointer variable" b
-${1:type}, pointer :: ${2:pointer_1} ${3:=> null()}
+snippet pdb "Declares a Integer Parameter" b
+double precision, pointer :: ${1:double_pointer} ${2:=> null()}
+endsnippet
+snippet pty "Declares a pointer variable" b
+${1:type}, pointer :: ${2:type_pointer} ${3:=> null()}
 endsnippet

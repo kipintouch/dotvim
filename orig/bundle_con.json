@@ -127,7 +127,7 @@
       "        \\ 'ignore_groups':    ['String'],                                   ",
       "        \\ 'ignore_unmatched': 0}                                            ",
       "endfor                                                                       "
-        ]
+    ]
   },
   "format_goyo": {
     "config": [
