@@ -1,97 +1,57 @@
 {
-  "autocomplete_neocomplcache": {
+  "Shougo/neocomplcache.vim": {
     "opt": {
       "autoload": {
         "insert": "1"
       },
       "lazy": "1"
-    },
-    "url": "Shougo/neocomplcache.vim"
-  },
-  "autocomplete_neocomplete": {
+    } },
+  "Shougo/neocomplete.vim": {
     "opt": {
       "autoload": {
         "insert": "1"
       },
       "lazy": "1",
       "vim_version": "7.3.885"
-    },
-    "url": "Shougo/neocomplete.vim"
-  },
-  "autocomplete_ycm": {
+    } },
+  "Valloric/YouCompleteMe": {
     "opt": {
       "vim_version": "7.3.584",
       "build" : {
-        "unix" : "./install.sh --clang-completer"
+        "unix" : "./install.py --clang-completer --omnisharp-completer --gocode-completer --tern-completer"
       }
-    },
-    "url": "Valloric/YouCompleteMe"
-  },
-  "color_bluedrake": {
-    "opt": {},
-    "url": "MichaelMalick/vim-colors-bluedrake"
-  },
-  "color_iceberg": {
-    "opt": {},
-    "url": "cocopon/iceberg.vim"
-  },
-  "color_codeschool": {
-    "opt": {},
-    "url": "29decibel/codeschool-vim-theme"
-  },
-  "color_dracula": {
-    "opt": {},
-    "url": "crusoexia/vim-dracula"
-  },
-  "color_gruvbox": {
-    "opt": {},
-    "url": "morhetz/gruvbox"
-  },
-  "color_kalisi": {
-    "opt": {},
-    "url": "freeo/vim-kalisi"
-  },
-  "color_kolor": {
-    "opt": {},
-    "url": "zeis/vim-kolor"
-  },
-  "color_molokai": {
-    "opt": {},
-    "url": "tomasr/molokai"
-  },
-  "color_molokayo": {
-    "opt": {},
-    "url": "fmoralesc/molokayo"
-  },
-  "color_monokai": {
-    "opt": {},
-    "url": "sickill/vim-monokai"
-  },
-  "color_pencil": {
-    "opt": {},
-    "url": "reedes/vim-colors-pencil"
-  },
-  "color_seoul256": {
-    "opt": {},
-    "url": "szw/seoul256.vim"
-  },
-  "color_solarized": {
-    "opt": {},
-    "url": "altercation/vim-colors-solarized.git"
-  },
-  "color_xoria256": {
-    "opt": {},
-    "url": "vim-scripts/xoria256.vim"
-  },
-  "color_colortuner": {
-    "opt": {},
-    "url": "zefei/vim-colortuner"
-  },
-  "format_easy_align": {
-    "opt": {},
-    "url": "junegunn/vim-easy-align"
-  },
-  "format_goyo": {
+    } },
+  "MichaelMalick/vim-colors-bluedrake": {
+    "opt": {} },
+  "cocopon/iceberg.vim": {
+    "opt": {} },
+  "29decibel/codeschool-vim-theme": {
+    "opt": {} },
+  "crusoexia/vim-dracula": {
+    "opt": {} },
+  "morhetz/gruvbox": {
+    "opt": {} },
+  "freeo/vim-kalisi": {
+    "opt": {} },
+  "zeis/vim-kolor": {
+    "opt": {} },
+  "tomasr/molokai": {
+    "opt": {} },
+  "fmoralesc/molokayo": {
+    "opt": {} },
+  "sickill/vim-monokai": {
+    "opt": {} },
+  "reedes/vim-colors-pencil": {
+    "opt": {} },
+  "szw/seoul256.vim": {
+    "opt": {} },
+  "altercation/vim-colors-solarized": {
+    "opt": {} },
+  "vim-scripts/xoria256.vim": {
+    "opt": {} },
+  "zefei/vim-colortuner": {
+    "opt": {} },
+  "junegunn/goyo.vim": {
     "opt": {
       "autoload": {
         "commands": [
@@ -99,59 +59,41 @@
         ]
       },
       "lazy": "1"
-    },
-    "url": "junegunn/goyo.vim"
-  },
-  "format_multi_cursor": {
-    "opt": {},
-    "url": "terryma/vim-multiple-cursors"
-  },
-  "format_surround": {
-    "opt": {},
-    "url": "tpope/vim-surround"
-  },
-  "format_vim_origami": {
-    "opt": {},
-    "url": "kshenoy/vim-origami"
-  },
-  "githelpers_fugitive": {
-    "opt": {},
-    "url": "tpope/vim-fugitive"
-  },
-  "githelpers_gitgutter": {
-    "opt": {},
-    "url": "airblade/vim-gitgutter"
-  },
-  "gui_airline": {
-    "opt": {},
-    "url": "bling/vim-airline"
-  },
-  "gui_tagbar": {
+    } },
+  "junegunn/vim-easy-align": {
+    "opt": {} },
+  "terryma/vim-multiple-cursors": {
+    "opt": {} },
+  "tpope/vim-surround": {
+    "opt": {} },
+  "kshenoy/vim-origami": {
+    "opt": {} },
+  "tpope/vim-fugitive": {
+    "opt": {} },
+  "airblade/vim-gitgutter": {
+    "opt": {} },
+  "vim-airline/vim-airline": {
+    "opt": {} },
+  "vim-airline/vim-airline-themes": {
+    "opt": {} },
+  "majutsushi/tagbar": {
     "opt": {
       "autoload": {
-        "commands": "TagbarToggle"
+        "commands": ["TagbarToggle"]
       },
       "lazy": "1"
-    },
-    "url": "majutsushi/tagbar"
-  },
-  "lang_cpp_enhanced_highlight": {
-    "url": "octol/vim-cpp-enhanced-highlight",
-    "opt": {}
-  },
-  "lang_latex_textlint": {
-    "url": "kipintouch/textlint-syntastic",
-    "opt": {}
-  },
-  "linter_syntastic": {
-    "opt": {},
-    "url": "scrooloose/syntastic"
-  },
-  "misc_ack": {
-    "opt": {},
-    "url": "mileszs/ack.vim"
-  },
-  "navigate_nerdtree": {
+    } },
+  "octol/vim-cpp-enhanced-highlight": {
+    "opt": {} },
+  "bbchung/clighter": {
+    "opt": {} },
+  "kipintouch/textlint-syntastic": {
+    "opt": {} },
+  "scrooloose/syntastic": {
+    "opt": {} },
+  "mileszs/ack.vim": {
+    "opt": {} },
+  "scrooloose/nerdtree": {
     "opt": {
       "autoload": {
         "commands": [
@@ -161,92 +103,66 @@
         ]
       },
       "lazy": "1"
-    },
-    "url": "scrooloose/nerdtree"
-  },
-  "snippet_honza": {
-    "opt": {},
-    "url": "honza/vim-snippets"
-  },
-  "snippet_ultisnips": {
-    "opt": {},
-    "url": "SirVer/ultisnips"
-  },
-  "unite_airline": {
+    } },
+  "SirVer/ultisnips": {
+    "opt": {
+      "depends": "honza/vim-snippets"
+    } },
+  "osyo-manga/unite-airline_themes": {
     "opt": {
       "autoload": {
         "unite_sources": "airline_themes"
       },
       "lazy": "1"
-    },
-    "url": "osyo-manga/unite-airline_themes"
-  },
-  "unite_colors": {
+    } },
+  "ujihisa/unite-colorscheme": {
     "opt": {
       "autoload": {
         "unite_sources": "colorscheme"
       },
       "lazy": "1"
-    },
-    "url": "ujihisa/unite-colorscheme"
-  },
-  "unite_core": {
-    "opt": {},
-    "url": "Shougo/unite.vim"
-  },
-  "unite_codesearch": {
+    } },
+  "Shougo/unite.vim": {
+    "opt": {} },
+  "junkblocker/unite-codesearch": {
     "opt": {
       "autoload": {
         "unite_sources": "codesearch"
       },
       "lazy": "1"
-    },
-    "url": "junkblocker/unite-codesearch"
-  },
-  "unite_mru": {
+    } },
+  "Shougo/neomru.vim": {
     "opt": {
       "autoload": {
         "unite_sources": "file_mru"
       },
       "lazy": "1"
-    },
-    "url": "Shougo/neomru.vim"
-  },
-  "unite_outline": {
+    } },
+  "h1mesuke/unite-outline": {
     "opt": {
       "autoload": {
         "unite_sources": "outline"
       },
       "lazy": "1"
-    },
-    "url": "h1mesuke/unite-outline"
-  },
-  "unite_vimproc": {
+    } },
+  "Shougo/vimproc.vim": {
     "opt": {
       "build": {
-        "cygwin": "make -f make_cygwin.mak",
-        "mac": "make -f make_mac.mak",
-        "unix": "make -f make_unix.mak",
-        "windows": "mingw32-make -f make_mingw64.mak"
+        "cygwin": "make          -f make_cygwin.mak ",
+        "mac"   : "make          -f make_mac.mak    ",
+        "unix"  : "make          -f make_unix.mak   ",
+        "win"   : "mingw32-make  -f make_mingw64.mak"
       },
       "lazy": "1"
-    },
-    "url": "Shougo/vimproc.vim"
-  },
-  "vim_textobj_user": {
-    "opt": {},
-    "url": "kana/vim-textobj-user"
-  },
-  "vim_textobj_indent": {
-    "opt": {},
-    "url": "kana/vim-textobj-indent"
-  },
-  "vim_textobj_comment": {
-    "opt": {},
-    "url": "glts/vim-textobj-comment"
-  },
-  "vim_textobj_wellle_targets":   {
-    "opt": {},
-    "url": "wellle/targets.vim"
-  }
+    } },
+  "kana/vim-textobj-user": {
+    "opt": {} },
+  "kana/vim-textobj-indent": {
+    "opt": {} },
+  "glts/vim-textobj-comment": {
+    "opt": {} },
+  "wellle/targets.vim":   {
+    "opt": {} },
+  "ryanoasis/vim-devicons": {
+    "opt": {} }
 }

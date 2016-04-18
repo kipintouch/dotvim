@@ -2,8 +2,8 @@
 
 " Initialization:                                                    " {{{1
   " Map Leader
-  let mapleader   = ","
-  let g:mapleader = ","
+  let mapleader   = ','
+  let g:mapleader = ','
   " Term Configuration
   let s:colorful_term = (&term =~ "xterm") || (&term =~ "screen")
   " OS Information
@@ -134,28 +134,24 @@
 "}}}1
 " Text Formatting:                                                   " {{{1
   " set completeopt=menuone " don't use a pop up menu for completions
-  " set nowrap          " do not wrap line
-  set formatoptions=rq  " Automatically insert comment leader on return, and
-                        " let gq format comments
+  set nowrap            " do not wrap line
+  set formatoptions=rq  " Automatically insert comment leader on return, and let gq format comments
   set formatoptions+=nt " Recognize numbered lists and auto-wrap
   set ignorecase        " case insensitive by default
   set infercase         " case inferred by default
   set shiftround        " when at 3 spaces, and I hit > ... go to 4, not 5
   set smartcase         " if there are caps, go case-sensitive
-  set shiftwidth=2      " auto-indent amount when using cindent, >>, << and
-                        " stuff like that
+  set shiftwidth=2      " auto-indent amount when using cindent, >>, << and stuff like that
   set expandtab         " no real tabs please!
-  set softtabstop=2     " when hitting tab or backspace, how many spaces should
-                        " a tab be (see expandtab)
-  set tabstop=2         " real tabs should be 8, and they will show with set
-                        " list on
+  set softtabstop=2     " when hitting tab or backspace, how many spaces should a tab be (see expandtab)
+  set tabstop=2         " real tabs should be 8, and they will show with set list on
   set autoindent        " Auto Indent
   set smartindent       " Smart Ident
   set wrap              " Wrap Lines
   set wrapmargin=0      " Controls when to wrap based on terminal size
   set cursorline        " Set CursorLine
   set cmdheight=2       " Setting Command-Pane Height
-  set textwidth=80      " Textwidth
+  set textwidth=120     " Textwidth
   " Work--In Progress Yet to do Temp-Directories
   set nobackup         " No Backup File
   set nowritebackup    " No WriteBackUP
@@ -211,7 +207,7 @@
     if s:running_windows " Working on GUI_FONT
       set guifont=Source_Code_Pro_Medium:h10:cANSI,Source_Code_Pro_Semibold:h10:cANSI,Source_Code_Powerline:h10:b:cANSI,Consolas\ for\ Powerline\ FixedD:h10,Ubuntu\ Mono\ derivative\ Powerline:h10,Monaco\ for\ Powerline:h10,DejaVu_Sans_Mono_for_Powerline:h10:i:cANSI
     else
-      set guifont=Source\ Code\ Pro\ Medium\ 10,Source\ Code\ Pro\ Semi-Bold\ 10,Source\ Code\ Pro\ Bold\ 10,Consolas\ for\ Powerline\ FixedD\ 10,Monaco\ for\ Powerline\ 10,Ubuntu\ Mono\ derivative\ Powerline\ 10,DejaVu\ Sans\ Mono\ for\ Powerline\ 10,Anonymous\ Pro\ for\ Powerline\ 10,Liberation\ Mono\ for\ Powerline\ 10
+      set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ Mono\ 8,Ubuntu\ Mono\ derivative\ Powerline\ 9,Anonymice\ Powerline\ 9,monofur\ for\ Powerline\ 9,DejaVu\ Sans\ Mono\ for\ Powerline\ 9,Inconsolata\ for\ Powerline\ 9,Sauce\ Code\ Pro\ 9,Sauce\ Code\ Pro\ Light\ 9,Sauce\ Code\ Pro\ Semibold\ 9,Sauce\ Code\ Pro\ Medium\ 9,Sauce\ Code\ Pro\ Black\ 9,Sauce\ Code\ Pro\ ExtraLight\ 9,Droid\ Sans\ Mono\ for\ Powerline
     endif
     set guicursor+=n-v-c:blinkon0
     nnoremap <A-Up> :silent! let &guifont = join(
@@ -230,7 +226,7 @@
   else " *ONLY ON LINUX* Term Color Settings                         " {{{2
     if s:colorful_term
       " 256 color --
-      let &t_Co=256
+      " let &t_Co=256
       " Restore screen after quitting
       if has("terminfo")
         let &t_Sf="\ESC[3%p1%dm"
@@ -247,6 +243,17 @@
     else
       colorscheme desert
     endif
+    if &term =~ '^screen'                                            " {{{3
+      " Page keys http://sourceforge.net/p/tmux/tmux-code/ci/master/tree/FAQ
+      execute "set t_kP=\e[5;*~"
+      execute "set t_kN=\e[6;*~"
+      " Arrow keys http://unix.stackexchange.com/a/34723
+      execute "set <xUp>=\e[1;*A"
+      execute "set <xDown>=\e[1;*B"
+      execute "set <xRight>=\e[1;*C"
+      execute "set <xLeft>=\e[1;*D"
+      " echom "Using Tmux Settings"
+    endif "}}}3
   endif
 "}}}1
 " File Encoding:                                                     " {{{1
@@ -271,103 +278,103 @@
   endif
 " }}}1
 " HELP FUNCTIONS:                                                    " {{{1
-" Match Extra White Spaces                                           " {{{2
-function! s:MatchExtraWhitespaces()
-  " echom "MATCHING WHITESPACES"
-  if    &ft ==# 'unite'   || &ft ==# 'startify' ||
-    \   &ft ==# 'tagbar'  || &ft ==# 'qf'       ||
-    \   &ft ==# 'help'    || &ft ==# ''
-    " echom 'Match Whitespaces Excluding: ' . string(&ft)
-    return
-  else
-    " echom 'Match Whitespaces Including: ' . string(&ft)
-    highlight ExWhSpace ctermbg=06 ctermfg=blue guibg=#008080 guifg=blue
-    call matchadd('ExWhSpace', '\s\+$', 101)
-    return
-  endif
-endfunction
-
-" Match ColorColumn                                                  " {{{2
-function! s:ColorColumnSetting()
-  if  &ft ==# 'unite' || &ft ==# 'json'     ||
-    \ &ft ==# 'help'  || &ft ==# 'qf'       ||
-    \ &ft ==# 'text'  || &ft ==# 'markdown' ||
-    \ &ft ==# ''
-    " echom "Exclude FT Detected: " . string(&ft)
-    return
-  else
-    " echom 'ColorColumn Detected: ' . string(&ft)
-    " highlight! link ColorColumn ErrorMsg
-    setlocal colorcolumn=+1
-  endif
-endf
-
-" HL NEXT                                                            " {{{2
-function! <SID>HLNext(blinktime)
-  highlight WhiteOnRed ctermfg=red ctermbg=white cterm=bold
-  if has("gui_running")
-    highlight WhiteOnRed guifg=red guibg=white gui=bold
-  endif
-  for l:ln in range(5)
-    let [bufnum, lnum, col, off] = getpos('.')
-    let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
-    let target_pat = '\c\%#'.@/
-    " let ring_pat = (lnum > 1 ? '\%'.(lnum-1).'l\%>'                " {{{3
-          " \ . max([col-4,1]) .'v\%<'.(col+matchlen+3).'v.\|' : '')
-          " \ . '\%'.lnum.'l\%>'.max([col-4,1]) .'v\%<'.col.'v.'
-          " \ . '\|'
-          " \ . '\%'.lnum.'l\%>'.max([col+matchlen-1,1])
-          " \ . 'v\%<'.(col+matchlen+3).'v.'
-          " \ . '\|'
-          " \ . '\%'.(lnum+1).'l\%>'.max([col-4,1])
-          " \ . 'v\%<'.(col+matchlen+3).'v.'"}}}3
-    let ring = matchadd('WhiteOnRed', target_pat, 101)
-    redraw
-    exec 'sleep ' . float2nr(a:blinktime * 100) . 'm'
-    call matchdelete(ring)
-    redraw
-  endfor
-endfunction
-" Remove White Spaces                                                " {{{2
-function! <SID>Remove_ExtraWhiteSpace()
-  " save last search & cursor position
-  let l:_s=@/
-  let l:l = line(".")
-  let l:c = col(".")
-  if &ft == 'unite' || &ft == 'startify'
-    return
-  else
-    %s/\s\+$//e
-    let @/=l:_s
-    call cursor(l:l, l:c)
-  endif
-endfunction
-" Help Function to capture output of ex commands                     " {{{2
-let g:tab_messages = ""
-function! TabMessage(cmd)
-  redir => g:tab_messages
-  silent execute a:cmd
-  redir END
-  " tabnew
-  " silent put=message
-  " set nomodified
-endfunction
-" Toggle Numbers in Vim                                              " {{{2
-function! NumberToggle()
-  if  &ft ==# 'unite' || &ft ==# ''   ||
-    \ &ft ==# 'help'  || &ft ==# 'qf'
-    return
-  else
-    if(&relativenumber == 1)
-      set relativenumber!
-      set number
+  " Match Extra White Spaces                                         " {{{2
+  function! <SID>MatchExtraWhitespaces()
+    " echom "MATCHING WHITESPACES"
+    if    &ft ==# 'unite'   || &ft ==# 'startify' ||
+      \   &ft ==# 'tagbar'  || &ft ==# 'qf'       ||
+      \   &ft ==# 'help'    || &ft ==# ''
+      " echom 'Match Whitespaces Excluding: ' . string(&ft)
+      return
     else
-      set number!
-      set relativenumber
+      " echom 'Match Whitespaces Including: ' . string(&ft)
+      highlight ExWhSpace ctermbg=06 ctermfg=blue guibg=#008080 guifg=blue
+      call matchadd('ExWhSpace', '\s\+$', 101)
+      return
     endif
-  endif
-endfunction
-" Some Text Formatting:                                              " {{{2
+  endfunction
+
+  " Match ColorColumn                                                " {{{2
+  function! <SID>ColorColumnSetting()
+    if  &ft ==# 'unite' || &ft ==# 'json'     ||
+      \ &ft ==# 'help'  || &ft ==# 'qf'       ||
+      \ &ft ==# 'text'  || &ft ==# 'markdown' ||
+      \ &ft ==# ''
+      " echom "Exclude FT Detected: " . string(&ft)
+      return
+    else
+      " echom 'ColorColumn Detected: ' . string(&ft)
+      " highlight! link ColorColumn ErrorMsg
+      setlocal colorcolumn=+1
+    endif
+  endf
+
+  " HL NEXT                                                          " {{{2
+  function! <SID>HLNext(blinktime)
+    highlight WhiteOnRed ctermfg=red ctermbg=white cterm=bold
+    if has("gui_running")
+      highlight WhiteOnRed guifg=red guibg=white gui=bold
+    endif
+    for l:ln in range(5)
+      let [bufnum, lnum, col, off] = getpos('.')
+      let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
+      let target_pat = '\c\%#'.@/
+      " let ring_pat = (lnum > 1 ? '\%'.(lnum-1).'l\%>'              " {{{3
+      "       \ . max([col-4,1]) .'v\%<'.(col+matchlen+3).'v.\|' : '')
+      "       \ . '\%'.lnum.'l\%>'.max([col-4,1]) .'v\%<'.col.'v.'
+      "       \ . '\|'
+      "       \ . '\%'.lnum.'l\%>'.max([col+matchlen-1,1])
+      "       \ . 'v\%<'.(col+matchlen+3).'v.'
+      "       \ . '\|'
+      "       \ . '\%'.(lnum+1).'l\%>'.max([col-4,1])
+      "       \ . 'v\%<'.(col+matchlen+3).'v.'"}}}3
+      let ring = matchadd('WhiteOnRed', target_pat, 101)
+      redraw
+      exec 'sleep ' . float2nr(a:blinktime * 100) . 'm'
+      call matchdelete(ring)
+      redraw
+    endfor
+  endfunction
+  " Remove White Spaces                                              " {{{2
+  function! <SID>Remove_ExtraWhiteSpace()
+    " save last search & cursor position
+    let l:_s=@/
+    let l:l = line(".")
+    let l:c = col(".")
+    if &ft == 'unite' || &ft == 'startify'
+      return
+    else
+      %s/\s\+$//e
+      let @/=l:_s
+      call cursor(l:l, l:c)
+    endif
+  endfunction
+  " Help Function to capture output of ex commands                   " {{{2
+  let g:tab_messages = ""
+  function! TabMessage(cmd)
+    redir => g:tab_messages
+    silent execute a:cmd
+    redir END
+    " tabnew
+    " silent put=message
+    " set nomodified
+  endfunction
+  " Toggle Numbers in Vim                                            " {{{2
+  " function! NumberToggle()
+  "   if  &ft ==# 'unite' || &ft ==# ''   ||
+  "     \ &ft ==# 'help'  || &ft ==# 'qf'
+  "     return
+  "   else
+  "     if(&relativenumber == 1)
+  "       set relativenumber!
+  "       set number
+  "     else
+  "       set number!
+  "       set relativenumber
+  "     endif
+  "   endif
+  " endfunction
+  " Some Text Formatting:                                            " {{{2
   "  Overline 0305 Underline 0332 DoubleUnderline 0333 Strikethrough 0336
   function! <SID>Combine_line(my_line, cp)                           " {{{3
     execute 'let l:char = "\u'.a:cp.'"'
@@ -451,8 +458,8 @@ endfunction
     call setpos('.', l:pos)
   endfunction
 
-" Close All but this buffer on a tab (original BufOnly.vim           " {{{2
-function! <SID>BufOnly()
+  " Close All But This Buffer On A Tab Original BufOnly:             " {{{2
+  function! <SID>BufOnly()
     " let l:buffer = bufnr('%')                                      " {{{3
     " if l:buffer == -1
     "   echohl ErrorMsg
@@ -485,22 +492,22 @@ function! <SID>BufOnly()
     " elseif l:delete_count > 1
     "   echomsg l:delete_count "buffers deleted"
     " endif "}}}3
-  " Define Some local variables
-  let l:curr_buffer  = bufnr('%')
-  let l:buflist      = tabpagebuflist()
-  if tabpagenr("$") == 1
-    let l:buflist      = range(1, bufnr('$'))
-  endif
-  let l:delete_count = 0
-  let l:bang         = '!'
-  for l:n in l:buflist
-    if l:n != l:curr_buffer && buflisted(l:n)
-      if l:bang == '' && getbufvar(l:n, '&modified')
-        echohl ErrorMsg
-        echomsg 'No write since last change for buffer'
-              \ l:n '(add ! to override)'
-        echohl None
-      else
+    " Define Some local variables                                    " {{{3
+    let l:curr_buffer  = bufnr('%')
+    let l:buflist      = tabpagebuflist()
+    if tabpagenr("$") == 1
+      let l:buflist      = range(1, bufnr('$'))
+    endif
+    let l:delete_count = 0
+    let l:bang         = '!'
+    for l:n in l:buflist
+      if l:n != l:curr_buffer && buflisted(l:n)
+        if l:bang == '' && getbufvar(l:n, '&modified')
+          echohl ErrorMsg
+          echomsg 'No write since last change for buffer'
+                \ l:n '(add ! to override)'
+          echohl None
+        else
           silent exe 'bdel' . l:bang . ' ' . l:n
           if ! buflisted(l:n)
             let delete_count = l:delete_count+1
@@ -512,9 +519,9 @@ function! <SID>BufOnly()
       echomsg l:delete_count "buffer deleted"
     elseif l:delete_count > 1
       echomsg l:delete_count "buffers deleted"
-    endif
+    endif "}}}3
   endfunction
-" Folding for Indent                                                 " {{{2
+  " Folding For Indent:                                              " {{{2
   function! Get_indent_Fold(lnum)
     function! s:NextNonBlankLine(lnum)                               " {{{3
       let numlines = line('$')
@@ -543,8 +550,8 @@ function! <SID>BufOnly()
       return '>' . next_indent
     endif
   endfunction
-" Fold Jumper                                                        " {{{2
-  fun! FoldJump(dir)
+  " Fold Jumper:                                                     " {{{2
+  fun! FoldJump(dir)                                                 " {{{3
     let l:start = line('.')
     let l:new = l:start
     if (a:dir == 1) " Moving Next fold or Down
@@ -561,67 +568,83 @@ function! <SID>BufOnly()
         normal {{
       endif
     endif
-  endf
+  endf "}}}3
+  function! NextClosedFold(dir)                                      " {{{3
+    let cmd = 'norm!z' . a:dir
+    let view = winsaveview()
+    let [l0, l, open] = [0, view.lnum, 1]
+    while l != l0 && open
+      exe cmd
+      let [l0, l] = [l, line('.')]
+      let open = foldclosed(l) < 0
+    endwhile
+    if open
+        call winrestview(view)
+    endif
+  endfunction "}}}3
 "}}}1
 " Mappings:                                                          " {{{1
-" Basic Editing                                                      " {{{2
-  " Save Split                                                       " {{{3
+" Basic Editing:                                                     " {{{2
+  " Save Split:                                                      " {{{3
     nnoremap <leader>s :split<CR>
     nnoremap <leader>v :vsplit<CR>
     nnoremap <leader>w :w<CR>
     nnoremap <leader>q :q<CR>
-  " Maintain Selection when Indenting text <left> | <right>          " {{{3
-    vnoremap < <gv
-    vnoremap > >gv
-  " HLNext Mapping                                                   " {{{3
+  " Maintain Selection When Indenting Text:                          " {{{3
+    noremap  <A-l> >>
+    vnoremap <A-l> >gv
+    noremap  <A-h> <<
+    vnoremap <A-h> <gv
+  " HLNext Mapping:                                                  " {{{3
     nnoremap <silent> n nzz:call <SID>HLNext(0.1)<cr>
     nnoremap <silent> N Nzz:call <SID>HLNext(0.1)<cr>
-  " Movements                                                        " {{{3
-    " First Non-blank Character on the line
-    nnoremap 0       ^
+  " Movements:                                                       " {{{3
+    " First Nonblank Character On The Line:
+    nnoremap 0 ^
     " Search and replace
     nnoremap <space> /\v
     " Going Up and down in Wrap lines
-    nnoremap j       gj
+    nnoremap j gj
     " Going Up and down in Wrap lines
-    nnoremap k       gk
+    nnoremap k gk
   " Tab Movements:                                                   " {{{3
     nnoremap <leader>tn :tabnew<CR>
-    nnoremap <Tab>   gt
-    nnoremap <S-Tab> gT
-    nnoremap <C-Tab> :echom "HELLO"<CR>
+    nnoremap <Tab>      gt
+    nnoremap <S-Tab>    gT
+    nnoremap <C-Left>   :tabmove -1<CR>
+    nnoremap <C-Right>  :tabmove +1<CR>
   " Buffer Movements Fold Movement:                                  " {{{3
     if g:local_settings_place == "home"
       " Jump To Next Fold or Downwards
-      nnoremap ö :call FoldJump(1)<CR>
+      nmap ö [
       " Jump To Previous Fold or Upwards
-      nnoremap ä :call FoldJump(0)<CR>
-      " Jump Paragraph Upwards
-      nnoremap Ö {
-      " Jump Paragraph Downwards
-      nnoremap Ä }
+      nmap ä ]
       " Jump to Definition
       nnoremap ü <C-]>
       " Jump back to Last Position
       nnoremap Ü <C-O>
+      " Jump Folds Upwards or EmptyLines
+      nnoremap <silent> Ö :call FoldJump(1)<CR>
+      " Jump Folds Downwards or EmptyLines
+      nnoremap <silent> Ä :call FoldJump(-1)<CR>
+      " Jump Closed-Folds Upwards
+      nnoremap <silent> ;Ö :call NextClosedFold('j')<cr>
+      " Jump Closed-Folds Downwards
+      nnoremap <silent> ;Ä :call NextClosedFold('k')<cr>
     else
       " Jump To Next Fold or Downwards
       nnoremap <A-/> :call FoldJump(1)<CR>
       " Jump To Previous Fold or Upwards
       nnoremap <A-?> :call FoldJump(0)<CR>
     endif
-  " Moving Lines Up and Down                                         " {{{3
-  " <move> (LineNumber: . )<to-location><CR><reselect::realign::reselect>
+  " Moving Lines Up And Down:                                        " {{{3
+    " <move> (LineNumber: . )<to-location><CR><reselect::realign::reselect>
     nnoremap <silent><A-j> :m .+1<CR>==
     nnoremap <silent><A-k> :m .-2<CR>==
     vnoremap <silent><A-j> :m '>+1<CR>gv=gv
     vnoremap <silent><A-k> :m '<-2<CR>gv=gv
-  " Moving In-between Location List                                  " {{{3
-    nnoremap <silent><A-.> :lprev<CR>
-    nnoremap <silent><A-,> :lnext<CR>
-    " nnoremap <A-Space> :echom "HELLO < A - SPacee >"<CR>
-  " Window Navigations                                               " {{{3
-    " Change Window Size                                             " {{{4
+  " Window Navigations:                                              " {{{3
+    " Change Window Size:                                            " {{{4
       if s:running_terminal
         nnoremap <silent><S-A-H> :vertical resize +5<CR>
         nnoremap <silent><S-A-J> :resize +5<CR>
@@ -633,26 +656,26 @@ function! <SID>BufOnly()
         nnoremap <silent><S-A-K> :resize -5<CR>
         nnoremap <silent><S-A-L> :vertical resize -5<CR>
       endif
-    " Move Btwn split Windows                                        " {{{4
+    " Move Btwn Split Windows:                                       " {{{4
       nnoremap <silent><C-h> :wincmd h<CR>
       nnoremap <silent><C-l> :wincmd l<CR>
       nnoremap <silent><C-j> :wincmd j<CR>
       nnoremap <silent><C-k> :wincmd k<CR>
-  " Colorscheme Background Toggle                                    " {{{3
+  " Colorscheme Background Toggle:                                   " {{{3
     nnoremap <A-#>
       \ :let &background = ( &background=='dark' ? 'light' : 'dark' ) \|
       \ :redraw                                                       \|
       \ :echom &background<CR>
-
-  " Change to CWD                                                    " {{{3
+  " Change To CWD:                                                   " {{{3
     nnoremap <leader>cd :lcd%:h<CR>
-  " BufOnly Mapping Close all but this buffer                        " {{{3
+  " BufOnly Mapping Close All But This Buffer:                       " {{{3
     nnoremap <leader>bd :call <SID>BufOnly()<CR>
-  " Toggle Paste                                                     " {{{3
-  " Turned Off Due To YCM-Confilict. <Tab> is disabled due to this in terminal.
-  " nnoremap <leader>pp :setlocal paste!<cr>
+  " Toggle Paste:                                                    " {{{3
+    " Turned Off Due To YCM-Confilict. <Tab> is disabled due to
+    " this in terminal.
+    " nnoremap <leader>pp :setlocal paste!<cr>
     set pastetoggle=<F2>
-  " Some Text Formatting (overline, strikethrough)                   " {{{3
+  " Some Text Formatting:                                            " {{{3
     nnoremap <leader>eo :call <SID>Combine_line(line("."), '0305')<CR>
     vnoremap <leader>eo :call <SID>Combine_select('0305')<CR>
     nnoremap <leader>eu :call <SID>Combine_line(line("."), '0333')<CR>
@@ -661,24 +684,17 @@ function! <SID>BufOnly()
     vnoremap <leader>et :call <SID>Combine_select('0336')<CR>
     nnoremap <leader>ec :call <SID>Del_combine_line()<CR>
     vnoremap <leader>ec :call <SID>Del_combine_selection()<CR>
-  " Toggle Number Use                                                " {{{3
-    nnoremap <silent><A-n> :call NumberToggle()<CR>
-" Acessing Files                                                     " {{{2
-  execute   " nnoremap <leader>ev   :e " .
-      \ expand("$MYVIMRC")                                   . "\<CR>"
-  execute   " nnoremap <leader>eb   :e " .
-      \ expand(s:vimfiles . "dotvim/vimrcs/base_rc")         . "\<CR>"
-  execute   " nnoremap <leader>ep   :e " .
-      \ expand(s:vimfiles . "dotvim/vimrcs/plugin_rc")       . "\<CR>"
-  execute   " nnoremap <leader>eep  :e " .
-      \ expand(s:vimfiles . "dotvim/dotvim.vim")             . "\<CR>"
-  execute   " nnoremap <leader>ek   :e " .
-      \ expand(s:vimfiles . "dotvim/vimrcs/commenter.vim")   . "\<CR>"
-  execute   " nnoremap <leader>ed   :e " .
-      \ expand(s:vimfiles . "dotvim/vimrcs/dragvisuals.vim") . "\<CR>"
-  execute   " nnoremap <leader>em   :e " .
-      \ expand(s:vimfiles . "dotvim/vimrcs/Term_Mapping_rc") . "\<CR>"
-" Autocomd                                                           " {{{1
+  " Toggle Number Use:                                               " {{{3
+    " nnoremap <silent><A-n> :call NumberToggle()<CR>
+" Acessing Files:                                                    " {{{2
+  execute   " nnoremap <leader>ev   :e " . expand("$MYVIMRC")                                     . "\<CR>"
+  execute   " nnoremap <leader>eb   :e " . expand(s:vimfiles  . "dotvim/vimrcs/base_rc")          . "\<CR>"
+  execute   " nnoremap <leader>ep   :e " . expand(s:vimfiles  . "dotvim/vimrcs/plugin_rc")        . "\<CR>"
+  execute   " nnoremap <leader>eep  :e " . expand(s:vimfiles  . "dotvim/autoload/dotvim.vim")     . "\<CR>"
+  execute   " nnoremap <leader>ek   :e " . expand(s:vimfiles  . "dotvim/vimrcs/commenter.vim")    . "\<CR>"
+  execute   " nnoremap <leader>ed   :e " . expand(s:vimfiles  . "dotvim/vimrcs/dragvisuals.vim")  . "\<CR>"
+  execute   " nnoremap <leader>em   :e " . expand(s:vimfiles  . "dotvim/vimrcs/Term_Mapping_rc")  . "\<CR>"
+" Autocomd:                                                          " {{{1
   " WhiteSpaces:                                                     " {{{2
     augroup WHITESPACES
       au!
@@ -695,29 +711,15 @@ function! <SID>BufOnly()
       \ if line("'\"") > 0 && line("'\"") <= line("$") |
       \   exe "normal! g`\"" |
       \ endif
-  " FileType Specific (indent, tabs etc )                            " {{{2
-  augroup MYFILETYPE
-    au!
-    autocmd BufNewFile,BufRead .bash*,*bash_* set ft=sh
-    autocmd FileType perl,sh,c,cpp,matlab
-      \ setl foldmethod=expr foldexpr=Get_indent_Fold(v:lnum)
-    autocmd Filetype plaintex set ft=tex
-    autocmd Filetype tex setl tw=120
-    autocmd FileType python,conf
-      \ setl sts=4 sw=4 ts=4
-      \ foldmethod=expr foldexpr=Get_indent_Fold(v:lnum)
-    autocmd FileType json,javascript,cmake
-      \ setl sts=2 sw=2 ts=2 tw=120
-      \ foldmethod=expr foldexpr=Get_indent_Fold(v:lnum)
-    " if s:running_windows
-    "   autocmd FileType fortran
-    "         \ setl foldmethod=expr foldexpr=Get_indent_Fold(v:lnum) |
-    "         \ setl tw=120                                           |
-    "         \ nmap <silent><buffer><C-F> :set syntax=fortran       \|
-    "           \ let b:fortran_fixed_source=!b:fortran_fixed_source \|
-    "           \ set syntax=text                                    \|
-    "           \ set syntax=fortran<CR>
-    " else
+  " FileType Specific:                                               " {{{2
+    augroup MYFILETYPE
+      au!
+      autocmd BufNewFile,BufRead .bash*,*bash_* set  ft=sh
+      autocmd Filetype           plaintex       set  ft=tex
+      autocmd Filetype           tex            setl tw=120
+      autocmd FileType           json,javascript,cmake,perl,sh,c,cpp,matlab,cuda,html,php,python,conf
+        \ setl sts=2 sw=2 ts=2
+        \ foldmethod=expr foldexpr=Get_indent_Fold(v:lnum)
       autocmd FileType fortran
         \ setl foldmethod=expr foldexpr=Get_indent_Fold(v:lnum) |
         \ setl tw=120                                           |
@@ -725,7 +727,7 @@ function! <SID>BufOnly()
           \ let b:fortran_fixed_source=!b:fortran_fixed_source \|
           \ set syntax=text                                    \|
           \ set syntax=fortran<CR>
-    " endif
-    autocmd FileType  * call s:ColorColumnSetting()                 |
-                      \ call s:MatchExtraWhitespaces()
-  augroup end
+
+      autocmd FileType  * call <SID>ColorColumnSetting()           |
+                        \ call <SID>MatchExtraWhitespaces()
+    augroup end
