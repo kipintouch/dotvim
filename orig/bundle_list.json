@@ -64,11 +64,13 @@
     "opt": {} },
   "terryma/vim-multiple-cursors": {
     "opt": {} },
-  "tpope/vim-surround": {
-    "opt": {} },
   "kshenoy/vim-origami": {
     "opt": {} },
+  "tpope/vim-surround": {
+    "opt": {} },
   "tpope/vim-fugitive": {
+    "opt": {} },
+  "tpope/vim-unimpaired": {
     "opt": {} },
   "airblade/vim-gitgutter": {
     "opt": {} },
@@ -95,15 +97,10 @@
     "opt": {} },
   "scrooloose/nerdtree": {
     "opt": {
-      "autoload": {
-        "commands": [
-          "NERDTreeToggle",
-          "NERDTreeFind",
-          "NERDTree"
-        ]
-      },
-      "lazy": "1"
-    } },
+      "lazy":     "1",
+      "autoload": { "commands": [ "NERDTreeToggle", "NERDTreeFind", "NERDTree"] },
+      "depends":  "ryanoasis/vim-devicons"
+    }},
   "SirVer/ultisnips": {
     "opt": {
       "depends": "honza/vim-snippets"

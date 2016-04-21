@@ -97,8 +97,13 @@ do while(${1:Conditions})
 	${2:Do Something}
 end do ! while
 endsnippet
+# Simple Write
 snippet wr "write(*, *) function" b
 write(*, ${1:*}) ${2:"${3:HelloWorld}"}${4:, }
+endsnippet
+# Write Format
+snippet fwr "write(ffmt, '<>><') function" b
+write(${1:ffmt}, '(${2:"(A)"})') ${3:i}
 endsnippet
 # Case Construct
 snippet cc "Case Statement" b
@@ -146,28 +151,32 @@ endsnippet
 # Variables / Type shorthand   for subroutines and functions (intent) in, out, inout #
 ######################################################################################
 # Integer var in Subroutines
-snippet sin "Subroutine Declaring a Integer" b
+snippet svin "Subroutine Declaring a Integer variable" b
 integer, intent(${1:in}) :: ${2:int_var}
 endsnippet
 # Character var in Subroutines
-snippet sch "Subroutine Declaring a Integer" b
+snippet svch "Subroutine Declaring a Character variable" b
 character, intent(${1:in}) :: ${2:char_var}
 endsnippet
 # Logical var in Subroutines
-snippet slog "Subroutine Declaring a Integer" b
+snippet svlog "Subroutine Declaring a Logical variable" b
 logical, intent(${1:in}) :: ${2:logical_var}
 endsnippet
 # Float var in Subroutines
-snippet sre "Subroutine Declaring a Integer" b
+snippet svre "Subroutine Declaring a Real variable" b
 real, intent(${1:in}) :: ${2:real_var}
 endsnippet
+# Float var in Subroutines
+snippet svdb "Subroutine Declaring a Double variable" b
+double precision, intent(${1:in}) :: ${2:double_var}
+endsnippet
 # Declaring type in subroutines
-snippet sty "Subroutine Declaring a type" b
+snippet svty "Subroutine Declaring a type variable" b
 type(${1:type}), intent(${2:in}) :: ${3:type_var}
 endsnippet
 # Declaring type array in subroutines
 snippet saty "Subroutine Declaring a type array" b
-type({$1:type}), dimension(${2:dim}), ${3:allocatable,} intent(${4:in}) :: ${5:type_array}
+type(${1:type}), dimension(${2:dim}), ${3:allocatable,} intent(${4:in}) :: ${5:type_array}
 endsnippet
 # Declaring integer array in subroutines
 snippet sain "Subroutine Declaring a integer array" b
@@ -203,7 +212,7 @@ character(len=${1:len}), ${2:allocatable,} dimension(${3:dim}) :: ${4:char_array
 endsnippet
 # Declaring type Array
 snippet aty "Declaring a type array" b
-type({$1:type}), ${2:allocatable,} dimension(${3:dim}) :: ${4:type_array}
+type(${1:type}), ${2:allocatable,} dimension(${3:dim}) :: ${4:type_array}
 endsnippet
 # Double Array var in Subroutines
 snippet adb "Declaring a Double" b

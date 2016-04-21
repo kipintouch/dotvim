@@ -1,3 +1,8 @@
+if exists('g:loaded_dotvim')
+  finish
+endif
+let g:loaded_dotvim = 1
+
 " Python Global Functions:                                                  " {{{1
 python << EOF
 import vim, json, os.path, shutil
@@ -86,7 +91,7 @@ EOF
 "}}}1
 
 " New Manager:                                                              " {{{1
-  fun! g:dotvim#new(host, manager)
+  fun! dotvim#new(host, manager)
     " Host:    Collg / WORK / HOME
     " Os:      Operating System for the Host
     " Manager: Plugin Manager (NeoBundle / Plug)
@@ -140,26 +145,26 @@ EOF
       endfunction "}}}2
     " Updating List From Local Conf:                                        " {{{2
       fun! Obj.Update_blist_from_local_conf()
-        if exists('g:bundle_settings') && type(g:bundle_settings) == 4
-          let self.plugins_to_exclude = []
-          " AutoComplete Plugin:                                            " {{{3
-            if (self.Get_os() ==# 'unix') " Ycm Default for home:
-              if ((self.Get_host() ==# 'collg') || (self.Get_host() ==# 'work'))
-                if has('lua') " Use Neocomplete:
-                  call extend(self.plugins_to_exclude, ['Shougo/neocomplcache.vim', 'Valloric/YouCompleteMe'])
-                else          " Use Neocomplcache:
-                  call extend(self.plugins_to_exclude, ['Shougo/neocomplete.vim',   'Valloric/YouCompleteMe'])
-                endif
-              else
-                call extend(self.plugins_to_exclude, ['Shougo/neocomplcache.vim', 'Shougo/neocomplete.vim'])
+        let self.plugins_to_exclude = []
+        " AutoComplete Plugin:                                            " {{{3
+          if (self.Get_os() ==# 'unix') " Ycm Default for home:
+            if ((self.Get_host() ==# 'collg') || (self.Get_host() ==# 'work'))
+              if has('lua') " Use Neocomplete:
+                call extend(self.plugins_to_exclude, ['Shougo/neocomplcache.vim', 'Valloric/YouCompleteMe'])
+              else          " Use Neocomplcache:
+                call extend(self.plugins_to_exclude, ['Shougo/neocomplete.vim',   'Valloric/YouCompleteMe'])
               endif
-            elseif (self.Get_os ==# 'win')
-              call extend(self.plugins_to_exclude, [
-                    \ 'Shougo/neocomplcache.vim',
-                    \ 'Shougo/neocomplete.vim',
-                    \ 'Valloric/YouCompleteMe'
-                    \ ])
-            endif "}}}3
+            else
+              call extend(self.plugins_to_exclude, ['Shougo/neocomplcache.vim', 'Shougo/neocomplete.vim'])
+            endif
+          elseif (self.Get_os ==# 'win')
+            call extend(self.plugins_to_exclude, [
+                  \ 'Shougo/neocomplcache.vim',
+                  \ 'Shougo/neocomplete.vim',
+                  \ 'Valloric/YouCompleteMe'
+                  \ ])
+          endif "}}}3
+        if exists('g:bundle_settings') && type(g:bundle_settings) == 4
           " Local Corrections Remove:                                       " {{{3
             call extend(self.plugins_to_exclude, g:bundle_settings.plugins_to_exclude)
             let self.plugins_to_exclude = s:Unique_list(self.plugins_to_exclude)
@@ -182,7 +187,7 @@ EOF
                 if (type(l:k) == 4)     " Dictionary:
                   call extend(self.blist, l:k)
                 elseif (type(l:k) == 1) " String:
-                  call extend(self.blist, {l:k: {'opt': {}} })
+                  call extend(self.blist, {l:k : {'opt': {}} })
                 else
                   echom '-------------------------------------------------------------'    .
                         \ "To Add Plugins you need a list of dict 'plugins_to_add': "      .
