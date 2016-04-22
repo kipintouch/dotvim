@@ -146,14 +146,20 @@ EOF
     " Updating List From Local Conf:                                        " {{{2
       fun! Obj.Update_blist_from_local_conf()
         let self.plugins_to_exclude = []
-        " AutoComplete Plugin:                                            " {{{3
-          if (self.Get_os() ==# 'unix') " Ycm Default for home:
-            if ((self.Get_host() ==# 'collg') || (self.Get_host() ==# 'work'))
+        " AutoComplete Plugin:                                              " {{{3
+          if (self.Get_os() ==# 'unix') " Ycm Default For Home And Collg:
+            if (self.Get_host() ==# 'work')
               if has('lua') " Use Neocomplete:
                 call extend(self.plugins_to_exclude, ['Shougo/neocomplcache.vim', 'Valloric/YouCompleteMe'])
               else          " Use Neocomplcache:
                 call extend(self.plugins_to_exclude, ['Shougo/neocomplete.vim',   'Valloric/YouCompleteMe'])
               endif
+            elseif (self.Get_host() ==# 'collg')
+              call extend(self.plugins_to_exclude, [
+                \ 'Shougo/neocomplcache.vim',
+                \ 'Shougo/neocomplete.vim',
+                \ 'Valloric/YouCompleteMe'
+                \ ])
             else
               call extend(self.plugins_to_exclude, ['Shougo/neocomplcache.vim', 'Shougo/neocomplete.vim'])
             endif
@@ -360,6 +366,56 @@ fhand.close()
 EOF
         echom 'Plugin Config Created'
       endfunction "}}}2
+    " Functional Profiling Vim Startuptime:                                 " {{{2
+      function! Obj.Profiling()
+        " Execute PERL:                                                     " {{{3
+          execute "!perl " . expand('~/.vim/dotvim/') . 'prof.pl'
+        " Open Profile File In Vim First:                                   " {{{3
+          execute "tabnew"
+          execute ":e" . " /tmp/stats"
+
+          let l:timings = []
+          for l:i in range(1, line('$'))
+            let l:temp = []
+            if getline(l:i) =~ '^SCRIPT'
+              call add(l:temp, getline(l:i)[len('SCRIPT  '):])
+              call add(l:temp, matchstr(getline(l:i + 1), '^Sourced \zs\d\+'))
+              let l:temp = l:temp + map(getline(l:i + 2, l:i + 3), 'matchstr(v:val, ''\d\+\.\d\+$'')')
+              call add(timings, l:temp)
+            endif
+          endfor
+          unlet l:temp
+        " Seperate Usr And Sys:                                             " {{{3
+          let l:usr = []
+          let l:sys = []
+          for l:i in range(len(timings))
+            if timings[l:i][0] =~ '/usr/'
+              call add(l:sys, timings[l:i])
+            else
+              call add(l:usr, timings[l:i])
+            endif
+          endfor
+        " Write Results To Res:                                             " {{{3
+          enew
+          let l:count = 1
+          for l:i in range(len(l:usr))
+            let l:temp = printf("%5u %10.5f %10.5f %100s",
+                  \ l:usr[l:i][1], str2float(l:usr[l:i][2]), str2float(l:usr[l:i][3]), l:usr[l:i][0])
+            call setline(l:count, l:temp)
+            let l:count += 1
+          endfor
+          for l:i in range(len(l:sys))
+            let l:temp = printf("%5u %10.5f %10.5f %100s",
+                  \ l:sys[l:i][1], str2float(l:sys[l:i][2]), str2float(l:sys[l:i][3]), l:sys[l:i][0])
+            call setline(l:count, l:temp)
+            let l:count += 1
+          endfor
+          unlet l:count
+          unlet l:timings
+          unlet l:usr
+          unlet l:sys
+          "}}}3
+      endfunction
     " Initializing Some Basics:                                             " {{{2
       call Obj.Init_bundle()
       call Obj.Update_blist_from_local_conf()
