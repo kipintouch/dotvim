@@ -1,7 +1,9 @@
-if exists('g:loaded_dotvim')
-  finish
-endif
-let g:loaded_dotvim = 1
+" If Loaded Then Exit                                                       " {{{1
+  if exists('g:loaded_dotvim')
+    finish
+  endif
+  let g:loaded_dotvim = 1
+  "}}}1
 
 " Python Global Functions:                                                  " {{{1
 python << EOF
@@ -416,6 +418,25 @@ EOF
           unlet l:sys
           "}}}3
       endfunction
+		" Setting Up Local Places:                                              " {{{2
+      if !exists('g:local_settings_place')
+        let g:local_settings_place = Obj.Get_host()
+        if ((len(substitute(system('echo $SSH_CLIENT'), '\v\W', '', 'g')) != 0) ||
+          \ (len(substitute(system('echo $SSH_TTY'),    '\v\W', '', 'g')) != 0))
+          let l:usr_ =  matchstr(
+            \ substitute(
+            \             system("who \| awk '{ gsub(/^(.*)\\(\|\\)/, \"\"); print }'"),
+            \             '\v\n',
+            \             '',
+            \             'g'),
+            \ 'port')
+          if len(l:usr_)
+            let g:local_settings_place = 'home'
+          elseif
+            let g:local_settings_place = 'work'
+          endif
+        endif
+      endif "}}}2
     " Initializing Some Basics:                                             " {{{2
       call Obj.Init_bundle()
       call Obj.Update_blist_from_local_conf()
