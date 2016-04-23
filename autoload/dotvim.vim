@@ -432,7 +432,7 @@ EOF
             \ 'port')
           if len(l:usr_)
             let g:local_settings_place = 'home'
-          elseif
+          else
             let g:local_settings_place = 'work'
           endif
         endif
