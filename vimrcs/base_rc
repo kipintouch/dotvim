@@ -224,7 +224,7 @@
       \ '\=eval(submatch(0)-1)',
       \ 'g')<CR> \| :echom split(&guifont, ',')[0]<CR>
   else " *ONLY ON LINUX* Term Color Settings                         " {{{2
-    if s:colorful_term
+    if s:colorful_term                                               " {{{3
       " 256 color --
       " let &t_Co=256
       " Restore screen after quitting
@@ -242,7 +242,7 @@
       colorscheme dracula
     else
       colorscheme desert
-    endif
+    endif "}}}3
     if &term =~ '^screen'                                            " {{{3
       " Page keys http://sourceforge.net/p/tmux/tmux-code/ci/master/tree/FAQ
       execute "set t_kP=\e[5;*~"
@@ -584,116 +584,151 @@
   endfunction "}}}3
 "}}}1
 " Mappings:                                                          " {{{1
-" Basic Editing:                                                     " {{{2
-  " Save Split:                                                      " {{{3
-    nnoremap <leader>s :split<CR>
-    nnoremap <leader>v :vsplit<CR>
-    nnoremap <leader>w :w<CR>
-    nnoremap <leader>q :q<CR>
-  " Maintain Selection When Indenting Text:                          " {{{3
-    noremap  <A-l> >>
-    vnoremap <A-l> >gv
-    noremap  <A-h> <<
-    vnoremap <A-h> <gv
-  " HLNext Mapping:                                                  " {{{3
-    nnoremap <silent> n nzz:call <SID>HLNext(0.1)<cr>
-    nnoremap <silent> N Nzz:call <SID>HLNext(0.1)<cr>
-  " Movements:                                                       " {{{3
-    " First Nonblank Character On The Line:
-    nnoremap 0 ^
-    " Search and replace
-    nnoremap <space> /\v
-    " Going Up and down in Wrap lines
-    nnoremap j gj
-    " Going Up and down in Wrap lines
-    nnoremap k gk
-  " Tab Movements:                                                   " {{{3
-    nnoremap <leader>tn :tabnew<CR>
-    nnoremap <Tab>      gt
-    nnoremap <S-Tab>    gT
-    nnoremap <C-Left>   :tabmove -1<CR>
-    nnoremap <C-Right>  :tabmove +1<CR>
-  " Buffer Movements Fold Movement:                                  " {{{3
-    if g:local_settings_place == "home"
-      " Jump To Next Fold or Downwards
-      nmap ö [
-      " Jump To Previous Fold or Upwards
-      nmap ä ]
-      " Jump to Definition
-      nnoremap ü <C-]>
-      " Jump back to Last Position
-      nnoremap Ü <C-O>
-      " Jump Folds Upwards or EmptyLines
-      nnoremap <silent> Ö :call FoldJump(1)<CR>
-      " Jump Folds Downwards or EmptyLines
-      nnoremap <silent> Ä :call FoldJump(-1)<CR>
-      " Jump Closed-Folds Upwards
-      nnoremap <silent> ;Ö :call NextClosedFold('j')<cr>
-      " Jump Closed-Folds Downwards
-      nnoremap <silent> ;Ä :call NextClosedFold('k')<cr>
-    else
-      " Jump To Next Fold or Downwards
-      nnoremap <A-/> :call FoldJump(1)<CR>
-      " Jump To Previous Fold or Upwards
-      nnoremap <A-?> :call FoldJump(0)<CR>
-    endif
-  " Moving Lines Up And Down:                                        " {{{3
-    " <move> (LineNumber: . )<to-location><CR><reselect::realign::reselect>
-    nnoremap <silent><A-j> :m .+1<CR>==
-    nnoremap <silent><A-k> :m .-2<CR>==
-    vnoremap <silent><A-j> :m '>+1<CR>gv=gv
-    vnoremap <silent><A-k> :m '<-2<CR>gv=gv
-  " Window Navigations:                                              " {{{3
-    " Change Window Size:                                            " {{{4
-      if s:running_terminal
-        nnoremap <silent><S-A-H> :vertical resize +5<CR>
-        nnoremap <silent><S-A-J> :resize +5<CR>
-        nnoremap <silent><S-A-K> :resize -5<CR>
-        nnoremap <silent><S-A-L> :vertical resize -5<CR>
+  " Basic Editing:                                                   " {{{2
+    " Save Split:                                                    " {{{3
+      nnoremap <leader>s :split<CR>
+      nnoremap <leader>v :vsplit<CR>
+      nnoremap <leader>w :w<CR>
+      nnoremap <leader>q :q<CR>
+    " Maintain Selection When Indenting Text:                        " {{{3
+      if &term =~ '^screen'
+        noremap  <Esc>l >>
+        vnoremap <Esc>l >gv
+        noremap  <Esc>h <<
+        vnoremap <Esc>h <gv
       else
-        nnoremap <silent>H       :vertical resize +5<CR>
-        nnoremap <silent><S-A-J> :resize +5<CR>
-        nnoremap <silent><S-A-K> :resize -5<CR>
-        nnoremap <silent><S-A-L> :vertical resize -5<CR>
+        noremap  <A-l> >>
+        vnoremap <A-l> >gv
+        noremap  <A-h> <<
+        vnoremap <A-h> <gv
       endif
-    " Move Btwn Split Windows:                                       " {{{4
-      nnoremap <silent><C-h> :wincmd h<CR>
-      nnoremap <silent><C-l> :wincmd l<CR>
-      nnoremap <silent><C-j> :wincmd j<CR>
-      nnoremap <silent><C-k> :wincmd k<CR>
-  " Colorscheme Background Toggle:                                   " {{{3
-    nnoremap <A-#>
-      \ :let &background = ( &background=='dark' ? 'light' : 'dark' ) \|
-      \ :redraw                                                       \|
-      \ :echom &background<CR>
-  " Change To CWD:                                                   " {{{3
-    nnoremap <leader>cd :lcd%:h<CR>
-  " BufOnly Mapping Close All But This Buffer:                       " {{{3
-    nnoremap <leader>bd :call <SID>BufOnly()<CR>
-  " Toggle Paste:                                                    " {{{3
-    " Turned Off Due To YCM-Confilict. <Tab> is disabled due to
-    " this in terminal.
-    " nnoremap <leader>pp :setlocal paste!<cr>
-    set pastetoggle=<F2>
-  " Some Text Formatting:                                            " {{{3
-    nnoremap <leader>eo :call <SID>Combine_line(line("."), '0305')<CR>
-    vnoremap <leader>eo :call <SID>Combine_select('0305')<CR>
-    nnoremap <leader>eu :call <SID>Combine_line(line("."), '0333')<CR>
-    vnoremap <leader>eu :call <SID>Combine_select('0333')<CR>
-    nnoremap <leader>et :call <SID>Combine_line(line("."), '0336')<CR>
-    vnoremap <leader>et :call <SID>Combine_select('0336')<CR>
-    nnoremap <leader>ec :call <SID>Del_combine_line()<CR>
-    vnoremap <leader>ec :call <SID>Del_combine_selection()<CR>
-  " Toggle Number Use:                                               " {{{3
-    " nnoremap <silent><A-n> :call NumberToggle()<CR>
-" Acessing Files:                                                    " {{{2
-  execute   " nnoremap <leader>ev   :e " . expand("$MYVIMRC")                                     . "\<CR>"
-  execute   " nnoremap <leader>eb   :e " . expand(s:vimfiles  . "dotvim/vimrcs/base_rc")          . "\<CR>"
-  execute   " nnoremap <leader>ep   :e " . expand(s:vimfiles  . "dotvim/vimrcs/plugin_rc")        . "\<CR>"
-  execute   " nnoremap <leader>eep  :e " . expand(s:vimfiles  . "dotvim/autoload/dotvim.vim")     . "\<CR>"
-  execute   " nnoremap <leader>ek   :e " . expand(s:vimfiles  . "dotvim/vimrcs/commenter.vim")    . "\<CR>"
-  execute   " nnoremap <leader>ed   :e " . expand(s:vimfiles  . "dotvim/vimrcs/dragvisuals.vim")  . "\<CR>"
-  execute   " nnoremap <leader>em   :e " . expand(s:vimfiles  . "dotvim/vimrcs/Term_Mapping_rc")  . "\<CR>"
+    " HLNext Mapping:                                                " {{{3
+      nnoremap <silent> n nzz:call <SID>HLNext(0.1)<cr>
+      nnoremap <silent> N Nzz:call <SID>HLNext(0.1)<cr>
+    " Movements:                                                     " {{{3
+      " First Nonblank Character On The Line:
+      nnoremap 0 ^
+      " Search and replace
+      nnoremap <space> /\v
+      " Going Up and down in Wrap lines
+      nnoremap j gj
+      " Going Up and down in Wrap lines
+      nnoremap k gk
+    " Tab Movements:                                                 " {{{3
+      nnoremap <leader>tn :tabnew<CR>
+      nnoremap <Tab>      gt
+      nnoremap <S-Tab>    gT
+      nnoremap <C-Left>   :tabmove -1<CR>
+      nnoremap <C-Right>  :tabmove +1<CR>
+    " Buffer Movements Fold Movement:                                " {{{3
+      if g:local_settings_place == "home"                            " {{{4
+        " Jump To Next Fold or Downwards
+        nmap ö [
+        " Jump To Previous Fold or Upwards
+        nmap ä ]
+        " Jump to Definition
+        nnoremap ü <C-]>
+        " Jump back to Last Position
+        nnoremap Ü <C-O>
+        " Jump Folds Upwards or EmptyLines
+        nnoremap <silent> Ö :call FoldJump(1)<CR>
+        " Jump Folds Downwards or EmptyLines
+        nnoremap <silent> Ä :call FoldJump(-1)<CR>
+        " Jump Closed-Folds Upwards
+        nnoremap <silent> ;Ö :call NextClosedFold('j')<cr>
+        " Jump Closed-Folds Downwards
+        nnoremap <silent> ;Ä :call NextClosedFold('k')<cr>
+      else                                                           " {{{4
+        if &term =~ '^screen'
+          " Jump To Next Fold or Downwards
+          nnoremap <Esc>/ :call FoldJump(1)<CR>
+          " Jump To Previous Fold or Upwards
+          nnoremap <Esc>? :call FoldJump(0)<CR>
+        else
+          " Jump To Next Fold or Downwards
+          nnoremap <A-/> :call FoldJump(1)<CR>
+          " Jump To Previous Fold or Upwards
+          nnoremap <A-?> :call FoldJump(0)<CR>
+        endif
+      endif "}}}4
+    " Moving Lines Up And Down:                                      " {{{3
+      " <move> (LineNumber: . )<to-location><CR><reselect::realign::reselect>
+      if &term =~ '^screen'
+        nnoremap <silent><Esc>j :m .+1<CR>==
+        vnoremap <silent><Esc>j :m '>+1<CR>gv=gv
+        nnoremap <silent><Esc>k :m .-2<CR>==
+        vnoremap <silent><Esc>k :m '<-2<CR>gv=gv
+      else
+        nnoremap <silent><A-j> :m .+1<CR>==
+        nnoremap <silent><A-k> :m .-2<CR>==
+        vnoremap <silent><A-j> :m '>+1<CR>gv=gv
+        vnoremap <silent><A-k> :m '<-2<CR>gv=gv
+      endif
+    " Window Navigations:                                            " {{{3
+      " Change Window Size:                                          " {{{4
+        if s:running_terminal
+          if &term =~ '^screen'
+            nnoremap <silent><Esc>H :vertical resize -5<CR>
+            nnoremap <silent><Esc>J :resize +5<CR>
+            nnoremap <silent><Esc>K :resize -5<CR>
+            nnoremap <silent><Esc>L :vertical resize +5<CR>
+          else
+            nnoremap <silent><S-A-H> :vertical resize -5<CR>
+            nnoremap <silent><S-A-J> :resize +5<CR>
+            nnoremap <silent><S-A-K> :resize -5<CR>
+            nnoremap <silent><S-A-L> :vertical resize +5<CR>
+          endif
+        else
+          nnoremap <silent>H       :vertical resize -5<CR>
+          nnoremap <silent><S-A-J> :resize +5<CR>
+          nnoremap <silent><S-A-K> :resize -5<CR>
+          nnoremap <silent><S-A-L> :vertical resize +5<CR>
+        endif
+      " Move Btwn Split Windows:                                     " {{{4
+        nnoremap <silent><C-h> :wincmd h<CR>
+        nnoremap <silent><C-l> :wincmd l<CR>
+        nnoremap <silent><C-j> :wincmd j<CR>
+        nnoremap <silent><C-k> :wincmd k<CR>
+    " Colorscheme Background Toggle:                                 " {{{3
+      if &term =~ '^screen'
+        nnoremap <Esc>#
+          \ :let &background = ( &background=='dark' ? 'light' : 'dark' ) \|
+          \ :redraw                                                       \|
+          \ :echom &background<CR>
+      else
+        nnoremap <A-#>
+          \ :let &background = ( &background=='dark' ? 'light' : 'dark' ) \|
+          \ :redraw                                                       \|
+          \ :echom &background<CR>
+      endif
+    " Change To CWD:                                                 " {{{3
+      nnoremap <leader>cd :lcd%:h<CR>
+    " BufOnly Mapping Close All But This Buffer:                     " {{{3
+      nnoremap <leader>bd :call <SID>BufOnly()<CR>
+    " Toggle Paste:                                                  " {{{3
+      " Turned Off Due To YCM-Confilict. <Tab> is disabled due to
+      " this in terminal.
+      " nnoremap <leader>pp :setlocal paste!<cr>
+      set pastetoggle=<F2>
+    " Some Text Formatting:                                          " {{{3
+      nnoremap <leader>eo :call <SID>Combine_line(line("."), '0305')<CR>
+      vnoremap <leader>eo :call <SID>Combine_select('0305')<CR>
+      nnoremap <leader>eu :call <SID>Combine_line(line("."), '0333')<CR>
+      vnoremap <leader>eu :call <SID>Combine_select('0333')<CR>
+      nnoremap <leader>et :call <SID>Combine_line(line("."), '0336')<CR>
+      vnoremap <leader>et :call <SID>Combine_select('0336')<CR>
+      nnoremap <leader>ec :call <SID>Del_combine_line()<CR>
+      vnoremap <leader>ec :call <SID>Del_combine_selection()<CR>
+    " Toggle Number Use:                                             " {{{3
+      " nnoremap <silent><A-n> :call NumberToggle()<CR>
+  " Acessing Files:                                                  " {{{2
+    execute   " nnoremap <leader>ev   :e " . expand("$MYVIMRC")                                     . "\<CR>"
+    execute   " nnoremap <leader>eb   :e " . expand(s:vimfiles  . "dotvim/vimrcs/base_rc")          . "\<CR>"
+    execute   " nnoremap <leader>ep   :e " . expand(s:vimfiles  . "dotvim/vimrcs/plugin_rc")        . "\<CR>"
+    execute   " nnoremap <leader>eep  :e " . expand(s:vimfiles  . "dotvim/autoload/dotvim.vim")     . "\<CR>"
+    execute   " nnoremap <leader>ek   :e " . expand(s:vimfiles  . "dotvim/vimrcs/commenter.vim")    . "\<CR>"
+    execute   " nnoremap <leader>ed   :e " . expand(s:vimfiles  . "dotvim/vimrcs/dragvisuals.vim")  . "\<CR>"
+    execute   " nnoremap <leader>em   :e " . expand(s:vimfiles  . "dotvim/vimrcs/Term_Mapping_rc")  . "\<CR>"
 " Autocomd:                                                          " {{{1
   " WhiteSpaces:                                                     " {{{2
     augroup WHITESPACES
