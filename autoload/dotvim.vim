@@ -423,13 +423,8 @@ EOF
         let g:local_settings_place = Obj.Get_host()
         if ((len(substitute(system('echo $SSH_CLIENT'), '\v\W', '', 'g')) != 0) ||
           \ (len(substitute(system('echo $SSH_TTY'),    '\v\W', '', 'g')) != 0))
-          let l:usr_ =  matchstr(
-            \ substitute(
-            \             system("who \| awk '{ gsub(/^(.*)\\(\|\\)/, \"\"); print }'"),
-            \             '\v\n',
-            \             '',
-            \             'g'),
-            \ 'port')
+          let l:usr_ =
+          \ matchstr( substitute(system("who \| awk '{ gsub(/^(.*)\\(\|\\)/, \"\"); print }'"), '\v\n', '', 'g'), 'port')
           if len(l:usr_)
             let g:local_settings_place = 'home'
           else

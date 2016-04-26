@@ -79,12 +79,7 @@
   "vim-airline/vim-airline-themes": {
     "opt": {} },
   "majutsushi/tagbar": {
-    "opt": {
-      "autoload": {
-        "commands": ["TagbarToggle"]
-      },
-      "lazy": "1"
-    } },
+    "opt": {} },
   "octol/vim-cpp-enhanced-highlight": {
     "opt": {} },
   "bbchung/clighter": {
